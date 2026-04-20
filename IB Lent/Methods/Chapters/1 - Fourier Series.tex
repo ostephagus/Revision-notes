@@ -1,0 +1,96 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Defining the Fourier Series}
+For this, define the vector space of $L$-periodic functions:
+\begin{equation*}
+    V = \subsetselect{f : \R \mapsto \C}{f(\theta + L) = f(\theta) \forall \theta \in \R}
+\end{equation*}
+where we will require that the functions are sufficiently well-behaved. The inner product is:
+\begin{equation*}
+    \inn{f}{g} = \int_{0}^{L} f(\theta)\overline{g(\theta)} d\theta
+\end{equation*}
+Define basis functions:
+\begin{equation*}
+    e_n(\theta) = e^{2\pi i n \theta / L}
+\end{equation*}
+\begin{equation*}
+    \inn{e_n}{e_m} = L\delta_{mn}
+\end{equation*}
+\begin{definition}{Complex Fourier series}
+    For $f \in V$ define its \underline{complex Fourier series} as:
+    \begin{equation*}
+        \hat{f}(\theta) = \sum_{n \in \Z} \hat{f}_n e_n(\theta)
+    \end{equation*}
+    and we write $f(\theta) \sim \hat{f}(\theta)$ to say that $\hat{f}$ is the Fourier series of $f$. Later we see what this means.
+\end{definition}
+To find the coefficients we use:
+\begin{equation*}
+    \hat{f}_n = \frac1L \inn{f}{e_n}
+\end{equation*}
+\begin{definition}{(Real) Fourier series}
+    For $f \in V$, the \underline{Fourier series} is:
+    \begin{equation*}
+        \frac12 a_0 + \sum_{n=1}^{\infty} \left[a_n \cos\left(\frac{2\pi n \theta}{L}\right) + b_n \sin\left(\frac{2\pi n \theta}{L}\right)\right]
+    \end{equation*}
+    where:
+    \begin{align*}
+        a_n &= \frac2L \int_{0}^{L} f(\theta)\cos\left(\frac{2\pi n \theta}{L}\right) d\theta \\
+        b_n &= \frac2L \int_{0}^{L} f(\theta)\sin\left(\frac{2\pi n \theta}{L}\right) d\theta \\
+    \end{align*}
+\end{definition}
+This uses a new basis:
+\begin{equation*}
+    \left\{1, c_n(\theta) = \sin\left(\frac{2\pi n \theta}{L}\right), s_n(\theta) = \sin\left(\frac{2\pi n \theta}{L}\right)\right\}
+\end{equation*}
+\begin{definition}{Partial Fourier series}
+    For $f \in V$, the \underline{partial Fourier series} of $n$ terms is:
+    \begin{equation*}
+        (S_nf)(\theta) = \sum_{n = -N}^N \hat{f}_n e^{2\pi i n \theta / L}
+    \end{equation*}
+\end{definition}
+\begin{theorem}[Pointwise convergence of Fourier Series]
+    Let $f : \R \mapsto \C$ be $L$-periodic. Require that $f$ has finitely many discontinuities, and finitely many local maxima and minima (Dirichlet property). Then for each $\theta \in [0, L)$,
+    \begin{equation*}
+        \frac{f(\theta^+) + f(\theta^-)}{2} = \lim_{N \to \infty} (S_Nf)(\theta)
+    \end{equation*}
+    where $f(\theta^\mp)$ are the left and right limits of $f$ approaching $\theta$.
+    \label{thmFourierConverge}
+\end{theorem}
+\begin{proof}[for $f \in C^1$]
+    By possibly translating and scaling the argument of $f$ assume $\theta = 0$ and $L = 2\pi$. Evaluate $(S_N f)(0)$ as an integral of geometric series (by expanding the coefficients in terms of integrals) and evaluate this sum to get the Dirichlet kernel,
+    \begin{equation*}
+        D_N(\theta) =
+        \begin{cases}
+            \frac{\sin\left[\left(N+\frac12\right)\theta\right]}{\sin\left(\frac{\theta}{2}\right)} & \theta \in \R \backslash 2\pi\Z \\
+            2N + 1 & \text{otherwise}
+        \end{cases}
+    \end{equation*}
+    which is continuous, $2\pi$ periodic and has $\int_{-\pi}^\pi D_N(\theta) d\theta = 2\pi$. Use this to simplify the formulae for $f(0)$ and $(S_Nf)(0) - f(0)$.
+
+    Make use of the function:
+    \begin{equation*}
+        F(\theta) = \frac{\theta}{\sin\left(\frac{\theta}{2}\right)}\left[\frac{f(\theta) - f(0)}{\theta}\right]
+    \end{equation*}
+    and use the Fundamental Theorem of Calculus to argue that this is a smooth function.
+    
+    Finally, integrate by parts in the formula for $(S_Nf)(0) - f(0)$ to show that it tends to $0$ as $N \to \infty$.
+\end{proof}
+\section{Periodic Extensions}
+\begin{definition}{Even extension}
+    A function $f : [0, L) \mapsto \C$ has a $2L$-periodic \underline{even extension} $f_{even}$ defined by $f_{even}(\theta) = f(-\theta)$ on $\theta \in (-L, 0)$ and extend by periodicity for the rest of $\R$.
+\end{definition}
+\begin{definition}{Odd extension}
+    A function $f : [0, L) \mapsto \C$ has a $2L$-periodic \underline{odd extension} $f_{odd}$ defined by $f_{odd}(\theta) = -f(-\theta)$ on $\theta \in (-L, 0)$ and extend by periodicity for the rest of $\R$.
+\end{definition}
+Then the cosine/sine series of $f$ are the Fourier series of the even/odd extensions of $f$.
+\section{Regularity and Decay of Coefficients}
+If $f \in V$ is $k$-times continuously differentiable, the coefficients decay as $\hat{f}_n = o(n^{-k})$. This is by integrating by parts $k$ times in the formula for $\hat{f}_n$.
+
+If $f \in V$ is once continuously differentiable, we can differentiate termwise in the Fourier series for $f$ to get the Fourier series for $f'$.
+\section{Parseval's Theorem}
+Assuming that, for $f, g \in V$, $\inn{f}{g} = \inn{\hat{f}}{\hat{g}}$, we can expand this RHS to get Parseval's Theorem:
+\begin{equation*}
+    \frac1L \int_{0}^{L} f(\theta)\overline{g(\theta)} d\theta = \sum_{n \in \Z} \hat{f}_n \overline{\hat{g}_n}.
+\end{equation*}
+\end{document}
