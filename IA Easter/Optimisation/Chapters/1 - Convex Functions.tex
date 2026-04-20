@@ -1,0 +1,167 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Introduction}
+\subsection{Minimisation Problems}
+\begin{definition}{Optimisation problem}
+    An \underline{optimisation problem} has the form:
+    \begin{align*}
+        \text{Minimise } & f(\vec{x}) \\
+        \text{Subject to } & \vec{h}(\vec{x}) = \vec{b}, \\
+        & \vec{x} \in \Xset
+    \end{align*}
+    where $f : \R^n \mapsto \R$ is the \underline{objective function}, $\vec{h}(\vec{x}) = \vec{b}$ is a \underline{functional constraint} where $\vec{h} : \R^n \mapsto \R^m$ and $\vec{b} \in \R^m$, and $\vec{x} \in \Xset$ is a \underline{regional constraint}.
+\end{definition}
+\begin{definition}{Feasible set}
+    A \underline{feasible set} is the set of $\vec{x}$ that satisfy all constraints in the minimisation problem. We denote it:
+    \begin{equation*}
+        \Xset(\vec{b}) = \subsetselect{\vec{x} \in \Xset}{\vec{h}(\vec{x}) = \vec{b}}
+    \end{equation*}
+\end{definition}
+\begin{definition}{Optimal value}
+    The \underline{optimal value} for a minimisation problem is the vector $\vec{x}^*$ that satisfies the constraints and minimises $f$.
+\end{definition}
+\subsection{Defining Convexity}
+\begin{definition}{Convex set}
+    A set $S \subseteq \R^n$ is \underline{convex} if, for all $\vec{x}, \vec{y} \in S$ and $\lambda \in [0,1]$,
+    \begin{equation*}
+        \lambda \vec{x} + (1-\lambda) \vec{y} \in S
+    \end{equation*}
+\end{definition}
+\begin{definition}{Convex function}
+    A function $f : S \mapsto \R$ is \underline{convex} if $S$ is a convex set and, for all $\vec{x}, \vec{y} \in S$, $\lambda \in [0, 1]$,
+    \begin{equation}
+        f(\lambda \vec{x} + (1-\lambda) \vec{y}) \leq \lambda f(\vec{x}) + (1-\lambda) f(\vec{y})
+        \label{eqnConvexDef}
+    \end{equation}
+\end{definition}
+\begin{theorem}[First-order condition for convexity]
+    A differentiable function $f : S \mapsto \R^n$ is convex if and only if:
+    \begin{equation}
+        f(\vec{y}) \geq f(\vec{x}) + \left(\nabla f(\vec{x})\right) \cdot (\vec{y} - \vec{x})
+        \label{eqnConvexFirstOrder}
+    \end{equation}
+    for all $\vec{x}, \vec{y} \in S$.
+    \label{thmConvexFirstOrder}
+\end{theorem}
+\begin{proof}
+    Fix $\vec{x}$ and $\vec{y}$ and consider the restricted function of $t \in [0, 1]$:
+    \begin{equation*}
+        f((1-t)\vec{x} + t\vec{y})
+    \end{equation*}
+    \begin{proofdirection}{$\Rightarrow$}{Suppose $f$ is convex}
+        Take the convexity definition in equation~\ref{eqnConvexDef} and rearrange as an inequality for $f(\vec{y})$. Take the limit $t \to 0$ for equation~\ref{eqnConvexFirstOrder}.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Suppose $f$ satisfies the first-order condition}
+        For ease define $\vec{x_t} = (1-t)\vec{x} + t\vec{y}$. Apply \eqnref{eqnConvexFirstOrder} twice to get:
+        \begin{align*}
+            f(\vec{y}) &\geq f(\vec{x_t}) + \left[\nabla f(\vec{x_t})\right]^T (\vec{y} - \vec{x_t}) \\
+            f(\vec{x}) &\geq f(\vec{x_t}) + \left[\nabla f(\vec{x_t})\right]^T (\vec{x} - \vec{x_t})
+        \end{align*}
+        Then a convex combination of these equations gives \eqnref{eqnConvexDef}.
+    \end{proofdirection}
+\end{proof}
+\begin{corollary}
+    Suppose $\vec{x}$ is a point where $\nabla f = \vec0$. Then $\vec{x}$ is a global minimum of the function.
+    \label{corLocalMinIsGlobal}
+\end{corollary}
+\begin{definition}{Hessian matrix}
+    The \underline{Hessian matrix} of a function $f : \R^n \mapsto \R$ is the symmetric matrix $H(f)$ with elements:
+    \begin{equation*}
+        \left[H(f)\right]_{ij} = \frac{\partial^{2}f}{\partial x_i\partial x_j}
+    \end{equation*}
+\end{definition}
+\begin{definition}{Positive semi-definiteness}
+    A matrix $A \in R^{n \times n}$ is \underline{positive semi-definite} if, for all $\vec{v} \in \R^n$,
+    \begin{equation*}
+        \vec{x}^T A \vec{x} \geq 0.
+    \end{equation*}
+    In other courses we prove that this is equivalent to having all eigenvalues non-negative. We write $A \succeq 0$.
+\end{definition}
+With this notation we can write $A \succeq B$ if $A-B$ is positive semi-definite.
+\begin{theorem}[Second-order condition for convexity]
+    A twice-differentiable function $f : \R^n \mapsto \R$ is convex if and only if:
+    \begin{equation}
+        H(f) \succeq 0
+        \label{eqnConvexSecondOrder}
+    \end{equation}
+    at every point in $\R^n$.
+    \label{thmConvexSecondOrder}
+\end{theorem}
+\begin{proof}
+    Only the forward direction is examinable, so assume \eqnref{eqnConvexSecondOrder}. Then the multivariate Taylor series (with Lagrange remainder) implies \eqnref{eqnConvexFirstOrder}.
+\end{proof}
+\section{Gradient Descent}
+The algorithm is as follows:
+\begin{enumerate}
+    \item Start at an initial point $\vec{x_0}$.
+    \item Choose a step size $\epsilon > 0$.
+    \item Given point $\vec{x_k}$, $\vec{x_{k+1}} = \vec{x_k} - \epsilon\nabla f(\vec{x_k})$.
+    \item Repeat until reaching either a predetermined maximum number of steps or reaching a small enough $\nabla f$.
+\end{enumerate}
+This works because at each step,
+\begin{equation*}
+    f(\vec{x_{k+1}}) \approx f(\vec{x_k}) - \epsilon \norm{\nabla f(\vec{x_k})}
+\end{equation*}
+for sufficiently small $\epsilon$.
+
+\begin{definition}{$\beta$-smoothness}
+    A twice-differentiable function $f : \R^n \mapsto \R$ is \underline{$\beta$-smooth} if, for $\beta > 0$,
+    \begin{equation*}
+        H(f) \preceq \beta I
+    \end{equation*}
+    for all $\vec{x} \in \R^n$.
+\end{definition}
+\begin{definition}{$\alpha$-strong convexity}
+    A twice-differentiable function $f : \R^n \mapsto \R$ is \underline{$\alpha$-strongly convex} if, for $\alpha > 0$,
+    \begin{equation*}
+        H(f) \succeq \alpha I
+    \end{equation*}
+    for all $\vec{x} \in \R^n$.
+\end{definition}
+\begin{theorem}
+    Let $f : \R^n \mapsto \R$ be twice-differentiable. Let $\vec{x}, \vec{y} \in \R^n$.
+
+    If $f$ is $\beta$-smooth then:
+    \begin{equation*}
+        f(\vec{y}) \leq f(\vec{x}) + (\nabla f(\vec{x})) \cdot (\vec{y} - \vec{x}) + \frac{\beta}{2}\norm{\vec{x} - \vec{y}}^2
+    \end{equation*}
+    If $f$ is $\alpha$-strongly convex then:
+    \begin{equation*}
+        f(\vec{y}) \leq f(\vec{x}) + (\nabla f(\vec{x})) \cdot (\vec{y} - \vec{x}) - \frac{\alpha}{2}\norm{\vec{x} - \vec{y}}^2
+    \end{equation*}
+    \label{thmConvexityBounds}
+\end{theorem}
+\begin{proof}
+    Consider the Taylor series with Lagrange remainder:
+    \begin{equation*}
+        f(\vec{y}) = f(\vec{x}) + (\nabla f(\vec{x})) \cdot (\vec{y} - \vec{x}) + \frac12 (\vec{y} - \vec{x})^T H(f)(\vec{z}) (\vec{y} - \vec{x})
+    \end{equation*}
+    for some $\vec{z}$ along the line between $\vec{x}$ and $\vec{y}$.
+
+    Recall also that, for $A \preceq B$,
+    \begin{equation*}
+        \vec{x}^T A \vec{x} \leq \vec{x}^T B \vec{x}
+    \end{equation*}
+    for all $\vec{x} \in \R^n$.
+
+    Then use the inequalities afforded by $\alpha$-strong convexity and $\beta$-smoothness for the result.
+\end{proof}
+\begin{corollary}
+    For a function $f$ as above:
+    \begin{equation*}
+        f\left(\vec{x} + \beta^{-1} \nabla f(\vec{x})\right) \leq f(\vec{x}) - \frac{1}{2\beta} \norm{\nabla f(\vec{x})}^2
+    \end{equation*}
+    \label{corStepSizeBound}
+\end{corollary}
+\begin{remark}
+    This gives us a step size, $\epsilon = \beta^{-1}$.
+\end{remark}
+\begin{corollary}
+    Let $f^*$ be the minimum value of $f(\vec{x})$. Then for any $\vec{x} \in \R^n$,
+    \begin{equation*}
+        f^* \geq f(\vec{x}) - \frac{\norm{\nabla f(\vec{x})}^2}{2\alpha}
+    \end{equation*}
+    \label{corStopCriterionBound}
+\end{corollary}
+\end{document}

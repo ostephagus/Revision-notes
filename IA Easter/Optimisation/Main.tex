@@ -1,0 +1,38 @@
+\documentclass[british,11pt,a4paper]{report}
+
+\def\course{Optimisation}
+\def\degreepart{IA}
+\def\term{Easter}
+\def\academicyear{2025}
+\def\lecturer{Prof V. Jog}
+
+\input{../../Header.tex}
+
+\newcommand{\Xset}{\mathcal{X}}
+\newcommand{\abs}[1]{\lvert#1\rvert}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+
+\newcommand{\bvec}[1]{
+    \StrCut{#1}{_}\firstpart\secondpart
+    \boldsymbol{\bar{\firstpart}}_{\secondpart}
+}
+
+\newcommand{\transportcell}[3]{
+    \begin{tabular}{c}
+        #1 \\
+        #2~\textbar~#3
+    \end{tabular}
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{Minimising Convex Functions}
+\subfile{Chapters/1 - Convex Functions.tex}
+\chapter{Lagrange's Method}
+%\subfile{Chapters/2 - Lagrange Method.tex}
+\chapter{Linear Programming}
+%\subfile{Chapters/3 - Linear Programming.tex}
+\chapter{Applications of Linear Programs}
+%\subfile{Chapters/4 - Applications.tex}
+\end{document}
