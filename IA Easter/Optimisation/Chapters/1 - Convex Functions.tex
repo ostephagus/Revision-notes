@@ -92,6 +92,7 @@ With this notation we can write $A \succeq B$ if $A-B$ is positive semi-definite
     Only the forward direction is examinable, so assume \eqnref{eqnConvexSecondOrder}. Then the multivariate Taylor series (with Lagrange remainder) implies \eqnref{eqnConvexFirstOrder}.
 \end{proof}
 \section{Gradient Descent}
+\subsection{Algorithm}
 The algorithm is as follows:
 \begin{enumerate}
     \item Start at an initial point $\vec{x_0}$.
@@ -104,7 +105,7 @@ This works because at each step,
     f(\vec{x_{k+1}}) \approx f(\vec{x_k}) - \epsilon \norm{\nabla f(\vec{x_k})}
 \end{equation*}
 for sufficiently small $\epsilon$.
-
+\subsection{Choosing the Parameters}
 \begin{definition}{$\beta$-smoothness}
     A twice-differentiable function $f : \R^n \mapsto \R$ is \underline{$\beta$-smooth} if, for $\beta > 0$,
     \begin{equation*}
@@ -164,4 +165,88 @@ for sufficiently small $\epsilon$.
     \end{equation*}
     \label{corStopCriterionBound}
 \end{corollary}
+\begin{remark}
+    This gives us the stopping condition for a required precision $\delta > 0$,
+    \begin{equation*}
+        \norm{\nabla f(\vec{x})}^2 < 2\alpha\delta \implies \abs{f(\vec{x}) - f^*} < \delta.
+    \end{equation*}
+\end{remark}
+\subsection{Convergence}
+\begin{theorem}
+    Let $f : \R^n \mapsto \R$ be $\alpha$-strongly convex and $\beta$-smooth. The gradient descent algorithm with step size $\beta^{-1}$ satisfies, at iteration $T$,
+    \begin{align*}
+        f(\vec{x_T}) - f^* &\leq \left(1 - \frac{\alpha}{\beta}\right)^T (f(\vec{x_0}) - f^*) \\
+        &\leq e^{-\frac{\alpha}{\beta}T} (f(\vec{x_0}) - f^*)
+    \end{align*}
+    where $f^*$ is the value of $f$ at the optimal point.
+    \label{thmGradDescConvergence}
+\end{theorem}
+\begin{proof}
+    By \thmref{corStepSizeBound} we have (after subtracting $f^*$):
+    \begin{equation*}
+        f(\vec{x_{t+1}}) - f^* \leq f(\vec{x_T}) - f^* - \frac1{2\beta} \norm{\nabla f(vec{x_T})}^2
+    \end{equation*}
+    Now do the same thing with \thmref{corStopCriterionBound} and combine with the above inequality to get:
+    \begin{equation*}
+        \left(1 - \frac{\alpha}{\beta}\right) (f(\vec{x_T}) - f^*)
+    \end{equation*}
+    and iterate this back for the result. For the second inequality, apply the well-known approximation for $e$.
+\end{proof}
+\section{Second-Order Methods}
+\subsection{Newton's Method}
+Newton's method is based on:
+\begin{equation}
+    \vec{x_{t+1}} = \vec{x_t} - \left(H(f)(\vec{x_{t}})\right)^{-1} \nabla f(\vec{x_{t}})
+    \label{eqnNewtonMethod}
+\end{equation}
+We can remember this as Newton-Raphson on the first derivative (in the 1D case).
+\begin{definition}{Matrix norm}
+    The \underline{norm} of a matrix $A \in R^{n \times n}$ is defined as the smallest positive real value $a$ such that:
+    \begin{equation*}
+        \norm{A\vec{z}} \leq a\norm{\vec{z}}
+    \end{equation*}
+    for all $\vec{z} \in \R^n$. We then say $\norm{A} = a$.
+\end{definition}
+\begin{remark}
+    For positive semi-definite matrices, this is the largest eigenvalue.
+\end{remark}
+\begin{definition}{$l$-Lipschitz}
+    A twice-differentiable function $f : \R^n \mapsto \R$ is \underline{$l$-Lipschitz} if, for all $\vec{x}, \vec{y} \in R^n$,
+    \begin{equation*}
+        \norm{H(f)(\vec{x}) - H(f)(\vec{y})} \leq l\norm{\vec{x} - \vec{y}}
+    \end{equation*}
+\end{definition}
+\begin{theorem}
+    Let $f : \R^n \mapsto \R$ and suppose that it is $l$-Lipschitz and $\alpha$-strongly convex. Then Newton's Method satisfies:
+    \begin{equation*}
+        f(\vec{x_{t}}) - f^* \leq \frac{2\alpha^3}{l^2} \left(\frac{l}{2\alpha^2} \norm{f(\vec{x_{0}})}\right)^{2^{t+1}}
+    \end{equation*}
+    \label{thmNewtonConvergence}
+\end{theorem}
+\begin{proof}
+    The proof of \thmref{thmNewtonConvergence} is non-examinable.
+\end{proof}
+\begin{remarks}
+    \item This is exponentially faster than gradient descent
+    \item This only gives us information about the convergence if $\norm{f(\vec{x_{0}})} < \frac{2\alpha^2}{l}$. Therefore, we often run gradient descent to get to this value and then run Newton's method which is faster.
+\end{remarks}
+\subsection{Barrier Method}
+Suppose we now impose the regional constraint:
+\begin{equation*}
+    A \vec{x} - \vec{b} \leq 0
+\end{equation*}
+for $A \in \R^{m \times n}$, $\vec{b} \in \R^m$.
+
+Then we define:
+\begin{equation*}
+    \Phi(\vec{x}) = -\sum_{i=1}^{m} \log(-(\vec{a_{i}}^T \vec{x} - b_i))
+\end{equation*}
+which is small inside the feasible region and large outside it. Our objective function then becomes $g_t(\vec{x}) = tf(\vec{x}) + \Phi(\vec{x})$, and the new Newton's Method algorithm is:
+\begin{enumerate}
+    \item Find a strictly feasible $\vec{x}$ (by running gradient descent on $\Phi$, for example).
+    \item Set $t > 0$ and $s > 1$.
+    \item Compute $\vec{x}^*(t)$ by minimising $g_t$ with Newton's method, starting with $\vec{x}$ \label{stepBarrierMethod}
+    \item Update $\vec{x} = \vec{x}^*(t)$, $t = st$.
+    \item If $t$ is not large enough, return to step \ref{stepBarrierMethod}.
+\end{enumerate}
 \end{document}
