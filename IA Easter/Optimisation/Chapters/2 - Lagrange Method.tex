@@ -1,0 +1,148 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Simple Optimisation}
+We have the same problem as before:
+\begin{align*}
+    \text{Minimise } & f(\vec{x}) \\
+    \text{Subject to } & \vec{h}(\vec{x}) = \vec{b}, \\
+    & \vec{x} \in \Xset
+\end{align*}
+\begin{definition}{Lagrangian}
+    The \underline{Lagrangian} is:
+    \begin{equation*}
+        L(\vec{x}, \vec{\lambda}) = f(\vec{x})- \vec{\lambda}^T (h(\vec{x}) - \vec{b})
+    \end{equation*}
+    where $\vec{\lambda} \in \R^m$.
+\end{definition}
+We now minimise the Lagrangian subject to $\vec{x} \in \Xset$.
+\begin{theorem}[Lagrange Sufficiency Theorem]
+    Let $\vec{x}^* \in \Xset$ and $h(\vec{x}^*) = \vec{b}$.
+
+    Let $\vec{\lambda}^* \in \R^m$ such that:
+    \begin{equation*}
+        L(\vec{x}^*, \vec{\lambda}^*) = \min_{\vec{x} \in \Xset} L(\vec{x}, \vec{\lambda}^*)
+    \end{equation*}
+    then $\vec{x}^*$ is an optimal point of the original minimisation problem.
+    \label{thmLagrangeSufficiency}
+\end{theorem}
+\begin{proof}
+    In order to show $f(\vec{x}^*) = f^*$, we show $f(\vec{x}^*) \leq f^*$. Then we must have equality because $f^*$ is the minimum value of $f$.
+
+    \begin{align*}
+        \min_{\vec{x} \in \Xset(\vec{b})} f(\vec{x}) &= \min_{\vec{x} \in \Xset(\vec{b})} \left[f(\vec{x}) - \vec{\lambda}^* \cdot (h(\vec{x}) - \vec{b})\right] \\
+        &\geq \min_{\vec{x} \in \Xset} L(\vec{x}, \vec{\lambda}^*) \\
+        &= L(\vec{x}^*, \vec{\lambda}^*) \\
+        &= f(\vec{x}^*)
+    \end{align*}
+\end{proof}
+If instead the functional constraint is an inequality (where we define inequality of vectors element-wise):
+\begin{align*}
+    \text{Minimise } & f(\vec{x}) \\
+    \text{Subject to } & \vec{h}(\vec{x}) \leq \vec{b}, \\
+    & \vec{x} \in \Xset
+\end{align*}
+then we need to add slack variables. The full algorithm for Lagrangian optimisation is:
+\begin{enumerate}
+    \item Add a slack variable $\vec{s}$ and consider the functional constraint $h(\vec{x}) + \vec{s} = \vec{b}$ with new regional constraint $\vec{s} \geq \vec0$.
+    \item The Lagrangian is:
+        \begin{align*}
+            L(\vec{x}, \vec{s}, \vec{\lambda}) &= f(\vec{x}) - \vec{\lambda} \cdot (h(\vec{x}) + \vec{s} - \vec{b}) \\
+            &= f(\vec{x}) - \vec{\lambda} \cdot (h(\vec{x}) - \vec{b}) - \vec{\lambda} \cdot \vec{s}
+        \end{align*}
+    \item Define the set:
+        \begin{equation*}
+            \Lambda = \subsetselect{\vec{\lambda} \in \R^m}{\min_{\substack{\vec{x} \in \Xset\\\vec{s} \geq 0}} L(\vec{x}, \vec{s}, \vec{\lambda}) > -\infty}
+        \end{equation*}
+    \item For each $\vec{\lambda} \in \Lambda$, find $\vec{x}^*(\vec{\lambda})$ and $\vec{s}^*(\vec{\lambda})$ such that the Lagrangian is minimal
+    \item Find $\vec{\lambda}^*$ such that $\vec{x}^*$ and $\vec{s}^*$ are feasible.
+\end{enumerate}
+\begin{remarks}
+    \item All the entries of $\vec{\lambda}$ must be non-positive.
+    \item \underline{Complementary slackness} says that for each $i$ we must have either $\lambda_i$ or $s_i$ zero.
+\end{remarks}
+\section{Duality}
+It is sufficient to consider:
+\begin{align*}
+    \text{Minimise } & f(\vec{x}) \\
+    \text{Subject to } & \vec{h}(\vec{x}) = \vec{b}, \\
+    & \vec{x} \in \Xset
+\end{align*}
+because we can include slack variables in $\vec{x}$. This is known as the \underline{primal problem}.
+\begin{definition}{Dual objective function}
+    Using the definitions of $\Lambda$ and the Lagrangian from before, the \underline{dual}\\\underline{objective function} is:
+    \begin{align*}
+        g : \Lambda &\mapsto \R\\
+        \vec{\lambda} &\mapsto \min_{\vec{x} \in \Xset} L(\vec{x}, \vec{\lambda})
+    \end{align*}
+\end{definition}
+\begin{definition}{Dual problem}
+    The \underline{dual problem} is:
+    \begin{align*}
+        \text{Maximise } &g(\vec{\lambda}) \\
+        \text{Subject to }& \vec{\lambda} \in \Lambda
+    \end{align*}
+\end{definition}
+\begin{theorem}[Weak duality]
+    If $\vec{x} \in \Xset(\vec{b})$ and $\vec{\lambda} \in \Lambda$ then:
+    \begin{equation}
+        f(\vec{x}) \geq g(\vec{\lambda})
+        \label{eqnWeakDuality}
+    \end{equation}
+    \label{thmWeakDuality}
+\end{theorem}
+\begin{proof}
+    Start with $f(\vec{x}) \geq \min_{\vec{x}' \in \Xset(\vec{b})} f(\vec{x}')$ and continue from the definitions.
+\end{proof}
+\begin{definition}{Strong duality}
+    \underline{Strong duality} occurs when \eqnref{eqnWeakDuality} is an equality for optimal $\vec{x}^*$ and $\vec{\lambda}^*$.
+\end{definition}
+The Lagrange method works exactly when strong duality holds.
+\section{Criterion for the Lagrange Method}
+\begin{definition}{Supporting hyperplane}
+    A function $\phi : \R^m \mapsto \R$ has a \underline{supporting hyperplane} at $\vec{b} \in \R^m$ if there exists $\vec{\lambda} \in \R^m$ such that:
+    \begin{equation*}
+        \phi(\vec{c}) \geq \phi(\vec{b}) + \vec{\lambda} \cdot (\vec{c} - \vec{b})
+    \end{equation*}
+    for all $\vec{c} \in \R^m$.
+\end{definition}
+If $\phi$ is differentiable at $\vec{b}$, the slope of the supporting hyperplane is $\vec{\lambda} = \nabla \phi(\vec{b})$.
+\begin{definition}{Value function}
+    For a primal problem of the form above, the \underline{value function} is defined by:
+    \begin{align*}
+        \phi : \R^m &\mapsto \R\\
+        \vec{c} &\mapsto \min_{\substack{h(\vec{x}) = \vec{c}\\\vec{x} \in \Xset}} f(\vec{x})
+    \end{align*}
+\end{definition}
+\begin{theorem}
+    The primal problem as above satisfies strong duality if and only if the value function $\phi$ has a supporting hyperplane at $\vec{b}$.
+    \label{thmSuppHyperplane}
+\end{theorem}
+\begin{proof}
+    \begin{proofdirection}{$\Rightarrow$}{Suppose that $\phi$ has a supporing hyperplane at $\vec{b}$}
+        Let the slope be $\vec{\lambda}$. Prove that $g(\vec{\lambda}) \geq \phi(\vec{b})$ from the definitions. Add and subtract a term involving $\vec{c}$, and then minimise over $\vec{c}$.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Suppose that strong duality holds}
+        The other direction is a similar trick. Use the definitions to consider $\phi(\vec{b}) = g(\vec{\lambda})$ for optimal $\vec{\lambda}$. Then add and subtract a term involving $\vec{c}$, take out of the minimisation expression and find an inequality to involve $\phi(\vec{b})$.
+    \end{proofdirection}
+\end{proof}
+\section{Extended Example: Shadow Prices}
+Consider a scenario where a factory owner makes $n$ items from $m$ raw materials. The number of products of each time produced are $x_i$, and we have the functional constraint $h(\vec{x}) \leq \vec{b}$. The profit function is $f(\vec{x})$. $\Xset = {\vec{x} \geq \vec0}$.
+
+If a raw materials seller offers a small amount $\vec{\epsilon}$ of extra raw materials, we consider the change in value function:
+\begin{equation*}
+    \phi(\vec{b} + \vec{\epsilon}) - \phi(\vec{b}) \approx \vec{\epsilon} \cdot \nabla \phi
+\end{equation*}
+and so $[\nabla \phi]_i$ is the price per unit of item $i$ that the owner is willing to pay. This is the \underline{shadow price} of item $i$.
+
+Suppose now the raw material seller sets prices $\vec{\lambda}$ for the $m$ raw materials. The profit function for the factory owner is now:
+\begin{equation*}
+    f(\vec{x}) - \vec{\lambda} \cdot (\vec{h}(\vec{x}) - \vec{b})
+\end{equation*}
+
+The raw materials seller knows that if the price of raw materials is $\vec{\lambda}$, the factory owner's amount produced, $\vec{x}$, will be:
+\begin{equation*}
+    \min_{\vec{x} \geq \vec{0}} \vec{\lambda} \cdot (\vec{h}(\vec{x}) - \vec{b}) - f(\vec{x})
+\end{equation*}
+and so the raw materials seller's problem is exactly the dual of the factory owner's.
+\end{document}
