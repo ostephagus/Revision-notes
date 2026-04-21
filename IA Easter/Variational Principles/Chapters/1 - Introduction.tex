@@ -1,0 +1,32 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Functionals}
+\begin{definition}{Functional}
+    A \underline{functional} is a map $F : (\R^n \mapsto \R) \mapsto \R$ that takes functions $\R^n \mapsto \R$ to a real number.
+\end{definition}
+This course will consider extremising functionals.
+\section{Convex Functions}
+This section duplicates content from IA Optimisation. Relevant new content is given below.
+
+\begin{definition}{Graph}
+    For a function $f : D \subseteq R^n \mapsto \R$, the \underline{graph} of $f$ is the $n$-dimensional surface embedded into $\R^{n+1}$ given by $z = f(\vec{x})$, where $\R^{n+1}$ is assigned coordinates $(\vec{x}, z)$.
+\end{definition}
+\begin{proposition}[Alternate first-order condition for convexity]
+    A function $f : \R^n \mapsto \R$ is convex if and only if:
+    \begin{equation}
+        (\vec{y} - \vec{x}) \cdot \left[\nabla f(\vec{y}) - \nabla f(\vec{x})\right] \geq 0
+        \label{eqnAltFirstOrderConvex}
+    \end{equation}
+    for all $\vec{x}, \vec{y} \in \R^n$.
+    \label{propAltFirstOrderConvex}
+\end{proposition}
+\begin{proof}
+    \begin{proofdirection}{$\Rightarrow$}{Suppose that $f$ is convex}
+        Apply the first-order condition twice, swapping the positions of $\vec{x}$ and $\vec{y}$. Add these equations.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Suppose that \eqnref{eqnAltFirstOrderConvex} holds}
+        Consider $\vec{z_{t}} = t\vec{y} + (1-t)\vec{x} = t(\vec{y} - \vec{x}) + \vec{x}$. Evaluate $f(\vec{y}) - f(\vec{x})$ as an integral involving $\nabla f(\vec{z_{t}}) dt$, subtract $(\vec{y} - \vec{x}) \cdot \nabla f(\vec{x})$ and show that the resulting integrand is non-negative using equation~\ref{eqnAltFirstOrderConvex} with $\vec{x}$ and $\vec{z_{t}}$.
+    \end{proofdirection}
+\end{proof}
+\end{document}

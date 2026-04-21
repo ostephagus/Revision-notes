@@ -1,0 +1,18 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+This chapter is very similar to content covered in IA Optimisation. Therefore, only a brief discussion is given.
+\section{Lagrange Multipliers}
+In order to consider minimisation problems with constraints, of the form:
+\begin{align*}
+    \text{Minimise }&f(\vec{x}) \\
+    \text{Subject to }& \vec{h}(\vec{x}) = \vec{b}
+\end{align*}
+where $\vec{x} \in \R^n$, $\vec{h} : \R^n \mapsto \R^m$, $\vec{b} \in \R^m$.
+
+Then we can consider the vector $\vec{\lambda} \in \R^m$ and the new objective function:
+\begin{equation*}
+    L(\vec{x}, \vec{\lambda}) = f(\vec{x}) - \vec{\lambda} \cdot (\vec{h}(\vec{x}) - \vec{b}).
+\end{equation*}
+Then minimising this function with respect to $\vec{x}$ gives the result of the constrained optimisation. Set the derivatives of $L$ with respect to components of $\vec{x}$ to zero to find the result, setting derivatives of $L$ with respect to components of $\vec{\lambda}$ to zero recovers the individual constraints.
+\end{document}

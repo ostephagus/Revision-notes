@@ -1,0 +1,67 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Definition and Basic Properties}
+\begin{definition}{Legendre Transform}
+    The \underline{Legendre transform} (LT) of a function $f : D \subseteq \R^n \mapsto \R$ is given by:
+    \begin{equation}
+        f^*(\vec{p}) = \sup_{\vec{x} \in D} \left[\vec{p} \cdot \vec{x} - f(\vec{x})\right]
+        \label{eqnLegendreTransform}
+    \end{equation}
+\end{definition}
+\begin{proposition}
+    The Legendre Transform of a function is always convex.
+    \label{propLegendreConvex}
+\end{proposition}
+\begin{proof}
+    Work directly from the definitions and use the fact that $\sup(f(t) + g(t)) \leq \sup f(t) + \sup g(t)$.
+    Then, once the inequality is established, the domain of $f^*$ is exactly where the supremum is finite and so the supremum for the convex combination is bounded above, implying the domain of $f^*$ is convex.
+\end{proof}
+\begin{proposition}
+    If $f$ is convex then so is:
+    \begin{equation*}
+        F_{\vec{p}}(\vec{x}) = f(\vec{x}) - \vec{p} \cdot \vec{x}.
+    \end{equation*}
+    \label{propLTArgConvex}
+\end{proposition}
+\begin{proof}
+    Immediate from the definitions.
+\end{proof}
+\begin{corollary}
+    If $f$ is convex and differentiable then any stationary point of $\vec{p} \cdot \vec{x} - f(\vec{x})$ is a global maximum occurring at $\vec{x}(\vec{p})$ given by solving:
+    \begin{equation*}
+        \nabla f(\vec{x}) = \vec{p}
+    \end{equation*}
+    The Legendre Transform is then $f^*(\vec{p}) = \vec{p} \cdot \vec{x}(\vec{p}) - f(\vec{x}(\vec{p}))$.
+    \label{corLTStationary}
+\end{corollary}
+\begin{theorem}
+    If $f$ is convex and twice continuously differentiable then $f^**(\vec{x}) = f(\vec{x})$.
+    \label{thmLTSelfInverse}
+\end{theorem}
+\begin{proof}
+    This is done just from the definitions, use suffix notation and try not to get confused with the symbols!
+\end{proof}
+\section{Application to Thermodynamics}
+Consider a system of many particles. The total energy is $E$, the volume of the space occupied by the system is $V$, the temperature of the system is $T$ and the pressure is $P$. There are $\Omega(E, V)$ microscopic configurations of the individual molecules in the system, and the entropy of the system is $S(E, V) = h_B \log(\Omega(E, V))$. $S$ is strictly increasing in $E$, so we can invert the relationship to define $E(S, V)$.
+Temperature and pressure are:
+\begin{align*}
+    T &= \left(\frac{\partial E}{\partial S}\right)_V > 0 \\
+    P &= -\left(\frac{\partial E}{\partial V}\right)_S
+\end{align*}
+and we have the infinitesimal relation $dE = T~dS - P~dV$.
+
+Taking a Legendre Transform of $E(S, V)$ over $S$ gives the quantity $-F$:
+\begin{equation*}
+    F(T, V) = E(S, V) - TS
+\end{equation*}
+where $T$ is the derivative of $E$ with respect to $S$, as above. This $F$ is the Helmholtz free energy. We have the relation $dF = -S~dT - P~dV$. We can derive the relation for pressure by taking a Legendre transform with respect to $T$ and introducing the parameter $-P$:
+\begin{equation*}
+    H(S, P) = PV + E
+\end{equation*}
+and this is the enthalpy of the system. $dH = T~dS + V~dP$. Taking the Legendre transform with respect to both $S$ and $V$ at the same time (and introducing $T, -P$ as the parameters) gives:
+\begin{equation*}
+    G(T, P) = E - TS + PV
+\end{equation*}
+and this is the Gibbs free energy. The differential form is $dG = -S~dT + V~dP$.
+\end{document}
