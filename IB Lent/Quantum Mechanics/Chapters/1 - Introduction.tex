@@ -1,0 +1,46 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Classical Mechanics}
+Classical mechanics considers two types of object: particles and waves.
+
+Waves propagate as determined by the wave equation:
+\begin{equation*}
+    \frac{\partial^{2}f(x, t)}{\partial t^{2}} - c^2 \frac{\partial^{2}f(x, t)}{\partial x^{2}} = 0
+\end{equation*}
+where $f(x, t)$ is the amplitude at each point and is periodic in $\frac{t}{x}$.
+
+Solutions to the wave equation have the form $\Re\left(A \exp[i(kx \pm \omega t)]\right)$, and obey the dispersion relation $\omega^2 = c^2 k^2$. $\omega$ is the angular frequency, related to the wavelength $\lambda$ and the frequency $\nu$ by:
+\begin{equation*}
+    \nu = \frac{\omega}{2\pi},\qquad \lambda = \frac{2\pi c}{\omega} = \frac{c}{\nu}
+\end{equation*}
+Waves undergo interference, the amplitudes of two waves at a point is the sum of their individual amplitudes. In contrast, particles cannot occupy the same point in space and instead collide.
+\section{Photoelectric Effect}
+The photoelectric effect is the emission of electrons from a metal plate when it is shone with light. Classical expectation was that the total energy of the electrons depends on intensity and not frequency of incident light. In fact:
+\begin{itemize}
+    \item There were no electrons emitted for light below a certain threshold frequency, regardless of intensity
+    \item Velocity of electrons depended on frequency not intensity
+    \item Emission rate increased with intensity
+\end{itemize}
+and so Einstein concluded that the light must be quantised.
+
+For light of angular frequency $\omega$ the energy of released electrons is $E = \hbar \omega - \phi$ where $\phi$ is the electron's binding energy in the metal.
+\section{Atomic Spectra}
+The light emitted from atoms when irradiated with light has a set of discrete frequencies:
+\begin{equation*}
+    \omega_{mn} = 2\pi R_0 \left(\frac{1}{n^2} + \frac{1}{m^2}\right)
+\end{equation*}
+Bohr proposed that the electron orbits around the nucleus are quantised such that the angular momentum is $L = n\hbar$.
+\begin{theorem}
+    If the angular momentum, $L$, is quantised then so are the radius, velocity and energy.
+    \label{thmQuantisationConsequences}
+\end{theorem}
+\begin{proof}
+    Use the angular momentum definition to get $v$ in terms of $r$, $n$ and constants. Use the Coulomb force in Newton's Second Law to get the radius in terms of only constants and $n$ and conclude that $v$ must also be quantised. $E$ can be found to be quantised using the kinetic energy and electric potential energy which are both in terms of only $r$, $v$ and constants.
+\end{proof}
+\section{De Broglie Wavelength}
+Any particle of momentum $p$ has a corresponding De Broglie Wavelength:
+\begin{equation*}
+    \lambda = \frac{2\pi \hbar}{p} \implies \omega = \frac{pc}{\hbar}
+\end{equation*}
+\end{document}
