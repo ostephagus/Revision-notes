@@ -1,0 +1,36 @@
+\documentclass[british,11pt,a4paper]{report}
+
+\def\course{Variational Principles}
+\def\degreepart{IA}
+\def\term{Easter}
+\def\academicyear{2025}
+\def\lecturer{Prof H. Reall}
+
+\input{../../Header.tex}
+\usepackage{mathrsfs}
+
+\newcommand{\funcset}{\mathscr{C}}
+
+\newcommand{\dvec}[1]{
+    \StrCut{#1}{_}\firstpart\secondpart
+    \dot{\boldsymbol{\firstpart}}_{\secondpart}
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{Introduction}
+\subfile{Chapters/1 - Introduction.tex}
+\chapter{The Legendre Transform}
+\subfile{Chapters/2 - Legendre Transform.tex}
+\chapter{Minimising with Constraints}
+%\subfile{Chapters/3 - Constraints.tex}
+\chapter{Functionals}
+%\subfile{Chapters/4 - Functionals.tex}
+\chapter{Principle of Least Action}
+%\subfile{Chapters/5 - Least Action.tex}
+\chapter{Variational PDEs}
+%\subfile{Chapters/6 - Partial DEs.tex}
+\chapter{The Second Variation}
+%\subfile{Chapters/7 - Second Variation.tex}
+\end{document}
