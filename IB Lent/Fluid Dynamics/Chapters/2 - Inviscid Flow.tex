@@ -1,0 +1,64 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Surface and Volume Forces}
+$\bdforce$ is the total volume force exerted on the fluid per unit volume. Gravity has $\bdforce = \rho \vec{g}$.
+\begin{definition}{Surface force}
+    Let $\delta A$ be a small area with normal $\vec{n}$. The \underline{surface force} exerted by the positive side on the negative side is:
+    \begin{equation*}
+        \vec{\tau}(\vec{x}, t, \vec{n}) \delta A
+    \end{equation*}
+    where $\vec{\tau}$ is the \underline{stress} acting on a surface element.
+\end{definition}
+\begin{definition}{Inviscid flow}
+    A fluid is \underline{inviscid} if we can neglect viscosity on the timescales under consideration. In this case we assume there are no frictional stresses.
+\end{definition}
+In this case we have $\vec{\tau}(\vec{x}, t, \vec{n}) = -p(\vec{x}, t)\vec{n}$ where $p$ is the pressure.
+
+For the rest of the chapter we will assume inviscid flow.
+\section{The Euler Momentum Equation}
+Euler Momentum Integral Equation:
+\begin{equation}
+    \frac{d}{dt} \int_V \rho \vec{u} dV = \underbrace{-\int_{\partial V} \rho \vec{u}(\vec{u} \cdot \vec{n})dS}_{\text{Momentum flux}} + \underbrace{\int_V \bdforce dV}_{\text{volume force}} + \underbrace{\int_{\partial V}-p\vec{n} dS}_{\text{surface force}}
+    \label{eqnEulerMomInt}
+\end{equation}
+Then by using the summation convention and the divergence theorem, we can find the Euler Momentum (Differential) Equation:
+\begin{equation}
+    \rho \frac{D \vec{u}}{D t} = - \nabla p + \bdforce
+    \label{eqnEulerMomDiff}
+\end{equation}
+\section{Bernoulli Equation for Steady Flow}
+We require:
+\begin{itemize}
+    \item steady flow,
+    \item $\rho$ constant,
+    \item conservative forces: $\bdforce = -\nabla \chi$.
+\end{itemize}
+Then the Bernoulli Equation for Steady Flow with Potential Forces is:
+\begin{equation}
+    \vec{u} \cdot \nabla \underbrace{\left[\frac12 \rho |\vec{u}|^2 + p + \chi\right]}_H = 0
+    \label{eqnSteadyBernoulli}
+\end{equation}
+where $H$ is related to the energy. This tells us that $H$ is constant along streamlines.
+\section{Hydrostatic Pressure}
+Equation~\ref{eqnEulerMomDiff} with no flow gives:
+\begin{equation*}
+    \vec0 = -\nabla p + \bdforce.
+\end{equation*}
+This is the equation of fluid statics. For conservative forces as above this is $p + \chi = \text{const}$. We can use this to derive the buoyancy force on a body of submerged volume $V$: $F = \rho g V \vec{e_z}$, equal to the weight of fluid displaced.
+\section{Vorticity}
+\begin{definition}{Vorticity}
+    The \underline{vorticity} of a fluid flow is $\vec{\omega} = \nabla \times \vec{u}$.
+\end{definition}
+The Vorticity Equation is:
+\begin{equation*}
+    \frac{D \vec{\omega}}{D t} = (\vec{\omega} \cdot \nabla)\vec{u}
+\end{equation*}
+where the RHS is vortex stretching. The derivation of this is by taking the curl of equation~\ref{eqnEulerMomDiff}. This shows that $\vec{\omega}$ behaves like a material line:
+\begin{equation*}
+    \frac{D \vec{\delta l}}{D t} = (\vec{\delta l} \cdot \nabla) \vec{u}
+\end{equation*}
+and this is a consequence of conservation of angular momentum.
+
+A corollary of a non-examinable theorem is that if a fluid is initially irrotational, then it must be irrotational for all time.
+\end{document}
