@@ -1,0 +1,136 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Setting Up the Vector Space}
+Quantum mechanics considers the vector space $\hilb = L^2(\R^3)$ of functions $\psi : \R^3 \mapsto \C^3$ which are square-integrable, that is,
+\begin{equation*}
+    \norm{\psi} = \int_{\R^3} \abs{\psi(\vec{x}, t)}d^3\vec{x}
+\end{equation*}
+is finite. This vector space is known as the \underline{Hilbert space}. The inner product in this vector space is:
+\begin{equation*}
+    \inn{\psi}{\phi} = \int_{\R^3} \psi^*(\vec{x}, t) \phi(\vec{x}, t) d^3\vec{x}
+\end{equation*}
+
+A quantum system has a state $\psi$ which is represented by a wavefunction $\psi(\vec{x}, t) \in \hilb$.
+
+If $\norm{\psi} = N \in \R$, then we define $\bar{\psi}(\vec{x}, t) = \frac{1}{\sqrt{N}} \psi(\vec{x}, t)$ so that $\norm{\bar{\psi}} = 1$.
+
+With this definition, the spatial probability density function is given by:
+\begin{equation*}
+    \rho(\vec{x}, t) = \abs{\bar{\phi}(\vec{x}, t)}^2
+\end{equation*}
+and this is the probability density that the particle is at position $\vec{x}$ at time $t$.
+\begin{definition}{Equivalent state}
+    Two states $\psi$ and $\tilde{\psi}$ are \underline{equivalent} if the amplitudes of their corresponding wavefunctions are the same everywhere,
+    \begin{equation*}
+        \abs{\tilde{\psi}(\vec{x}, t)}^2 = \abs{\psi(\vec{x}, t)}^2
+    \end{equation*}
+    and this is when $\tilde{\psi}(\vec{x}, t) = e^{i\alpha}\psi(\vec{x}, t)$.
+\end{definition}
+\begin{proposition}[Superposition principle]
+    If $\psi_1, \psi_2 \in \hilb$, then $\psi = a_1 \psi_1 + a_2 \psi_2 \in \hilb$.
+    \label{propWFLinearCombo}
+\end{proposition}
+\begin{proof}
+    The proof is simply using the definitions and triangle inequality to show that $\psi$ has finite norm.
+\end{proof}
+\begin{proposition}
+    The inner product in $\hilb$, defined previously as:
+    \begin{equation*}
+        \inn{\psi}{\phi} = \int_{\R^3} \psi^*(\vec{x}, t) \phi(\vec{x}, t) d^3\vec{x}
+    \end{equation*}
+    is finite.
+    \label{propInnerProd}
+\end{proposition}
+\begin{proof}
+    Use the Cauchy-Schwarz inequality to show that the inner product is bounded above by $\sqrt{N_1N_2}$ where $N_1$ is the norm of $\psi$, $N_2$ is the norm of $\phi$.
+\end{proof}
+\begin{propositions}{
+        Let $\phi, \psi \in \hilb$ and let $a_1, a_2$ be real coefficients
+        \label{propsInnerProd}
+    }
+    \item $\inn{\psi}{\phi} = \inn{\phi}{\psi}^*$ \label{propInnerProdConjSymmetry}
+    \item The inner product is antilinear in the first argument and linear in the second argument \label{propInnerProdLinear}
+    \item $\inn{\psi}{\psi} \geq 0$ \label{eqnNormPositive}
+\end{propositions}
+\begin{proof}
+    All immediate from the definitions.
+\end{proof}
+\section{Time-Dependent Schr\"odinger Equation}
+The Time-Dependent Schr\"odinger Equation (TDSE) is a postulate of quantum mechanics. It is:
+\begin{equation}
+    i\hbar \frac{\partial \psi(\vec{x}, t)}{\partial t} = - \frac{\hbar}{2m} \nabla^2 \psi(\vec{x}, t) + U(\vec{x}) \psi(\vec{x}, t)
+    \label{eqnTDSE}
+\end{equation}
+where $U$ is the potential.
+\begin{proposition}
+    Let $\psi$ obey \eqnref{eqnTDSE} (TDSE). Then $\norm{\psi}$ is constant with respect to time.
+    \label{propNormConst}
+\end{proposition}
+\begin{proof}
+    Take a time derivative of the norm, use the TDSE and then the divergence theorem to show it is zero.
+\end{proof}
+\begin{definition}{Probability current}
+    The \underline{probability current} is the vector:
+    \begin{equation*}
+        \vec{J} = \frac{i\hbar}{2m} (\psi^* \nabla \psi - \psi \nabla \psi=^).
+    \end{equation*}
+\end{definition}
+\section{Introduction to Measurement}
+\begin{definition}{Operator}
+    An \underline{operator} in quantum mechanics is a linear map $\op : \hilb \mapsto \hilb$.
+\end{definition}
+\begin{definition}{Hermitian conjugate}
+    The \underline{Hermitian conjugate} $\opdg$ of an operator $\op$ is the operator such that:
+    \begin{equation*}
+        \inn{\opdg \psi_1}{\psi_2} = \inn{\psi_1}{\op\psi_2}
+    \end{equation*}
+    for all $\psi_1, \psi_2 \in \hilb$.
+\end{definition}
+\begin{definition}{Hermitian operator}
+    An operator $\op$ is \underline{Hermitian} if $\opdg = \op$.
+\end{definition}
+\begin{remark}
+    All physical quantities in QM are represented by Hermitian operators.
+\end{remark}
+\begin{itemize}
+    \item The position operator is $\hat{x} : \psi(x, t) \mapsto x\psi(x, t)$.
+    \item The momentum operator is $\hat{p} : \psi(x, t) \mapsto -i\hbar \frac{\partial \psi}{\partial x}$.
+    \item The kinetic energy operator is $\hat{T} : \psi \mapsto \frac{\hat{p}^2}{2m}\psi$.
+    \item The potential energy operator is $\hat{U} : \psi \mapsto U(x)\psi(x, t)$.
+    \item The total energy operator is $\hat{H} = (\hat{T} + \hat{U})$.
+\end{itemize}
+\begin{proposition}
+    The eigenvalues of Hermitian operators are real.
+    \label{propMeasurementReal}
+\end{proposition}
+\begin{proof}
+    This is a standard proof from, for example, IA Vectors and Matrices adapted for the notation of operators.
+\end{proof}
+\begin{proposition}
+    Let $\op$ be a Hermitian operator with $\psi_1, \psi_2$ normalised eigenfunctions of $\op$ with eigenvalues $a_1, a_2$. If these are distinct then $\psi_1$ and $\psi_2$ are orthogonal.
+    \label{propOrthogonalEigenfunctions}
+\end{proposition}
+\begin{theorem}
+    The set of eigenfunctions of a Hermitian operator forms a complete, orthonormal basis for $\hilb$.
+    \label{thmEigenfunctionsFormBasis}
+\end{theorem}
+This theorem will be used without proof.
+
+The Copenhagen interpretation of quantum mechanics requires the following postulates:
+\begin{enumerate}
+    \item The possible outcomes of a measurement of an observable quantity $O$ are the eigenvalues of the corresponding operator $\op$.
+    \item If $\{\psi_i\}_{i \in I}$ is a set of orthonormal eigenfunctions of $\op$ with eigenvalues $\lambda$ then the measurement of the observable $\op$ on a quantum system described by the wavefunction $\psi$ has probability:
+        \begin{equation*}
+            \P(O = \lambda) = \sum_{i \in I}\abs{\inn{\psi_i}{\psi}}^2
+        \end{equation*}
+        and if the set of eigenfunctions of $\op$ is a discrete set, then $I$ is a singleton.
+    \item If $O$ is measured on a particle with wavefunction $\psi$ at time $t$ with outcome $\lambda_i$, then the wavefunction instantaneously becomes $psi(x, t) = \psi_i$ after the measurement (wavefunction collapse).
+\end{enumerate}
+\begin{definition}{Expected value}
+    The \underline{expected value} of a measurement of $O$ is:
+    \begin{equation*}
+        \E{O}_\psi = \inn{\psi}{\op \psi}.
+    \end{equation*}
+\end{definition}
+\end{document}
