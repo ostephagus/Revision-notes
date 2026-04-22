@@ -1,0 +1,90 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Dirac Delta Function}
+\begin{definition}{Dirac delta function}
+    The \underline{Dirac delta function} is the limit $n \to \infty$ of the distribution:
+    \begin{equation*}
+        \delta_n =
+        \begin{cases}
+            \frac{n}{\alpha} \exp \left[-\frac{1}{1-n^2x^2}\right] & \abs{x} < \frac1n \\
+            0 & \text{otherwise}
+        \end{cases}
+    \end{equation*}
+    where
+    \begin{equation*}
+        \alpha = \int_{-1}^{1} \exp\left[-\frac{1}{1-y^2}\right] dy 
+    \end{equation*}
+\end{definition}
+This function is smooth, and has the property that any integral over a superset of $(-1, 1)$ is $1$. Therefore, we define the limit $\delta(x)$ to be zero everywhere except $x = 0$ (where it is undefined), and has the property that any integral over a domain through $0$ is $1$. In fact, $\delta$ has the \underline{sampling property}:
+\begin{equation*}
+    \int_{-\epsilon}^{\epsilon} f(x)\delta(x) dx = f(0)
+\end{equation*}
+and the derivative $\delta'(x)$ has the property:
+\begin{equation*}
+    \int_{-\epsilon}^{\epsilon} f(x)\delta'(x) dx = -f'(0)
+\end{equation*}
+by integrating by parts.
+
+We can consider a periodic expansion of the delta function, $\delta^{(L)}$, in order to take the Fourier series:
+\begin{equation*}
+    \delta^{(L)} \sim \frac1L \sum_{n \in \Z} e^{2 \pi i n x / L}
+\end{equation*}
+\section{Green's Functions}
+We now consider forced equations $Ly = f$ on $x \in (a, b)$. A Green's Function $G(x;\xi)$ solves:
+\begin{equation*}
+    L[G(x;\xi)] = \delta(x - \xi),\quad x \in (a, b)
+\end{equation*}
+with the boundary condition $G(x;\xi) = 0$ at $x \in {a, b}$. Then the solution becomes:
+\begin{equation*}
+    y(x) = \int_{a}^{b} G(x;\xi)f(\xi) d\xi.
+\end{equation*}
+In general, $G$ will be a piecewise function with two different solutions either side of $\xi$. It will be continuous with a jump discontinuity in the first derivative (jump equal to the coefficient of $G''$ in $L$).
+\begin{proposition}
+    Let $y_1, y_2$ be linearly independent solutions to $Ly = 0$ with $y_1(a) = 0$ and $y_2(b) = 0$. Then the Green's function for $L$ of the form:
+    \begin{equation*}
+        \alpha(x) \frac{d^{2}}{dx^{2}} + \beta(x) \frac{d}{dx} + \gamma(x)
+    \end{equation*}
+    is:
+    \begin{equation*}
+        G(x;\xi) = \frac{1}{\alpha(x) W(y_1, y_2)(\xi)} \times
+        \begin{cases}
+            y_1(x) y_2(\xi) & x < \xi \\
+            y_1(\xi) y_2(x) & x > \xi
+        \end{cases}
+    \end{equation*}
+    \label{propGreenFunc}
+\end{proposition}
+In the case of a Sturm-Liouville operator, the denominator of $G$ is constant.
+\section{Eigenfunction Expansions}
+For a Sturm-Liouville operator $L$, we have normalised eigenfunctions $Y_k$. We will take $W = 1$ for simplicity.
+\begin{proposition}
+    If $Y_k$ are the eigenfunctions of a Sturm-Liouville operator $L$ with corresponding eigenvalues $\lambda_k$ then the Green's function for $L$ is:
+    \begin{equation*}
+        G(x;\xi) = \sum_{l=1}^{\infty} \frac{Y_k(x)Y_k(\xi)}{\lambda_k}.
+    \end{equation*}
+    \label{propGreensExpansion}
+\end{proposition}
+\begin{proof}
+    Consider $G$ as a linear combination of $Y_k$ with coefficients determined by the inner product. Use the fact that $\inn{G}{Y_k} = \lambda_k^{-1} \inn{G}{LY_k} = \lambda_k^{-1} \inn{LG}{Y_k}$.
+\end{proof}
+This fails if $L$ has a zero eigenvalue, since then it is not invertible.
+\section{Initial Value Problems}
+We can use a Green's function to solve problems of the form:
+\begin{equation*}
+    Ly = f(t), t > 0 \text{ with } y(0) = \dot{y}(0) = 0
+\end{equation*}
+Then we have the familiar solution:
+\begin{equation*}
+    y(t) = \int_{0}^{\infty} G(t;\tau)f(\tau) d\tau 
+\end{equation*}
+\begin{proposition}
+    The Green's function for this problem satisfies:
+    \begin{enumerate}
+        \item $G(t;\tau) = 0$ on $t < \tau$,
+        \item $L[G(t;/tau)] = 0$ on $t > \tau$ with $G(\tau^+;\tau) = 0$ and $\dot{G}(\tau^+;\tau) = \frac{1}{\alpha(t)}$
+    \end{enumerate}
+    where $\alpha$ is the coefficient of $\frac{d^{2}}{dt^{2}}$ in $L$.
+    \label{propGreenIVP}
+\end{proposition}
+\end{document}
