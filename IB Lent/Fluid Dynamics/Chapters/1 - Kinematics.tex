@@ -1,0 +1,75 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+We will consider always the velocity field $\vec{u}(\vec{x}, t)$ that describes the velocity of individual fluid particles at the point $\vec{x}$ and time $t$.
+\section{Streamlines and Pathlines}
+\begin{definition}{Streamline}
+    A \underline{streamline} is a curve that is everywhere tangential to the flow of the fluid at a given instant in time.
+\end{definition}
+A streamline through $\vec{x_0}$ at time $t_0$ is given in parametric form as $\vec{x}(s;\vec{x_0}, t_0)$ and solves:
+\begin{equation*}
+    \frac{d \vec{x}}{d s} = \vec{u}(\vec{x}, t_0),\qquad\vec{x}(0;\vec{x_0}, t_0) = \vec{x_0}
+\end{equation*}
+\begin{definition}{Pathline}
+    A \underline{pathline} is the trajectory of a fluid particle starting at a given point and time.
+\end{definition}
+The pathline starting at $\vec{x_0}$ at time $t_0$ is given in parametric form $\vec{x}(t;\vec{x_0})$ and solves:
+\begin{equation*}
+    \frac{d\vec{x}}{dt} = \vec{u}(\vec{x}, t),\qquad\vec{x}(t_0;\vec{x_0}) = \vec{x_0}
+\end{equation*}
+\begin{definition}{Steady flow}
+    A fluid flow is \underline{steady} if its velocity field does not depend on time.
+\end{definition}
+In the case of steady flow, pathlines and streamlines are the same.
+\section{The Material Derivative}
+\begin{definition}{Material derivative}
+    The \underline{material derivative} of a vector (or scalar) field $\vec{F}$ is given by:
+    \begin{equation*}
+        \frac{D \vec{F}}{D t} = \frac{\partial \vec{F}}{\partial t} + (\vec{u} \cdot \nabla) \vec{F}
+    \end{equation*}
+    where the first term is the \underline{local derivative} and the second term is the \underline{advected derivative}.
+\end{definition}
+\section{Conservation of Mass}
+\begin{definition}{Mass density}
+    The \underline{mass density} of a fluid is the mass per unit volume $\rho(\vec{x}, t)$ of the fluid.
+\end{definition}
+Considering the flow of mass through a small volume $\delta V$ and taking the limit as this goes to $0$, we find:
+\begin{equation}
+    \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho\vec{u}) = 0
+    \label{eqnConserveMass}
+\end{equation}
+\begin{definition}{Incompressible}
+    A fluid flow is \underline{incompressible} if $\frac{D \rho}{D t} = 0$. This is equivalent to $\nabla \cdot \vec{u} = 0$.
+\end{definition}
+We take $\rho$ constant, so $\nabla \cdot \vec{u} = 0$ anyway.
+\section{Kinematic Boundary Conditions}
+For a surface with normal $\vec{n}$ and velocity $\vec{U}$, the Kinematic Boundary Condition (KBC) is:
+\begin{equation}
+    \vec{u} \cdot \vec{n} = \vec{U} \cdot \vec{n}.
+    \label{eqnKBC}
+\end{equation}
+For a fixed boundary, we therefore require $\vec{u} \cdot \vec{n} = 0$.
+
+For a free surface defined by $z = \zeta(x, y, t)$ then the KBC becomes:
+\begin{equation*}
+    \frac{D F}{D t} = 0
+\end{equation*}
+where $F(x, y, z, t) = z - \zeta(x, y, t)$, and the surface is $F = 0$.
+\section{Streamfunctions}
+For incompressible flow $\nabla \cdot \vec{u} = 0$ and so we can construct a vector potential $\vec{A}$ such that $\vec{u} = \nabla \times \vec{A}$.
+\subsection{2D Cartesian Coordinates}
+We consider:
+\begin{equation*}
+    \vec{u} =
+    \begin{pmatrix}u \\ v \\ 0\end{pmatrix}
+\end{equation*}
+and $\vec{A} = \psi(x, y) \vec{e_z}$. Therefore:
+\begin{equation*}
+    u = \frac{\partial \psi}{\partial y},\qquad v = -\frac{\partial \psi}{\partial x}
+\end{equation*}
+\subsection{2D Polar Coordinates}
+Now consider a flow $\vec{u} = u_r \vec{e_r} + u_\theta \vec{e_\theta}$. Then $\vec{A} = \phi(r, \theta)\vec{e_z}$ given by:
+\begin{equation*}
+    \frac1r \frac{\partial \phi}{\partial \theta} = u_r(r,\theta),\qquad -\frac{\partial \phi}{\partial r} = u_\theta(r, \theta)
+\end{equation*}
+\end{document}
