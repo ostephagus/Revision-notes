@@ -1,0 +1,39 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Introduction}
+We will consider flows of the form:
+\begin{equation*}
+    \vec{u} = u(y, t) \vec{e_x}
+\end{equation*}
+called 2D parallel viscous flow.
+
+\begin{definition}{Viscous stress}
+    The \underline{viscous stress} is a shear stress given by:
+    \begin{equation*}
+        \tau = \mu \frac{\partial u}{\partial \vec{n}}
+    \end{equation*}
+    where $\mu$ is a property of the fluid called the (dynamic) viscosity.
+\end{definition}
+In practice, $\vec{n} = \pm \vec{e_y}$.
+\section{Forces}
+The force balance along $x$ and $y$ are:
+\begin{align*}
+    \rho \frac{\partial u}{\partial t} &= \mu \frac{\partial^{2}u}{\partial y^{2}} - \frac{\partial p}{\partial x} + f_x \\
+    0 &= -\frac{\partial p}{\partial y} + f_y
+\end{align*}
+so in the $y$ direction we just have a hydrostatic balance.
+
+The boundary condition in the case of viscous flows is $\vec{u} = \vec{U}$ (no-slip condition), using the notation from earlier.
+
+At an interface between two fluids of different viscosities, we must match the stresses:
+\begin{equation*}
+    \mu_1 \frac{\partial u_1}{\partial y} = \mu_2 \frac{\partial u_2}{\partial y}.
+\end{equation*}
+\section{Unsteady Flow}
+To solve problems involving unsteady flow, we introduce the \underline{kinematic viscosity} $\nu = \frac{\mu}{\rho}$. Then we find that the equation for $u$ reduces to a diffusion equation:
+\begin{equation*}
+    \frac{\partial u}{\partial t} = \nu \frac{\partial^{2}u}{\partial y^{2}}.
+\end{equation*}
+And we can solve this using either dimensional analysis or a Fourier transform.
+\end{document}
