@@ -1,0 +1,104 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Superposition}
+\begin{definition}{Boundary value problem}
+    A \underline{boundary value problem} is a problem of the form:
+    \begin{equation*}
+        P\phi(\vec{x}) = 0
+    \end{equation*}
+    defined on a bounded, open subset $\Omega$ of $\R^n$. $\phi$ must also satisfy appropriate boundary conditions on $\partial \Omega$.
+\end{definition}
+\begin{definition}{Initial value problem}
+    An \underline{initial value problem} is a problem of the form:
+    \begin{equation*}
+        P\phi(\vec{x}, t) = 0
+    \end{equation*}
+    defined on a bounded, open subset $\Omega$ of $\R^n$ and on $t > 0$. $\phi$ must satisfy appropriate boundary conditions on $\partial \Omega$ for all time, and appropriate initial conditions at $t = 0$ on $\Omega$.
+\end{definition}
+We can split IBVPs into a problem with initial condition $0$ (and with the given boundary conditions), and a problem with boundary conditions $0$ (and with the given initial conditions). The summing the solutions gives the required solution.
+
+We can also split the problem into sub-problems with the boundary conditions only non-zero on one region of the boundary domain, such as only one side of a square.
+\section{Laplace's Equation}
+Laplace's equation is a boundary value problem given by:
+\begin{equation*}
+    \nabla^2 \phi = 0
+\end{equation*}
+where $\nabla^2 = \nabla \cdot \nabla$.
+
+For Laplace's Equation on a square, disc or ball, we can transform to the appropriate coordinate system (Cartesian, cylindrical and spherical, respectively) and use separation of variables. Our general process is:
+\begin{enumerate}
+    \item Try a separable solution and solve for separate problems involving only one boundary condition
+    \item Apply homogeneous boundary conditions to the individual eigenfunctions
+    \item Multiply the separable parts back together, and sum over all possible eigenvalues (normally indexed by $\N$ or $\N_0$)
+    \item Apply any non-homogeneous boundary conditions using the relevant inner product for the operator.
+\end{enumerate}
+
+We often find that $\lambda > 0$ is a requirement to avoid trivial solutions. This cannot be simply assumed, and often involves finding solutions for negative $\lambda$ and showing this cannot be non-trivial with the given boundary conditions.
+
+For Laplace's Equation on a rectangle or disc, we expect solutions involving trigonometric functions (or hyperbolic trigonometric functions). For Laplace's Equation on a sphere, we must transform to $x = \cos(\theta)$ and find Legendre's Equation in $x$.
+\section{Wave Equation}
+\subsection{Solution}
+By considering the tension in a taut string, we derive the Wave Equation:
+\begin{equation*}
+    \frac{\partial^{2}\phi}{\partial t^{2}} = c^2 \nabla^2 \phi
+\end{equation*}
+which is an IBVP.
+
+We again consider separation of variables to solve this on a line or a disc. The solution $y(x, t)$ for a line with fixed ends at $0, L$ is:
+\begin{equation*}
+    y(x, y) = \sum_{n=0}^{\infty} \sin\left(\frac{n\pi x}{L}\right) \left[A_n \cos\left(\frac{n\pi ct}{L}\right) + B_n \sin\left(\frac{n\pi c t}{L}\right)\right]
+\end{equation*}
+where the $A_n$ and $B_n$ are determined by the initial conditions (on $y$ and $\dot{y}$).
+
+The separation of variables on a disc results in Bessel's Equation with $m = 0$ for $R$, and a sinusoidal solution for $T$.
+\subsection{Energy Conservation and Uniqueness}
+For the first example with a string clamped at $0$ and $L$, define the energy:
+\begin{equation*}
+    E(t) = \int_{0}^{L} \left[\frac12 \mu y_t^2 + \frac12 \tau y_x^2\right] dx
+\end{equation*}
+where $\mu$ is the mass per unit length of the string, $\tau$ is the tension. We can set $\mu = 1$ so that $\tau = c^2$. Then differentiating gives that the energy is constant. Then we can do a similar thing as seen in IA Vector Calculus for the proof of uniqueness for Laplace's Equation and use the energy conservation for the difference $\psi = \phi_1 - \phi_2$ of two solutions to the Wave Equation.
+\subsection{Reflection and Transmission}
+We now consider singular travelling waves:
+\begin{equation*}
+    y(x, t) \propto \Re\left[e^{i\omega(t - x / c)}\right].
+\end{equation*}
+We can have a difference in density of the string for $x < 0$ and $x > 0$, in which case we need to solve on the separate domains $x > 0$ and $x < 0$, along with boundary conditions at $x = 0$ to match $y$ and $\frac{\partial y}{\partial x}$.
+
+The other possibility is a mass at $x = 0$ (but the same density string), in which case we again solve either side of $0$ with $y$ matching at $0$, but the other matching condition requires consideration of Newton's 2nd Law (see example sheet). %TODO: Get this from the example sheet.
+
+For both of the above setups, with incoming waves from $-\infty$, our solution looks like:
+\begin{equation*}
+    y(x, t) =
+    \begin{cases}
+        \Re\left[e^{i\omega(t - x / c_-)} + Re^{-i\omega(t - x / c_-)}\right] & x < 0 \\
+        \Re\left[Re^{i\omega(t - x / c_+)}\right] & x > 0 \\
+    \end{cases}
+\end{equation*}
+where $R$ and $T$ are the reflection and transmission coefficients.
+\section{Heat Equation}
+\subsection{Solution}
+The heat equation is an IBVP given by:
+\begin{equation*}
+    \frac{\partial \phi}{\partial t} = \kappa \nabla^2 \phi
+\end{equation*}
+where $\kappa > 0$ is the thermal conductivity of the material.
+
+We again solve this using separation of variables. Separating $\phi$ as $\phi(\vec{x}, t) = \psi(\vec{x}) T(t)$ gives $T = e^{-\kappa \mu t}$ for eigenvalue $\mu$, and that $\psi$ solves the Laplacian eigenvalue problem $\nabla^2 \psi = -\mu \psi$.
+
+A square domain for $\psi$ gives sinusoidal solutions in $x$ and $y$, a cylindrical domain gives the Bessel equation in $r$ and a sinusoidal solution in $z$.
+\subsection{Heat Loss and Uniqueness}
+Define the heat energy:
+\begin{equation*}
+    Q(t) = \frac12 \int_{\Omega} \phi(\vec{x}, t)^2 dV
+\end{equation*}
+and by taking its derivative we see that this is a (non-strictly) decreasing function with $t$.
+
+\begin{proposition}
+    If the quantity $Q(t)$ is finite, the solution to the heat equation is unique.
+    \label{propHeatUnique}
+\end{proposition}
+\begin{proof}
+    Again consider $\psi = \phi_1 - \phi_2$ the difference of two solutions of the heat equation. Then this solution has energy $0$ at time $0$, and so must have $Q \equiv 0$ because $Q$ is non-negative and decreasing. This implies $\psi \equiv 0$.
+\end{proof}
+\end{document}
