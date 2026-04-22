@@ -1,0 +1,154 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Functional Inner Product Spaces}
+\begin{definition}{Weight function}
+    A \underline{weight function} $w(x) : [a, b] \mapsto \R$ is a function that is positive on $(a, b)$.
+\end{definition}
+Then we consider an inner product:
+\begin{equation*}
+    \inn{f}{g}_w = \int_{a}^{b} f(x)\overline{g(x)} w(x) dx
+\end{equation*}
+and $\inn{f}{g} = \inn{f}{g}_1$.
+
+\begin{definition}{Self-adjoint operator}
+    A linear differential operator $L$ is \underline{self-adjoint} on an inner product space if:
+    \begin{equation*}
+        \inn{Ly_1}{y_2}_w = \inn{y_1}{Ly_2}_w
+    \end{equation*}
+    for all functions $y_1, y_2$ in the inner product space.
+\end{definition}
+\begin{definition}{Eigenfunction}
+    The function $y \not\equiv 0$ is an \underline{eigenfunction} of a linear differential operator $L$ if, for some $\lambda \in \C$ (the \underline{eigenvalue}),
+    \begin{equation*}
+        Ly = \lambda y.
+    \end{equation*}
+\end{definition}
+We take from courses such as IB Linear Algebra that, for a self-adjoint operator $L$,
+\begin{itemize}
+    \item the eigenvalues are real,
+    \item eigenfunctions with distinct eigenvalues are orthogonal
+    \item $L$ has a complete orthogonal set of eigenfunctions
+\end{itemize}
+\section{Self-Adjoint Operators and Boundary Values}
+We will now consider the eigenvalue problem $Ly = \lambda y$ where $L$ is a self-adjoint differential operator, and we require certain boundary conditions on $y$.
+\begin{definition}{Sturm-Liouville Operator}
+    An operator $L$ is \underline{Sturm-Liouville} on $(a, b)$ if it has the form:
+    \begin{align*}
+        L[f(x)] &= \frac1{w(x)} \left[-\frac{d}{dx} \left(p(x) \frac{df(x)}{dx} + q(x) f(x)\right)\right] \\
+        &= \frac{1}{w(x)} \left[-p(x) f''(x) - p'(x) f'(x) + q(x) f(x)\right]
+    \end{align*}
+    where $p, q, w : [a, b] \mapsto \R$ and $p, w$ are positive on $(a, b)$. $w$ is the weight function.
+\end{definition}
+\begin{definition}{Singular endpoint}
+    For a Sturm-Liouville operator on $[a, b]$, and endpoint $c \in \{a, b\}$ is \underline{singular} if $p(c) = 0$.
+\end{definition}
+Boundary conditions are unnecessary at singular endpoints.
+\begin{definition}{Homogeneous boundary condition}
+    A boundary condition at an endpoint $c$ is \underline{homogeneous} if it has the form:
+    \begin{equation*}
+        \alpha y(c) + \beta y'(c) = 0
+    \end{equation*}
+    for real numbers $\alpha, \beta$.
+\end{definition}
+We then define the vector space that $L$ operates on to be the set $V \subseteq C^2[a, b]$ of functions that satisfy the boundary conditions.
+\begin{proposition}
+    For a Sturm-Liouville operator $L$ on $[a, b]$ with weight function $w$, if $y_1, y_2 \in C^2[a, b]$ then:
+    \begin{equation}
+        \inn{Ly_1}{y_2} - \inn{y_1}{Ly_2} = p(x) W(y_1, \overline{y_2})(x)|_{x = a}^b
+        \label{eqnSLAdjDifference}
+    \end{equation}
+    where $W$ is the Wronskian.
+    \label{propSLIsSelfAdj}
+\end{proposition}
+\begin{proof}
+    Proof is from the definitions, combining the two integrals (from the inner products) together to form the integral of an exact derivative.
+\end{proof}
+\begin{corollary}
+    For an inner product space $V \subseteq C^2[a, b]$ of functions obeying homogeneous boundary conditions, $L$ is self-adjoint.
+    \label{corSLIsSelfAdj}
+\end{corollary}
+\section{Sturm-Liouville Eigenvalue Problems}
+We now consider eigenvalue problems with Sturm-Liouville operators adorned with real homogeneous boundary conditions.
+
+For $V$ as before, we know that $L$ must have eigenfunction-eigenvalue pairs $(y_n, \lambda_n)$ with orthogonal eigenfunctions that form a basis such that, for $f \in V$,
+\begin{equation*}
+    f(x) = \sum_{n = 1}^{\infty} \hat{f}_n y_n(x)
+\end{equation*}
+where $\hat{f}_n = \frac{\inn{f}{y_n}_w}{\norm{y_n}_w^2}$ are the generalised Fourier coefficients.
+
+For a general second order differential operator eigenvalue problem $Ly + \lambda y = 0$,
+\begin{equation*}
+    \alpha(x) y''(x) + \beta(x) y(x) + \gamma(x)y(x) + \lambda y(x) = 0
+\end{equation*}
+with $\alpha > 0$, we can turn this into a Sturm-Liouville eigenvalue problem using an integrating factor:
+\begin{equation*}
+    I(x) = \exp\left[\int \frac{\beta(x)}{\alpha(x)}dx\right]
+\end{equation*}
+then we get a Sturm-Liouville operator with:
+\begin{equation*}
+    p(x) = I(x),\qquad q(x) = \frac{-I(x)\gamma(x)}{\alpha(x)},\qquad w(x) = \frac{I(x)}{\alpha(x)}
+\end{equation*}
+\section{Important Sturm-Liouville Problems}
+\subsection{Legendre's Equation}
+Legendre's Equation is:
+\begin{equation*}
+    -\frac{d}{dx} \left[(1 - x)^2 \frac{dy}{dx}\right] = \lambda y
+\end{equation*}
+for $x \in (-1, 1)$. Both endpoints are singular so we do not need to specify boundary conditions. IA Differential Equations knowledge: $0$ is a singular point so we look for solutions of the form:
+\begin{equation*}
+    y(x) = \sum_{n=0}^{\infty} a_n x^n
+\end{equation*}
+We end up with two series for $y$:
+\begin{align*}
+    y_0(x) &= a_0 \left[1 + \frac{-\lambda x^2}{2!} + \frac{-\lambda(3 \times 2 - \lambda)x^4}{4!} + \cdots\right] \\
+    y_1(x) &= a_1 \left[x + \frac{(2 - \lambda)x^3}{3!} + \frac{(2-\lambda)(4 \times 3 - \lambda)x^5}{5!} + \cdots\right]
+\end{align*}
+and in order for these to converge on $\abs{x} = 1$, we need that $\lambda = k(k+1)$ for some $k \in \N_0$. Then $y_0$ ($k$ even) or $y_1$ ($k$ odd) will terminate. The solutions to Legendre's Equation for such $\lambda$ are the \underline{Legendre polynomials}.
+\subsection{Bessel's Equation}
+We have the Sturm-Liouville eigenvalue problem, for $m \geq 0$:
+\begin{equation*}
+    -\frac{d}{dr} \left[r \frac{dy}{dr}\right] + \frac{m^2}{r} y = \lambda r y
+\end{equation*}
+on $(0, 1)$ with $y(1) = 0$. The left endpoint is singular. We transform this into a different form by setting $z = \sqrt{\lambda} r$ and $R(z) = y(r)$. Then Bessel's Equation is:
+\begin{equation}
+    x^2 \frac{d^{2}y}{dx^{2}} + x \frac{dy}{dx} + (x^2 - m^2) y = 0
+    \label{eqnBessel}
+\end{equation}
+We solve by substituting:
+\begin{equation*}
+    R(z) = z^\sigma \sum_{n=0}^{\infty} a_n z^n
+\end{equation*}
+Then the Bessel Functions of the First Kind are:
+\begin{equation*}
+    J_m(z) = \left(\frac{z}{2}\right)^m \sum_{n=0}^{\infty} \frac{(-1)^n}{n!(n+m)!} \left(\frac{z}{2}\right)^{2n}
+\end{equation*}
+and as $z \to \infty$ we find:
+\begin{equation*}
+    J_m(z) \to \sqrt{\frac{2}{\pi z}} \cos\left(z - \frac{\pi m}{2} - \frac{\pi}{4}\right) + O(z^{-3/2})
+\end{equation*}
+and so $J_m(z)$ has infinitely many zeroes on the positive $z$ axis, labelled $j_{mk}$ for $k \in \N$. We require $J_m(\sqrt{\lambda}) = 0$ and so the eigenvalues are $\lambda_k = j_{mk}^2$.
+
+Therefore, the eigenfunctions of the original problem are:
+\begin{equation*}
+    y_k(r) = J_m(j_{mk}r)
+\end{equation*}
+\section{Inhomogeneous Problems}
+Let $L$ be a Sturm-Liouville operator and $f \in V$. By possibly re-labelling $f$, require that the weight function is $1$. Let $\{Y_k\}$ be the set of normalised eigenfunctions of $L$, and so:
+\begin{equation*}
+    f = \sum_{k=1}^{\infty} B_k Y_k
+\end{equation*}
+for coefficients $B_k$. Now if we want to solve $Ly = f$, we have the solution:
+\begin{equation*}
+    y(x) = \sum_{k=1}^{\infty} \frac{B_k}{\lambda_k} Y_k(x)
+\end{equation*}
+as long as all eigenvalues are non-zero. Evaluating the $B_k$ in terms of inner products gives:
+\begin{equation*}
+    y(x) = \int_{a}^{b} G(x;\xi)f(\xi) d\xi 
+\end{equation*}
+where
+\begin{equation*}
+    G(x;\xi) = \sum_{k=1}^{\infty} \frac{Y_k(x)Y_k(\xi)}{\lambda_k}
+\end{equation*}
+is an example of a Green's function.
+\end{document}
