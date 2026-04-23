@@ -98,7 +98,7 @@ where $U$ is the potential.
     \item The momentum operator is $\hat{p} : \psi(x, t) \mapsto -i\hbar \frac{\partial \psi}{\partial x}$.
     \item The kinetic energy operator is $\hat{T} : \psi \mapsto \frac{\hat{p}^2}{2m}\psi$.
     \item The potential energy operator is $\hat{U} : \psi \mapsto U(x)\psi(x, t)$.
-    \item The total energy operator is $\hat{H} = (\hat{T} + \hat{U})$.
+    \item The total energy operator is the Hamiltonian operator $\hat{H} = (\hat{T} + \hat{U})$.
 \end{itemize}
 \begin{proposition}
     The eigenvalues of Hermitian operators are real.
@@ -133,4 +133,15 @@ The Copenhagen interpretation of quantum mechanics requires the following postul
         \E{O}_\psi = \inn{\psi}{\op \psi}.
     \end{equation*}
 \end{definition}
+\section{Time-Independent Schr\"odinger Equation}
+Consider 1D and a separable solution $\psi(x, t) = T(t) \chi(x)$. Then we find the time-independent Schr\"odinger Equation (TISE):
+\begin{equation}
+    -\frac{\hbar^2}{2m} \frac{\partial^{2}\chi}{\partial x^{2}} + U(x) \chi(x) = E\chi(x)
+    \label{eqnTISE}
+\end{equation}
+where $E$ is the energy eigenvalue. The corresponding time solution is $T(t) = e^{-iEt/\hbar}$. The TISE can also be written $\hat{H}\chi = E\chi$.
+
+A solution of this form is a \underline{stationary state}. Here $\rho(x, t) = \abs{\chi(x)}$ is unchanging in time.
+
+Because $\hat{H}$ is a self-adjoint operator, it has a complete basis of eigenfunctions and so every solution of the TDSE can be written as a linear combination of stationary states.
 \end{document}
