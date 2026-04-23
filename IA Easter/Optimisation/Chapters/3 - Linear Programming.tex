@@ -1,0 +1,168 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Formulations}
+\begin{definition}{Linear program}
+    A \underline{linear program} is an optimisation problem where the objective function and all constraints are linear in $\vec{x}$.
+\end{definition}
+The \underline{general form} is:
+\begin{align*}
+    \text{Maximise } & \vec{c} \cdot \vec{x} \\
+    \text{Subject to } & \vec{a_i} \cdot \vec{x} \geq \vec{b_{i}},~~i \in M_1 \\
+    & \vec{a_i} \cdot \vec{x} \leq \vec{b_{i}},~~i \in M_2 \\
+    & \vec{a_i} \cdot \vec{x} = \vec{b_{i}},~~i \in M_3 \\
+    & x_j \geq 0,~~j \in N_1 \\
+    & x_j \leq 0,~~j \in N_2.
+\end{align*}
+The \underline{standard form} is:
+\begin{align*}
+    \text{Maximise } & \vec{c} \cdot \vec{x} \\
+    \text{Subject to } & A\vec{x} = \vec{b} \\
+    & \vec{x} \geq \vec{0}.
+\end{align*}
+Any problem in general form can be written in standard form using slack variables and by expressing components as $x_j = x_j^+ - x_j^-$.
+\section{Extreme Points}
+\begin{definition}{Extreme point}
+    A point $\vec{x}$ of a convex set $\Xset \subseteq \R^n$ is an \underline{extreme point} if $\vec{x}$ cannot be written as:
+    \begin{equation*}
+        \vec{x} = \lambda \vec{y} + (1 - \lambda) \vec{z}
+    \end{equation*}
+    for $\vec{y} \neq \vec{z}$ and $\lambda \in (0, 1)$.
+\end{definition}
+\begin{theorem}
+    The maximum of a convex function over a convex set is realised at an extreme point of this set.
+    \label{thmMaxAtExtreme}
+\end{theorem}
+\begin{proof}
+    A simple proof by contradiction.
+\end{proof}
+
+For a matrix $A \in \R^{m \times n}$, let $\vec{a_{1}}, \cdots \vec{a_{m}}$ be the rows of the matrix and $\vec{A_{1}}, \cdots, \vec{A_{n}}$ be the columns.
+
+Now consider a linear programming problem in standard form and assume:
+\begin{enumerate}
+    \item $A$ has linearly independent rows, so the rank is $m$ (if not we would have redundant constraints we could remove)
+    \item Every set of $m$ columns is linearly independent ($n > m$)
+\end{enumerate}
+\begin{definition}{Basic solution}
+    A point $\vec{x}$ that satisfies $A\vec{x} = \vec{b}$ and has at most $m$ non-zero elements is a \underline{basic solution} of the linear programming problem.
+\end{definition}
+\begin{definition}{Basic feasible solution}
+    A basic solution $\vec{x}$ that satisfies $\vec{x} \geq \vec0$ is a \underline{basic feasible solution}.
+\end{definition}
+We now have a third assumption:
+\begin{enumerate}
+    \setcounter{enumi}{2}
+    \item Every basic feasible solution is non-degenerate (has exactly $m$ non-zero entries).
+\end{enumerate}
+We can now detail a simple algorithm to find basic solutions:
+\begin{enumerate}
+    \item Select indices $B(1), \cdots, B(m) \in \{1, \cdots, n\}$.
+    \item For each index $B(i)$, set the $i$th column of a matrix $B$ to be $\vec{A_{B(i)}}$
+    \item By assumption 2, $B$ is invertible: set the $B(i)$th element of $\vec{x}$ to $[B^{-1}\vec{b}]_i$
+    \item Set the other entries of $\vec{x}$ to zero.
+\end{enumerate}
+Then to find basic feasible solutions, we simply check each basic solution.
+\begin{theorem}[Basic feasible solutions are extreme points]
+    A point $\vec{x}$ is a basic feasible solution if and only if it is an extreme point of the feasible set:
+    \begin{equation*}
+        \Xset(\vec{b}) = \subsetselect{\vec{x} \in \R^n}{A\vec{x} = \vec{b},~\vec{x} \geq \vec{0}}
+    \end{equation*}
+    \label{thmBFSIsExtreme}
+\end{theorem}
+\begin{proof}
+    \begin{proofdirection}{$\Rightarrow$}{Assume that $\vec{x}$ is a BFS}
+        Proof by contradiction: let $\vec{x} = \lambda \vec{y} + (1-\lambda)\vec{z}$. Then show that these must have the same zero entries (because they are all feasible, $\vec{x} \geq \vec0$) and then are determined by uniqueness of solution to $B\vec{v} = \vec{b}$.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Assume that $\vec{x}$ is an extreme point}
+        Proof by contradiction: let $\vec{x}$ be extreme but not a BFS, so has $r > m$ non-zero entries. Label the indices $i_1, \cdots, i_r$ and take the columns of $A$ at these indices. Take a linear combination of these columns and use the coefficients to form a new vector such that $A \vec{w} = \vec{0}$. Then for small enough $k$ such that $\vec{x} \pm k\vec{w} \geq 0$, we have a convex combination to make $\vec{x}$ which contradicts the extremeness.
+    \end{proofdirection}
+\end{proof}
+\section{Duality in Linear Programs}
+\begin{theorem}
+    If a linear program is feasible and bounded then it satisfies strong duality.
+    \label{thmLinearProgStrongDual}
+\end{theorem}
+\begin{proof}
+    The proof is by finding a supporting hyperplane.
+\end{proof}
+For a linear program in standard form:
+\begin{align*}
+    \text{Maximise } & \vec{c} \cdot \vec{x} \\
+    \text{Subject to } & A\vec{x} = \vec{b} \\
+    & \vec{x} \geq \vec{0}
+\end{align*}
+its dual is:
+\begin{align*}
+    \text{Maximise} & \vec{b} \cdot \vec{\lambda} \\
+    \text{Subject to } & A^T\vec{\lambda} \leq \vec{c}.
+\end{align*}
+
+For a linear program in general form:
+\begin{align*}
+    \text{Maximise } & \vec{c} \cdot \vec{x} \\
+    \text{Subject to } & \vec{a_i} \cdot \vec{x} \geq \vec{b_{i}},~~i \in M_1 \\
+    & \vec{a_i} \cdot \vec{x} \leq \vec{b_{i}},~~i \in M_2 \\
+    & \vec{a_i} \cdot \vec{x} = \vec{b_{i}},~~i \in M_3 \\
+    & x_j \geq 0,~~j \in N_1 \\
+    & x_j \leq 0,~~j \in N_2 \\
+    & x_j \text{ free},j \in N_3
+\end{align*}
+its dual is:
+\begin{align*}
+    \text{Maximise } & \vec{b} \cdot \vec{\lambda} \\
+    \text{Subject to } & \lambda_i \geq 0,~~i \in M_1 \\
+    & \lambda_i \leq 0,~~i \in M_2 \\
+    & \lambda_i \text{ free},~~i \in M_3 \\
+    & \vec{\lambda}^T \vec{A_{j}} \leq c_j,~~j \in N_1 \\
+    & \vec{\lambda}^T \vec{A_{j}} \geq c_j,~~j \in N_2 \\
+    & \vec{\lambda}^T \vec{A_{j}} = c_j,~~j \in N_3 \\
+\end{align*}
+\begin{theorem}
+    Let $\vec{x}$ and $\vec{\lambda}$ be feasible points in the primal and dual problems, respectively. The pair $(\vec{x}, \vec{\lambda})$ is optimal if and only if:
+    \begin{align*}
+        \lambda_i (\vec{a_{i}}^T \vec{x} - b_i) &= 0 ~\forall i \\
+        (c_i - \vec{\lambda}^T \vec{A_{j}})x_j &= 0 ~\forall j
+    \end{align*}
+    \label{thmLinearProgOptimality}
+\end{theorem}
+\begin{remark}
+    Linear programs are special in that complementary slackness is sufficient for optimality.
+\end{remark}
+\begin{proof}
+    Define:
+    \begin{align*}
+        u_i &= \lambda_i (\vec{a_{i}}^T \vec{x} - b_i) \\
+        v_j &= (c_i - \vec{\lambda}^T \vec{A_{j}})x_j
+    \end{align*}
+    These are non-negative. Summing this all together gives $\vec{c} \cdot \vec{x} - \vec{\lambda} \cdot \vec{b}$.
+
+    If complementary slackness holds then all the $u_i$ and $v_j$ are zero so we have strong duality. This is reversible logic because they are all non-negative.
+\end{proof}
+\section{Simplex Algorithm}
+\begin{definition}{Reduced cost vector}
+    Given a set of indices $B(1), \cdots, B(m)$, the \underline{reduced cost vector} $\bvec{c}$ is defined:
+    \begin{equation*}
+        \bar{c}_j = c_j - \vec{c_B}^T B^{-1} \vec{A_{j}}
+    \end{equation*}
+    where $\vec{c_{B}}$ is the vector with only elements $B(1), \cdots, B(m)$ and $B$ is the matrix of the corresponding columns of $A$ (as before).
+\end{definition}
+A basic feasible solution is optimal if and only if $\bvec{c} \geq \vec0$.
+
+The simplex algorithm starts at a basic feasible solution and moves in the direction of decreasing cost. It considers a simplex Tableau, and the following algorithm.
+\begin{enumerate}
+    \item Setup: add slack variables as required to get to standard form.
+    \item Start the simplex method with a basic feasible solution (such as by setting all non-slack variables to 0 if this works).
+    \item Fill in the simplex tableau with:
+    \begin{enumerate}
+        \item the non-zero entries of $\vec{x}$ in the left column,
+        \item the corresponding rows of $B^{-1} A$ in the body of the table,
+        \item the reduced costs in the bottom row: $\bar{c}_i$,
+        \item the value $-\vec{c_B} \cdot \vec{x_B}$, to minimise.
+    \end{enumerate}
+    \item Identify the pivot column: if all entries in the bottom row ($\bvec{c}$) are non-negative, stop. If not, select the smallest negative entry.
+    \item Identify the pivot element: for the pivot column, divide the elements in the first row by the corresponding elements in the pivot column. Choose the row corresponding to the smallest ratio.
+    \item Perform row operations: the $j$th column should be the identity column so scale the $i$th row and add it to the other rows as required.
+    \item Return to step 3 and continue the algorithm.
+\end{enumerate}
+\end{document}
