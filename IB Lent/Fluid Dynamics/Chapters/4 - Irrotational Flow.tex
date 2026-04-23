@@ -1,0 +1,33 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Velocity Potential}
+We consider irrotational flow: $\nabla \times \vec{u} = \vec0$. Then we have the velocity potential $\phi$:
+\begin{equation*}
+    \vec{u} = \nabla \phi
+\end{equation*}
+Then the incompressibility condition $\nabla \cdot \vec{u} = 0$ implies that $\phi$ is harmonic. Therefore, we solve Laplace's equation on the given domain to find $\vec{u}$.
+\section{Uniform Flow Past an Object}
+\subsection{Flow Past a Sphere}
+Consider fluid moving with speed $U$ in the $\vec{e_z}$ direction past a sphere of radius $a$.
+
+We solve $\nabla^2 \phi = 0$ with spherical polar coordinates and require:
+\begin{equation*}
+    \phi(r, \theta) \to Ur\cos(\theta) \text{ as } r \to \infty,\qquad \frac{\partial \phi}{\partial r}(a, \theta) = 0
+\end{equation*}
+We find the solution:
+\begin{equation*}
+    \phi = U\cos(\theta) \left[r + \frac{a^3}{2r^2}\right]
+\end{equation*}
+\subsection{Flow Past a Cylinder with Circulation}
+For the flow past a cylinder, we allow a circulation:
+\begin{equation*}
+    \oint_{B_r(\vec{0})} \vec{u} \cdot \vec{dx} = \kappa.
+\end{equation*}
+We solve $\nabla^2 \phi = 0$ in cylindrical polar coordinates along with $\phi \to Ur\cos(\theta)$ as $r \to \infty$ and $\frac{\partial \phi}{\partial r}(a, \theta) = 0$.
+
+The solution is:
+\begin{equation*}
+    \phi = \frac{\kappa}{2\pi} \theta + U\cos(\theta) \left[r + \frac{a^2}{r}\right]
+\end{equation*}
+\end{document}
