@@ -1,0 +1,80 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Configuration Space}
+For a system of $N$ particles in $3$-dimensional space, we consider the $3N$-dimensional \underline{configuration space} of all the position vectors of the particles stacked on top of one another.
+
+\section{The Lagrangian}
+\begin{definition}{Lagrangian}
+    For a configuration space with position vector $\vec{q}$, the \underline{Lagrangian} of this system is:
+    \begin{equation*}
+        L(\vec{q}, \dvec{q}, t) = T - V
+    \end{equation*}
+    where $T$ is the total kinetic energy of the system and $V$ is the total potential energy.
+\end{definition}
+\begin{definition}{Action}
+    The \underline{action} of a path in configuration space (an evolution of the state over time) is:
+    \begin{equation*}
+        I[\vec{q}] = \int_{t_A}^{t_B} L(\vec{q}(t), \dvec{q}(t), t) dt
+    \end{equation*}
+\end{definition}
+The Principle of Least Action states that the actual path in configuration space taken by the system is that which extremises the action.
+
+If $L$ has no explicit dependence on $t$ then there exists a first integral:
+\begin{equation*}
+    L - \sum_{i=1}^{3N} \dot{q}_i \frac{\partial L}{\partial \dot{q}_i} = -E
+\end{equation*}
+where $E$ is the total energy of the system.
+\section{The Hamiltonian}
+\subsection{Derivation}
+\begin{definition}{Hamiltonian}
+    The \underline{Hamiltonian} is the Legendre Transform of $L$ with respect to $\dvec{q}$:
+    \begin{equation*}
+        H(\vec{q}, \vec{p}, t) = \sup_{\dot{q}} \left[\vec{p} \cdot \dvec{q} - L(\vec{q}, \dvec{q}, t)\right]
+    \end{equation*}
+\end{definition}
+We determine $\vec{p}$ as follows:
+\begin{equation*}
+    p_i = \frac{\partial L}{\partial \dot{q}_i}
+\end{equation*}
+and $\vec{p}$ is the conjugate momentum. In polar coordinates we get the angular momentum.
+\subsection{Hamiltonian Equations of Motion}
+The Hamiltonian Equations of Motion are first-order differential equations in $6N$-dimensional phase space with coordinates $\vec{q}, \vec{p}$:
+\begin{align*}
+    \dot{q_i} &= \frac{\partial H}{\partial p_i} \\
+    \dot{p_i} &= - \frac{\partial H}{\partial q_i}
+\end{align*}
+Notably, this gives:
+\begin{equation*}
+    \frac{dH}{dt} = \frac{\partial H}{\partial t}
+\end{equation*}
+so if $t$ does not appear in the formula for the Hamiltonian, $H$ has no $t$ dependence despite $\vec{p}$ and $\vec{q}$ being functions of $t$.
+\section{Symmetry and Noether's Theorem}
+\subsection{General Symmetries of the Action}
+Considering a change of variables:
+\begin{align*}
+    \vec{q}^* &= \vec{Q}(\vec{q}, \dvec{q}, t) \\
+    t^* &= T(\vec{q}, \dvec{q}, t)
+\end{align*}
+then this is a symmetry of the action if, for all curves in configuration space,
+\begin{equation*}
+    \int_{t_A^*}^{T_B^*} L(\vec{q}^*(t^*), \dvec{q}^*(t^*), t^*) dt^* = \int_{t_A}^{t_B} L(\vec{q}(t), \dvec{q}(t), t) dt.
+\end{equation*}
+\subsection{General Form of Noether's Theorem}
+\begin{definition}{1-parameter family of transformations}
+    A \underline{1-parameter family of transformations} has the form:
+    \begin{align*}
+        \vec{q}^* &= \vec{Q}(\vec{q}, \dvec{q}, t; s) \\
+        t^* &= T(\vec{q}, \dvec{q}, t; s)
+    \end{align*}
+    where $s \in \R$ is a parameter defining the transformation.
+\end{definition}
+\begin{theorem}[Noether's Theorem]
+    If the action has a 1-parameter family of symmetries then any solution of the Euler-Lagrange equation has a conserved quantity:
+    \begin{equation*}
+        \sum_{i=1}^{3N} \frac{\partial L}{\partial \dot{q}_i} \left(\frac{\partial Q_i}{\partial s}\right)_{s = 0} + \left(L - \sum_{i=1}^{3N} \dot{q}_i \frac{\partial L}{\partial \dot{q_i}}\right) \left(\frac{\partial T}{\partial s}\right)_{s = 0} = \text{const}
+    \end{equation*}
+    \label{thmNoether}
+\end{theorem}
+%TODO: Understand exactly what is examinable here.
+\end{document}
