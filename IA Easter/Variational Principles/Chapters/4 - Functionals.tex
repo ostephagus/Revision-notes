@@ -1,0 +1,81 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\begin{definition}{Functional}
+    A \underline{functional} is a map $F : \funcset \mapsto \R$ from a set $\funcset$ of functions to a real number $F[y]$.
+\end{definition}
+\section{Variation}
+\subsection{Single Argument}
+For a functional of the form:
+\begin{align*}
+    f : C^\infty[\alpha, \beta] &\mapsto \R\\
+    y(x) &\mapsto\int_{\alpha}^{\beta} f(y(x), y'(x), x) dx 
+\end{align*}
+we can find the functional derivative, defined by:
+\begin{equation*}
+    \frac{\delta F[y]}{\delta y(x)} = \frac{\partial f}{\partial y} - \frac{d}{dx} \frac{\partial f}{\partial y'}
+\end{equation*}
+by considering the difference quotient:
+\begin{equation*}
+    \lim_{\delta y \to 0} \frac{F[y + \delta y]- F[y]}{\delta y}.
+\end{equation*}
+In order for this to work, we need boundary conditions,
+\begin{itemize}
+    \item $y(\alpha) = a, y(\beta) = b$ for fixed $a, b$ and for all functions in $\funcset$, or
+    \item $\frac{\partial f}{\partial y'} = 0$ at $x \in \{a, b\}$.
+\end{itemize}
+An extremum of the functional occurs if and only if:
+\begin{equation*}
+    \frac{\delta F[y]}{\delta y(x)} = 0 \iff \frac{\partial f}{\partial y} - \frac{d}{dx} \frac{\partial f}{\partial y'} = 0
+\end{equation*}
+which is the Euler-Lagrange Equation. This is, in general, a second-order differential equation for $y$.
+\subsection{Multivariate Generalisation}
+Suppose that now $\vec{y}$ is a vector of functions $y_i(x)$. $\vec{y} : [\alpha, \beta] \mapsto \R^n$. With a functional of the form:
+\begin{equation*}
+    F[\vec{y}] = \int_{\alpha}^{\beta} f(\vec{y}, \vec{y}', x) dx
+\end{equation*}
+then with suitable boundary conditions we have the Euler-Lagrange equations:
+\begin{equation*}
+    \frac{\partial f}{\partial y_i} - \frac{d}{dx} \frac{\partial f}{\partial y_i'} = 0
+\end{equation*}
+for all $i \in \{1, \cdots, n\}$.
+\subsection{First Integrals}
+If $\frac{\partial f}{\partial y} = 0$ (no explicit dependence on $y$), we have:
+\begin{equation*}
+    \frac{\partial f}{\partial y'} = \text{const}
+\end{equation*}
+simply by integrating the Euler-Lagrange equation.
+
+If $\frac{\partial f}{\partial x} = 0$ then we have:
+\begin{equation*}
+    f - y' \frac{\partial f}{\partial y'} = \text{const}
+\end{equation*}
+by expanding out $\frac{df}{dx}$ using the multivariate chain rule, then applying the Euler-Lagrange equation and integrating once.
+\section{Fermat's Principle}
+Consider light propagating in a medium with speed $c(\vec{x})$. Let the speed of light in a vacuum be $c$, and so:
+\begin{equation*}
+    n(\vec{x}) = \frac{c}{c(\vec{x})}
+\end{equation*}
+is the refractive index of the medium. The time taken for light to travel along a path $C$ is:
+\begin{equation*}
+    T[C] = \int_C \frac{1}{c(\vec{x})} dl
+\end{equation*}
+and we define the optical path length as:
+\begin{equation*}
+    P[C] = cT[C] = \int_C n(\vec{x}) dl.
+\end{equation*}
+Fermat's Principle is that the light travels along a path that minimises $P$ (or equivalently $T$).
+\section{Constraints}
+We can extremise a functional $F[y]$ with respect to constraints using a Lagrange multiplier method.
+
+In the case of a functional constraint, $P[y] = c$, we introduce a Lagrange multiplier and extremise the new functional:
+\begin{equation*}
+    \Phi_\lambda[y] = F[y] - \lambda (P[y] - c)
+\end{equation*}
+the solution will have $\lambda$ present, and this is determined by applying the constraint to the solution.
+
+In the case of a function constraint $g(y(x)) = 0$, such as restricting a path $y(x)$ to a surface defined by $g(y) = 0$, we define $\lambda(x)$ to be the Lagrange multiplier (because we need the constraint to hold for all $x$) and extremise:
+\begin{equation*}
+    \Phi[y, \lambda] = F[y] - \int_{\alpha}^{\beta} \lambda(x) g(y(x)) dx
+\end{equation*}
+\end{document}
