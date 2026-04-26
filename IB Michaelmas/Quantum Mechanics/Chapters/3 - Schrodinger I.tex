@@ -1,0 +1,63 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+In this chapter we will require normalised wavefunctions unless otherwise specified.
+\section{Bound States}
+\subsection{Infinite Potential Well}
+Consider a potential of the form:
+\begin{equation*}
+    U(x) =
+    \begin{cases}
+        0 & \abs{x} \leq a \\
+        \infty & \abs{x} > a
+    \end{cases}
+\end{equation*}
+which means that for $\abs{x} > a$ we need $\chi(x) = 0$. The solutions are:
+\begin{equation*}
+    \chi_n(x) =
+    \begin{cases}
+        a^{-\frac12} \sin\left(\frac{n\pi x}{2a}\right) & \text{$n$ even} \\
+        a^{-\frac12} \cos\left(\frac{n\pi x}{2a}\right) & \text{$n$ odd}
+    \end{cases}
+\end{equation*}
+found by solving the second-order TDSE and applying boundary conditions. Note that the ground state is at $n = 1$ not $n = 0$ because this is the first normalisable wavefunction.
+\begin{proposition}
+    For a quantum system with non-degenerate eigenfunctions and even potential ($U(x) = U(-x)$), the eigenfunctions of $\hat{H}$ must be either odd or even.
+    \label{propEvenOddWF}
+\end{proposition}
+\subsection{Finite Potential Well}
+In this case we have finite potential and so we require $\chi \in C^1(\R)$.
+\begin{equation*}
+    U(x) =
+    \begin{cases}
+        0 & \abs{x} \leq a \\
+        U_0 & \abs{x} > a
+    \end{cases}
+\end{equation*}
+We deal with bound states with $E < U_0$. We have even and odd state for $\chi$. The even states are:
+\begin{equation*}
+    \chi(x) =
+    \begin{cases}
+        Ce^{\bar{k}x} & x < -a \\
+        B\cos(kx) & \abs{x} < a \\
+        Ce^{-\bar{k}x} & x > a
+    \end{cases}
+\end{equation*}
+where $k\tan(ka) = \bar{k}$, $k^2 + \bar{k}^2 = \frac{2mU_0}{\hbar^2}$. This has infinitely many solutions. $B$ is determined by normalisation.
+
+%TODO: Odd states from example sheet.
+\subsection{Quantum Harmonic Oscillator}
+Now we take:
+\begin{equation*}
+    U(x) = \frac12kx^2
+\end{equation*}
+and we solve with a power series (and require that it terminates) to get:
+\begin{equation*}
+    \chi_n(\xi) = f_n(\xi) e^{-\xi^2 / 2}
+\end{equation*}
+where $\xi = \sqrt{m\omega}{\hbar}$ and $f_n$ are the Hermite polynomials satisfying:
+\begin{equation*}
+    f_n(\xi) = (-1)^n e^{\xi^2} \frac{d^{n}}{d\xi^{n}}\left(e^{-\xi^2}\right)
+\end{equation*}
+and the eigenvalues are $E_n = \left(n + \frac12\right)\hbar\omega$.
+\end{document}
