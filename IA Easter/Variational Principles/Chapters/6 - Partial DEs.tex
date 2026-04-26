@@ -1,0 +1,32 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Multivariate Functionals}
+We now consider functions:
+\begin{align*}
+    \vec{y} : V \subseteq \R^m &\mapsto \R^n\\
+    \vec{x} &\mapsto \vec{y}(\vec{x})
+\end{align*}
+and functionals of the form:
+\begin{equation*}
+    F[\vec{y}] = \int_V f(\vec{y}(\vec{x}), \nabla \vec{y}(\vec{x}), \vec{x}) d^m\vec{x}
+\end{equation*}
+We generally find the specific version of the Euler-Lagrange equation for each problem, because the general Euler-Lagrange derivation is very complex. The process for this is as follows.
+\begin{enumerate}
+    \item Calculate the relevant first derivatives of $f$;
+    \item use these in the Taylor expansion of $F[\vec{y} + \vec{\delta y}] - F[\vec{y}]$;
+    \item split the integral into an exact expression $\nabla \vec{g} \cdot \vec{dx}$ (which becomes a boundary term) and a leftover term;
+    \item apply relevant boundary conditions on $\partial V$ to ensure the boundary term vanishes;
+    \item evaluate the functional derivative as the leftover term.
+\end{enumerate}
+The Minimal Surface Equation gives the function $h(x, y)$ that minimises the area of a surface $z = h(x,y)$ connecting a curve $\partial D$:
+\begin{equation*}
+    (1 + h_y^2) h_{xx} + (1 + h_x^2) h_{yy} - 2h_x h_y h_{xy} = 0
+\end{equation*}
+If $h_x, h_y$ are small and positive we derive the Laplace equation. If the boundary curve lines in a plane then we get the planar solution $Ax + By + C = 0$.
+
+If $h = h(r)$ we find the area functional has a first integral, and solving this gives a Catenoid:
+\begin{equation*}
+    r = r_0 \cos(\frac{z - z_0}{r_0}).
+\end{equation*}
+\end{document}
