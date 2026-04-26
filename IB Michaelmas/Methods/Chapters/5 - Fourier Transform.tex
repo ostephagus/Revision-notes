@@ -1,0 +1,123 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Definition and Simple Properties}
+\begin{definition}{Fourier transform}
+    Let $f : \R \mapsto \C$ have \underline{Fourier transform} (FT) given by:
+    \begin{equation*}
+        \hat{f}(\lambda) = \int_{-\infty}^{\infty} e^{-i\lambda x}f(x) dx
+    \end{equation*}
+\end{definition}
+$\FT$ denotes the linear map sending $f$ to $\hat{f}$. The Fourier transform has the following properties:
+\begin{enumerate}
+    \item Differentiation:
+        \begin{equation*}
+            \FT\left[\left(\frac{d^{k}}{dx^{k}}\right)f(x)\right] = (i\lambda)^k \hat{f}(\lambda)
+        \end{equation*}
+    \item Multiplication:
+        \begin{equation*}
+            \FT\left[x^kf(x)\right] = \left(i \frac{d}{d\lambda}\right)^k \hat{f}(\lambda)
+        \end{equation*}
+    \item Translation:
+        \begin{equation*}
+            \FT\left[f(x - k)\right] = e^{-i\lambda k}\hat{f}(\lambda)
+        \end{equation*}
+    \item Phase shift:
+        \begin{equation*}
+            \FT\left[e^{-ikx} f(x)\right] = \hat{f}(x - k)
+        \end{equation*}
+\end{enumerate}
+\begin{theorem}[Fourier Inversion Theorem]
+    For a function $\hat{f}$, the function $f$ that satisfies $\FT[f] = \hat{f}$ is given by:
+    \begin{equation*}
+        f = \frac1{2\pi} \int_{-\infty}^{\infty} e^{i\lambda x}\hat{f}(\lambda) d\lambda 
+    \end{equation*}
+    \label{thmFourierInversion}
+\end{theorem}
+Applied to the Dirac delta function:
+\begin{equation*}
+    \delta(x - y) = \frac{1}{2\pi} \int_{-\infty}^{\infty} e^{i\lambda(x-y)} d\lambda 
+\end{equation*}
+\begin{proposition}[Parseval's Theorem for Fourier Transforms]
+    For functions $f, g : \R\mapsto\C$,
+    \begin{equation*}
+        \int_{-\infty}^{\infty} f(x)\overline{g(x)} dx = \frac1{2\pi} \int_{-\infty}^{\infty} \hat{f}(\lambda)\overline{\hat{g}(\lambda)} d\lambda
+    \end{equation*}
+    \label{thmParsevalFT}
+\end{proposition}
+\begin{definition}{Convolution}
+    For $f, g : \R\mapsto\C$, the \underline{convolution} $f \star g : \R \mapsto \C$ is given by:
+    \begin{equation*}
+        (f \star g)(x) = \int_{-\infty}^{\infty} f(x - y)g(y) dy 
+    \end{equation*}
+    and is a commutative operation.
+\end{definition}
+\begin{theorem}[Convolution Theorem for Fourier Transforms]
+    For $f, g : \R\mapsto\C$,
+    \begin{equation*}
+        \FT[f \star g](\lambda) = \hat{f}(\lambda) \hat{g}(\lambda)
+    \end{equation*}
+    \label{thmFTConvolution}
+\end{theorem}
+\section{Important examples}
+\begin{tabular}{|c|c|}
+    \hline
+    Function & Fourier Transform \\
+    \hline
+    $H(x) e^{-\sigma x}$ & $\frac{1}{\sigma + i \lambda}$ \\
+    $\frac{1}{\sqrt{2\pi}}e^{-x^2 / 2}$ & $e^{-\lambda^2 / 2}$ \\
+    \hline
+\end{tabular}
+\section{Initial Value Problems}
+Consider:
+\begin{equation*}
+    \begin{cases}
+        Ly = f(t) & t > 0 \\
+        y(0) = \dot{y}(0) = 0 &
+    \end{cases}
+\end{equation*}
+Then let $L$ be a constant-coefficient second-order differential operator,
+\begin{equation*}
+    L = \alpha \frac{d^{2}}{dx^{2}} + \beta \frac{d}{dx} + \gamma
+\end{equation*}
+Take $\alpha = 1$ by possibly re-labelling $f$ and dividing through. Fourier Transform of the problem gives:
+\begin{equation*}
+    \left[(i\omega)^2 + \beta(i\omega) + \gamma\right]\hat{y}(\omega) = \hat{f}(\omega)
+\end{equation*}
+where we use $\omega$ as the FT parameter rather than $\lambda$.
+
+Now we define the response function:
+\begin{equation*}
+    R(t) = H(t) \left[\frac{e^{-\sigma_1 t} - e^{-\sigma_2 t}}{\sigma_2 - \sigma_1}\right]
+\end{equation*}
+where $\sigma_1$ and $\sigma_2$ are the roots of the characteristic equation for $L$.
+
+The solution is:
+\begin{equation*}
+    y(t) = (R \star f)(t) = \int_{0}^{t} R(t - \tau)f(\tau) d\tau 
+\end{equation*}
+And so $R$ is a Green's function.
+\section{Poisson Summation Formula}
+\begin{proposition}[Poisson Summation Formula]
+    For $f : \R\mapsto\R$,
+    \begin{equation*}
+        \sum_{n \in \Z} f(x + n) = \sum_{n \in \Z} \hat{f}(2\pi n)e^{2\pi n x}
+    \end{equation*}
+    \label{propPoissonSummation}
+\end{proposition}
+\section{Discrete Fourier Transform}
+\begin{definition}{Discrete Fourier Transform}
+    For a sequence $(X_n)_{n = 0}^{N - 1}$, the \underline{discrete Fourier Transform} (DFT) is a sequence $(\hat{X}_k)_{k=0}^{N - 1}$ given by:
+    \begin{equation*}
+        \hat{X}_k = \sum_{n=0}^{N-1} X_n e^{-2\pi i n k / N}
+    \end{equation*}
+\end{definition}
+\begin{proposition}[Discrete Fourier Inversion Theorem]
+    Given a sequence $(\hat{X}_k)_{k = 0}^{N - 1}$, the series $(X_n)_{n = 0}^{N - 1}$ with DFT $(\hat{X}_k)$ is given by:
+    \begin{equation*}
+        X_n = \frac{1}{N} \sum_{k=0}^{N-1} \hat{X}_k e^{2\pi i n k / N}
+    \end{equation*}
+    \label{propDiscreteFTInverse}
+\end{proposition}
+We can represent the linear map $\FT$ as a matrix with elements $\FT_{kn} = e^{-2\pi i n k / N}$. Then the matrix $\frac{1}{\sqrt{N}}$ is unitary.
+\end{document}
