@@ -1,0 +1,55 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Game Theory}
+\subsection{Games and Simple Strategies}
+\begin{definition}{Game}
+    A \underline{game} is a setup where two players can choose from a set number of actions which affects their scores.
+\end{definition}
+\begin{definition}{Payoff matrix}
+    For each player, the \underline{payoff matrix} is an $m \times n$ matrix whose entries $A_{ij}$ are the score (or payoff) attained by player $1$ when they play action $i$ and player 2 plays action $j$.
+\end{definition}
+\begin{definition}{Zero-sum game}
+    A game is \underline{zero-sum} if after each round of the game the total payoff is zero. In this case the two player have payoff matrices $A$ and $-A$.
+\end{definition}
+\begin{definition}{Conservative approach}
+    The \underline{conservative approach} for a player is to choose the action that satisfies:
+    \begin{equation*}
+        \max_{i \in \{1, \cdots, m\}} \min_{j \in \{1, \cdots, n\}} a_{ij}
+    \end{equation*}
+    which may not exist.
+\end{definition}
+\begin{definition}{Strategy}
+    A \underline{strategy} is the probability distribution of actions that a player picks. A \underline{pure strategy} is the strategy that only ever chooses one action. Otherwise the strategy is a \underline{mixed strategy}.
+\end{definition}
+\subsection{Linear Programming for Strategies}
+Player 1 must solve:
+\begin{align*}
+    \text{Maximise } &v \\
+    \text{Subject to } & A^T \vec{p} \geq v\vec{e} \\
+    & \vec{e} \cdot \vec{p} = 1 \\
+    & \vec{p} \geq \vec{0}
+\end{align*}
+where $\vec{e}$ is the vector of all $1$ entries.
+
+Player 2 solves the dual problem:
+\begin{align*}
+    \text{Minimise } &w \\
+    \text{Subject to } & A \vec{q} \leq w\vec{e} \\
+    & \vec{e} \cdot \vec{q} = 1 \\
+    & \vec{q} \geq \vec{0}
+\end{align*}
+\begin{definition}{Nash equilibrium}
+    The \underline{Nash equilibrium} is the pair $(\vec{p}, \vec{q})$ that solves the primal and dual problems.
+\end{definition}
+\begin{theorem}
+    A strategy $\vec{p}$ is optimal for player 1 if and only if there exist $\vec{q}$ and $v$ such that the following hold.
+    \begin{enumerate}
+        \item Primal feasibility: $A^T\vec{p} \geq v\vec{e}, \vec{e} \cdot \vec{p} = 1, \vec{p} \geq \vec{0}$;
+        \item dual feasibility: $A\vec{q} \leq v\vec{e}, \vec{e} \cdot \vec{q} = 1, \vec{q} \geq \vec0$;
+        \item complementary slackness: $v = \vec{p}^TA\vec{q}$.
+    \end{enumerate}
+    \label{thmGameOptimality}
+\end{theorem}
+\section{Transport Problems}
+\end{document}
