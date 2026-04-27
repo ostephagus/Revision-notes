@@ -1,0 +1,112 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Commutators}
+\begin{definition}{Commutator}
+    The \underline{commutator} of two Hermitian operators $\hat{A}$ and $\hat{B}$ is:
+    \begin{equation*}
+        \cmmt{A}{B} = \hat{A} \hat{B} - \hat{B} \hat{A}
+    \end{equation*}
+\end{definition}
+\begin{propositions}{
+        Let $\hat{A}, \hat{B}$ be Hermitian operators.
+        \label{propsCmmtProps}
+    }
+    \item $\cmmt{A}{B} = -\cmmt{B}{A}$ \label{propCmmtAntisym}
+    \item $\cmmt{A}{A} = 0$
+    \item $[\hat{A}, \hat{B}\hat{C}] = \cmmt{A}{B}\hat{C} + \hat{B}\cmmt{A}{C}$ \label{eqnCmmtExpand2Arg}
+    \item $[\hat{A}\hat{B}, \hat{C}] = \hat{A}\cmmt{B}{C} + \cmmt{A}{C}\hat{B}$ \label{eqnCmmtExpand1Arg}
+\end{propositions}
+\begin{definition}{Simultaneous diagonalisability}
+    Two Hermitian operators $\hat{A}$ and $\hat{B}$ are \underline{simultaneously diagonalisable} in $\hilb$ if there exists a complete basis of joint eigenfunctions $\psi_i$ such that:
+    \begin{equation*}
+        \hat{A} \psi_i = a_i,\qquad \hat{B} \psi_i = b_i
+    \end{equation*}
+\end{definition}
+\begin{theorem}
+    Two Hermitian operators $\hat{A}, \hat{B}$ are simultaneously diagonalisable if and only if:
+    \begin{equation*}
+        \cmmt{A}{B} = 0
+    \end{equation*}
+    \label{thmSimDiagCmmt}
+\end{theorem}
+\begin{proof}
+    \begin{proofdirection}{$\Rightarrow$}{Suppose that $\hat{A}, \hat{B}$ are sim. diag.}
+        Consider any state $\psi$ as a linear combination of eigenfunctions and then apply the commutator, showing it is zero.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Suppose that $\cmmt{A}{B} = 0$}
+        For any eigenvalue $a$ of $\hat{A}$, show that $\hat{A}\hat{B}\psi = a_i\hat{B}\psi$ and so $\hat{B}$ maps the eigenspace to itself. Argue that this is sufficient for sim. diag.
+    \end{proofdirection}
+\end{proof}
+\section{Uncertainty}
+\begin{definition}{Uncertainty of measurement}
+    For a measurement of an observable $O$ on a state $\psi$, the \underline{uncertainty} of this measurement is:
+    \begin{equation*}
+        \Delta_\psi O = \sqrt{(\Delta_\psi O)^2}
+    \end{equation*}
+    where:
+    \begin{align*}
+        (\Delta_\psi O)^2 &= \E{(\op - \E{\op}_\psi \hat{I})^2}_\psi \\
+        &= \E{\op^2}_\psi - \left(\E{\op}\right)^2
+    \end{align*}
+\end{definition}
+\begin{lemma}
+    Let $\psi \in \hilb$ and $O$ an observable. Then $(\Delta_\psi O)^2 \geq 0$ with equality if and only if $\psi$ is an eigenfunction of $\op$.
+    \label{lemNoUncIffEFunc}
+\end{lemma}
+\begin{proof}
+    Show that the uncertainty is equal to the norm of a state $\phi = (\op - \E{\op}\hat{I})\psi$. Then the equivalence in the second part is simple, and the logic is reversible.
+\end{proof}
+\begin{lemma}[Cauchy-Schwarz Inequality]
+    For states $\psi_1, \psi_2 \in \hilb$,
+    \begin{equation*}
+        \abs{\inn{\psi_1}{\psi_2}}^2 \leq \norm{\psi_1}^2 \norm{\psi_2}^2
+    \end{equation*}
+    with equality if and only if $\psi_1 = \lambda \psi_2$ for $\lambda \in \C$.
+    \label{lemCauchySchwarz}
+\end{lemma}
+\begin{theorem}[Generalised Uncertainty Principle]
+    If $A$, $B$ are observables and $\psi \in \hilb$,
+    \begin{equation}
+        (\Delta_\psi A)(\Delta_\psi B) \geq \frac12 \abs{\inn{\psi}{\cmmt{A}{B}\psi}}
+        \label{eqnGeneralisedUncertainty}
+    \end{equation}
+    \label{thmGeneralisedUncertainty}
+\end{theorem}
+\begin{proof}
+    Define:
+    \begin{align}
+        \hat{A}' &= \hat{A} - \E{\hat{A}}_\psi \hat{I} \nonumber\\
+        \hat{B}' &= \hat{B} - \E{\hat{B}}_\psi \hat{I} \label{eqnCauchySchwarzResult}
+    \end{align}
+    then by \thmref{lemCauchySchwarz},
+    \begin{align*}
+        (\Delta_\psi A)^2(\Delta_\psi B)^2 &\geq \abs{\inn{\hat{A}'\psi}{\hat{B}'\psi}} \\
+        &= \abs{\inn{\psi}{\hat{A}'\hat{B}'\psi}}
+    \end{align*}
+    Let $\{\hat{A}', \hat{B}'\} = \hat{A}'\hat{B}' + \hat{B}'\hat{A}'$ be the anti-commutator. Consider the Hermitian conjugates of the commutator and anti-commutator, to argue later about real and imaginary parts. Write $\hat{A}'\hat{B}'$ as the sum of the commutator and anti-commutator, and substitute this into equation~\ref{eqnCauchySchwarzResult}. Expand the $\abs{\cdot}$ using real-imaginary parts to reach the commutator. Note that the commutator of $\hat{A}$ and $\hat{B}$ is the same as that of the dashed versions.
+\end{proof}
+\begin{corollary}
+    Two quantities whose corresponding operators commute can be simultaneously measured on a quantum state with (theoretically) zero uncertainty.
+    \label{corCommuteImpliesSimMeasure}
+\end{corollary}
+\begin{corollary}[Heisenberg Uncertainty Principle]
+    For operators $\hat{x}$ and $\hat{p}$, the minimum uncertainty for a simultaneous measurement is $\frac\hbar2$.
+    \label{corHeisenbergUncertainty}
+\end{corollary}
+\begin{remark}
+    This lower bound is attained only for wavefunctions of the form $\psi(x) = Ce^{-bx^2}$.
+\end{remark}
+\section{Ehrenfest Theorem}
+\begin{theorem}[Ehrenfest Theorem]
+    The expectation of an operator $\op$ for a state $\psi \in \hilb$ evolves according to:
+    \begin{equation*}
+        \frac{d}{dt} \E{\op}_\psi = \frac{i}{\hbar} \E{\cmmt{H}{O}}_\psi + \E{\frac{\partial \op}{\partial t}}_\psi
+    \end{equation*}
+    \label{thmEhrenfest}
+\end{theorem}
+\begin{proof}
+    The proof is direct from the Schr\"odinger Equation.
+\end{proof}
+This theorem results in lots of useful laws from Classical Mechanics, by taking $\op$ to be familiar operators.
+\end{document}
