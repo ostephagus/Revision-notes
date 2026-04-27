@@ -1,0 +1,192 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Well-Posedness}
+\begin{definition}{Well-posed}
+    A problem is \underline{well-posed} if:
+    \begin{enumerate}
+        \item a solution exists;
+        \item solutions are unique;
+        \item solutions depend continuously on given data (boundary conditions and initial conditions).
+    \end{enumerate}
+\end{definition}
+An example of a well-posed problem is solving the Laplace equation on a suitable domain with Dirichlet Boundary Conditions. An example of an ill-posed problem is the heat equation running time backwards.
+\section{Method of Characteristics}
+Consider a PDE of the form:
+\begin{equation*}
+    a(x, y) \frac{\partial u}{\partial x} + b(x, y) \frac{\partial u}{\partial y} = c(x, y, u)
+\end{equation*}
+along with an initial condition $u(x, y) = \phi(x, y)$ along a curve $C \subseteq \R^2$.
+
+This is \textit{quasi-linear} because the nonlinearity is only on the RHS.
+
+We consider a characteristic curve defined by:
+\begin{align*}
+    \frac{dx}{dt} &= a(x, y) \\
+    \frac{dy}{dt} &= b(x, y)
+\end{align*}
+along with $(x(0), y(0)) \in C$, such that $z(t) = u(x(t), y(t))$ satisfies:
+\begin{equation*}
+    \frac{dz}{dt} = c(x, y, z)
+\end{equation*}
+which is a first-order ODE for $z$. We solve with the initial condition $z(0) = \phi(x(0), y(0))$.
+
+Now assuming the curve $C$ to be parameterised by $s \in \R$, we invert the relationship between $(x, y)$ and $(s, t)$ to get the result ($u$ instead of $z$).
+\section{Classifying Second-Order PDEs}
+We consider PDEs of the form $Lu = g$ where $L$ has the form:
+\begin{equation*}
+    a \frac{\partial^{2}}{\partial x^{2}} + 2b \frac{\partial^{2}}{\partial x\partial y} + c \frac{\partial^{2}}{\partial y^{2}} + d \frac{\partial }{\partial x} + e \frac{\partial }{\partial y} + f
+\end{equation*}
+where $a$ to $f$ are functions of $x$ and $y$. The characteristic curves are given by:
+\begin{equation*}
+    \frac{dy}{dx} = - \frac{-b \pm \sqrt{b^2 - ac}}{a}
+\end{equation*}
+when this is real. This is derived via a coordinate transformation to $\xi, \eta$ such that the coefficients of the non-mixed second derivatives are zero. These coordinates are constant along characteristic curves.
+\begin{itemize}
+    \item If $b^2 < ac$ then the PDE is \underline{elliptic}, with no real characteristic curves.
+    \item If $b^2 = ac$ then the PDE is \underline{parabolic}, with 1 real characteristic curve.
+    \item If $b^2 > ac$ then the PDE is \underline{hyperbolic}, with 2 real characteristic curves.
+\end{itemize}
+We define \underline{locally/globally hyperbolic} for PDEs with the discriminant positive only somewhere / everywhere on the domain.
+In the case of a hyperbolic operator we perform the required coordinate transform to obtain:
+\begin{equation*}
+    \tilde{L} = \frac{\partial^{2}}{\partial \xi\partial \eta} + \text{lower-order terms}
+\end{equation*}
+\section{Fourier Transform in Higher Dimensions}
+\begin{definition}{Higher-dimensional Fourier transform}
+    For $f : \R^n \mapsto \C$, define the \underline{Fourier transform} $\hat{f}(\vec{\lambda})$:
+    \begin{equation*}
+        \hat{f}(\vec{\lambda}) = \int_{\R^n} e^{-i \vec{\lambda} \cdot \vec{x}} f(\vec{x}) d^n \vec{x}
+    \end{equation*}
+\end{definition}
+The inverse is:
+\begin{equation*}
+    f(\vec{x}) = \frac{1}{(2\pi)^n} \int_{\R^n} e^{i \vec{\lambda} \cdot \vec{x}} \hat{f}(\vec{\lambda}) d^n\vec{\lambda}
+\end{equation*}
+Convolution is:
+\begin{equation*}
+    (f \star g)(\vec{x}) = \int_{\R^3} f(\vec{x} - \vec{y}) g(\vec{y}) d^n\vec{y}
+\end{equation*}
+and the convolution theorem holds: $\FT[f \star g](\vec{\lambda}) = \hat{f}(\vec{\lambda}) \hat{g}(\vec{\lambda})$. Derivatives act only on the element they differentiate with respect to:
+\begin{equation*}
+    \FT\left[\left(\frac{\partial}{\partial x_1}\right)^{\alpha_1} \cdots \left(\frac{\partial}{\partial x_n}\right)^{\alpha_n}f(\vec{x})\right] = (i\lambda_1)^{\alpha_1} \cdots (i\lambda_n)^{\alpha_n} \hat{f}(\vec{\lambda})
+\end{equation*}
+So in summary, all the usual properties of Fourier Transforms are true in higher dimensions, and the inversion formula has a power $n$ on the denominator.
+\section{Heat Equation}
+The \underline{heat kernel} is:
+\begin{equation*}
+    k(\vec{x};t) = \frac{1}{(4\pi \kappa t)^{n / n}}\exp\left(-\frac{\norm{\vec{x}}^2}{4\kappa t}\right)
+\end{equation*}
+and has Fourier Transform:
+\begin{equation*}
+    e^{-\kappa t \norm{\vec{\lambda}}^2}
+\end{equation*}
+For the heat equation with $u = f$ at $t = 0$, but no forcing term, the solution is:
+\begin{equation*}
+    u_1(\vec{x}, t) = k(\vec{x};t) \star f(\vec{x})
+\end{equation*}
+
+For the heat equation with $u = 0$ at $t = 0$ and forcing term $F(\vec{x}, t)$, the solution is:
+\begin{equation*}
+    u_2(\vec{x}, t) = \int_{\tau = 0}^{t} \int_{\vec{y} \in \R^n} k(\vec{x} - \vec{y}; t - \tau) F(\vec{y}, \tau) d^n\vec{y}~d\tau 
+\end{equation*}
+which is a convolution with respect to $\vec{x}$ and $t$. In order to solve the heat equation in general, we superpose $u = u_1 + u_2$.
+\section{Laplace Equation}
+The \underline{free-space Green's Function} has the form:
+\begin{equation*}
+    G(\vec{x}, \vec{y}) =
+    \begin{cases}
+        \frac{1}{2\pi}\log\norm{\vec{x} - \vec{y}} & n = 2 \\
+        -\frac{1}{(n-2)|S^{n-1}|} \norm{\vec{x} - \vec{y}}^{2-n} & n > 2
+    \end{cases}
+\end{equation*}
+where $|S^{n-1}|$ is the area of a surface element in $n-1$ dimensions. In 3 dimensions,
+\begin{equation*}
+    G(\vec{x}, \vec{y}) = -\frac{1}{4\pi} \norm{\vec{x} - \vec{y}}^{-1}
+\end{equation*}
+It satisfies:
+\begin{align*}
+    \nabla_{\vec{x}} G(\vec{x}, \vec{y}) &= \delta(\vec{x} - \vec{y}) \\
+    \lim_{\norm{\vec{x}} \to \infty} G(\vec{x}, \vec{y}) &= 0
+\end{align*}
+To solve $\nabla^2 u = F$ on a domain $\Omega$, along with boundary condition $u = 0$ on $\partial \Omega$, we need the Dirichlet Green's Function $\DGrn(\vec{x}, \vec{y})$ that satisfies:
+\begin{equation*}
+    \begin{cases}
+        \nabla_{\vec{x}} \DGrn(\vec{x}, \vec{y}) = \delta(\vec{x} - \vec{y}) & \vec{x} \in \Omega \\
+        \DGrn(\vec{x}, \vec{y}) = 0 & \vec{x} \in \partial \Omega
+    \end{cases}
+\end{equation*}
+Then we add a series of free-space Green's functions with $\vec{y}$ outside the domain $\Omega$ such that on the boundary $\partial \Omega$, the two contributions cancel. This is the \textit{method of images}. For example, if we require $\DGrn$ to be zero on the $x$-axis, we choose:
+\begin{equation*}
+    \DGrn(\vec{x}, \vec{y}) = G(\vec{x}, \vec{y}) - G(\vec{x}, \vec{y}')
+\end{equation*}
+where $\vec{y}'$ is $\vec{y}$ reflected in the $x$-axis.
+
+Then the solution to the problem is:
+\begin{equation*}
+    u(\vec{x}) = \int_{\R^3} \DGrn(\vec{x}, \vec{y}) F(\vec{y}) d^n\vec{y}
+\end{equation*}
+\section{Wave Equation}
+The wave equation is:
+\begin{equation*}
+    \frac{\partial^{2}u}{\partial t^{2}} - c^2 \nabla^2 u = F(\vec{x}, t)
+\end{equation*}
+for $\vec{x} \in \R^n$, along with initial conditions:
+\begin{equation*}
+    u(\vec{x}, 0) = f(\vec{x}),\quad \left.\frac{\partial u}{\partial t}\right|_{t = 0} = g(\vec{x})
+\end{equation*}
+
+Define the function $\Phi_t(\vec{x})$ by its Fourier Transform:
+\begin{equation*}
+    \hat{\Phi}_t(\vec{\lambda}) = \frac{\sin(c\norm{\vec{\lambda}} t)}{c\norm{\vec{\lambda}}}
+\end{equation*}
+In 1 dimension,
+\begin{equation*}
+    \Phi_t(\vec{x}) = \frac{1}{2c} \left[H(x+ct)-H(x-ct)\right]
+\end{equation*}
+and in 3 dimensions,
+\begin{equation*}
+    \Phi_t(\vec{x}) = \frac{1}{4\pi c \norm{\vec{x}}} \left[\delta(\norm{\vec{x}} - ct) - \delta(\norm{\vec{x}} + ct)\right]
+\end{equation*}
+and we see that in both cases we have $\Phi_t(\vec{x}) = \Phi_t^+(\vec{x}) - \Phi_t^-(\vec{x})$, the advanced and retarded parts.
+
+The solution to the wave equation as above, with $F = 0$ is:
+\begin{equation*}
+    u_1(\vec{x}, t) = (\Phi_t \star g)(\vec{x}) + \frac{\partial}{\partial t} ((\Phi_t \star f)(\vec{x}))
+\end{equation*}
+and the solution to the wave equation with $f = g = 0$ is:
+\begin{equation*}
+    u_2(\vec{x}, t) = \int_{\tau = 0}^t \int_{\vec{y} \in \R^n} \Phi_{t - \tau} (\vec{x} - \vec{y}) F(\vec{y}, \tau) d^n\vec{y}~d\tau
+\end{equation*}
+and superposing gives the required solution.
+\section{Wave Equation on the Half-Line}
+We now solve:
+\begin{equation*}
+    \begin{cases}
+        v_{tt} - c^2 v_{xx} = P(x, t)  & x > 0, t > 0 \\
+        v_t(0, t) = p(t) & t > 0 \\
+        v(x, 0) = q(x) & x > 0 \\
+        v_t(x, 0) = r(x) & x > 0
+    \end{cases}
+\end{equation*}
+and require $p(0) = q(0), p'(0) = r(0)$.
+
+We then transform to the equivalent equation for $u$:
+\begin{equation*}
+    \begin{cases}
+        u_{tt} - c^2 u_{xx} = F(x, t) & x > 0, t > 0 \\
+        u(0, t) = 0 & t > 0 \\
+        u(x, 0) = f(x) & x > 0 \\
+        u_t(x, 0) = g(x) & x > 0
+    \end{cases}
+\end{equation*}
+where $u = v - p\left(t + \frac{x}{c}\right) - Q(t) - Q\left(t + \frac{x}{c}\right)$ and:
+\begin{equation*}
+    Q(t) = \int_{0}^{t} (t - \tau) P(0, \tau) d\tau.
+\end{equation*}
+We now consider the odd extension of the problem to the real line. Let $F_{odd}, f_{odd}$ and $g_{odd}$ be these extensions. Then the solution is a superposition of:
+\begin{align*}
+    u_1(x, t) &= (\Phi_t \star g_{odd})(x) + \frac{\partial}{\partial t} ((\Phi_t \star f_{odd})(x)) \\
+    u_2(x, t) &= \int_{\tau = 0}^t \int_{y = -\infty}^\infty \Phi_{t - \tau}(x - y) F_{odd}(y, \tau) dy~d\tau
+\end{align*}
+\end{document}
