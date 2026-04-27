@@ -43,9 +43,18 @@ We deal with bound states with $E < U_0$. We have even and odd state for $\chi$.
         Ce^{-\bar{k}x} & x > a
     \end{cases}
 \end{equation*}
-where $k\tan(ka) = \bar{k}$, $k^2 + \bar{k}^2 = \frac{2mU_0}{\hbar^2}$. This has infinitely many solutions. $B$ is determined by normalisation.
+where $k\tan(ka) = \bar{k}$, $k^2 + \bar{k}^2 = \frac{2mU_0}{\hbar^2}$. This has finitely many solutions for each $\bar{k}$. $A, B$ are determined by normalisation and the condition that the pieces must agree at $x = a$.
 
-%TODO: Odd states from example sheet.
+The odd states are:
+\begin{equation*}
+    \chi(x) =
+    \begin{cases}
+        Ce^{-\bar{k}x} & x < -a \\
+        B\sin(kx) & \abs{x} < a \\
+        -Ce^{\bar{k}x} & x > a
+    \end{cases}
+\end{equation*}
+where $k = -\bar{k} \tan(ka)$ and once again $A$, $B$ are normalisation constants. In this case we have no solutions for $\frac{8mU_0}{\hbar^2 \pi^2} < a^{-2}$.
 \subsection{Quantum Harmonic Oscillator}
 Now we take:
 \begin{equation*}
@@ -60,4 +69,109 @@ where $\xi = \sqrt{m\omega}{\hbar}$ and $f_n$ are the Hermite polynomials satisf
     f_n(\xi) = (-1)^n e^{\xi^2} \frac{d^{n}}{d\xi^{n}}\left(e^{-\xi^2}\right)
 \end{equation*}
 and the eigenvalues are $E_n = \left(n + \frac12\right)\hbar\omega$.
+\section{Free Particle}
+The solution to the TISE for a free particle is $\chi_k(x) = e^{ikx}$. This is non-normalisable and so we can either:
+\begin{enumerate}
+    \item Build a superposition of particles that is normalisable
+    \item Change the interpretation
+\end{enumerate}
+\subsection{Gaussian Wavepacket}
+The Gaussian wavepacket is a linear superposition of solutions to the TISE with the following form:
+\begin{equation*}
+    \psi(x, t) = \int_{-\infty}^{\infty} A_{GP}(k) \psi_k(x, t) dk
+\end{equation*}
+where:
+\begin{equation*}
+    A_{GP}(k) = \exp\left[-\frac{\sigma}{2}(k - k_0)^2\right],
+\end{equation*}
+a normal distribution $N(k_0, \sigma^2)$. The wavefunction with this form is now normalisable.
+
+The expected position is $\E{\hat{x}}_{GP} = \frac{\hbar k_0}{m}t$, with uncertainty: 
+\begin{equation*}
+    \Delta x = \sqrt{\frac12 \left(\sigma + \frac{\hbar^2 t^2}{m^2 \sigma}\right)}
+\end{equation*}
+which spreads out over time.
+
+Expected momentum is $\E{\hat{p}}_{GP} = \hbar k_0$, with uncertainty $\frac{\hbar}{\sqrt{2\sigma}}$. In fact, Heisenberg Uncertainty Principle bound is attained in this case:
+\begin{equation*}
+    \Delta x \Delta p \geq \frac{\hbar}{2}.
+\end{equation*}
+\subsection{Beam Interpretation}
+We can instead change our interpretation of the wavefunction $\chi_k(x) = e^{ikx}$. We say that this is a beam of particles with average density $\abs{\psi}^2$. The full wavefunction is 
+\begin{equation*}
+    \psi_k(x, t) = Ae^{ikx} e^{-i\hbar k^2 / 2m}.
+\end{equation*}
+Probability current is given by:
+\begin{align*}
+    j_k(x, t) &= -\frac{i\hbar}{2m} \left(\psi_k^* \frac{\partial \psi_k}{\partial x} - \psi_k \frac{\partial \psi_k^*}{\partial x}\right) \\
+    &= \abs{A}^2 \frac{\hbar k}{m} \\
+    &= \abs{A}^2 \frac{p_k}{m}
+\end{align*}
+and this is understood as the average flux of particles (average density times velocity).
+\section{Scattering States}
+\begin{definition}{Scattering state}
+    A \underline{scattering state} is a quantum system with a wavefunction that does not decay to $0$ as $\abs{x} \to \infty$.
+\end{definition}
+\subsection{Potential Step}
+Consider:
+\begin{equation*}
+    U(x) =
+    \begin{cases}
+        0 & x \leq 0 \\
+        U_0 & x > 0
+    \end{cases}
+\end{equation*}
+Then solving on the two regions for a beam incident from $-\infty$,
+\begin{equation*}
+    \chi_{k, \bar{k}}(x) =
+    \begin{cases}
+        Ae^{ikx} + Be^{-ikx} & x \leq 0 \\
+        Ce^{i\bar{k}x} & x > 0
+    \end{cases}
+\end{equation*}
+where $B, C$ can be determined in terms of $A$ using continuity of $\chi$ and its derivative at zero. $k$ and $\bar{k}$ depend on the energy:
+\begin{equation*}
+    k = \sqrt{\frac{2mE}{\hbar^2}},\qquad \bar{k} = \sqrt{\frac{2m(E - U_0)}{\hbar^2}}
+\end{equation*}
+The flux of particles can be split into $j_{inc}, j_{ref}$ and $j_{trn}$ for the incident, reflected and transmitted beams.
+\begin{align*}
+    j_{inc} &= \frac{\hbar k}{m} \abs{A}^2 \\
+    j_{ref} &= \frac{\hbar k}{m} \abs{B}^2 \\
+    j_{trn} &= \frac{\hbar k}{m} \abs{C}^2 \\
+\end{align*}
+and we define the reflection and transmission coefficients:
+\begin{align*}
+    R &= \frac{j_{ref}}{j_{inc}} \\
+    T &= \frac{j_{trn}}{j_{inc}}
+\end{align*}
+which satisfy $R + T = 1$.
+
+In the case $E < U_0$ we find a similar solution but with $0$ momentum on $x > 0$ and a transmission coefficient of $0$.
+\subsection{Potential Barrier}
+Now consider a potential:
+\begin{equation*}
+    U(x) =
+    \begin{cases}
+        U_0 & x \in (0, a) \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation*}
+and define:
+\begin{equation*}
+    k = \sqrt{\frac{2mE}{\hbar^2}},\qquad \eta = \sqrt{\frac{2m(U_0 - E)}{\hbar^2}}
+\end{equation*}
+We find the solution:
+\begin{equation*}
+    \chi(x) =
+    \begin{cases}
+        e^{ikx} + Ae^{-ikx} & x \leq 0 \\
+        Be^{-\eta x} + Ce^{\eta x} & x \in (0, a) \\
+        De^{ikx} & x \geq a
+    \end{cases}
+\end{equation*}
+where $A, B, C$ and $D$ can be determined using continuity of $\chi$ and $\chi'$ at the joins. The transmission coefficient is $\abs{D}^2$:
+\begin{equation*}
+    T = \frac{4k^2\eta^2}{(k^2+\eta^2)\sinh(\eta a) + 4k^2\eta^2}
+\end{equation*}
+which is non-zero, so particles can quantum tunnel through the barrier despite having less energy.
 \end{document}
