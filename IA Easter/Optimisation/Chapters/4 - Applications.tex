@@ -52,4 +52,170 @@ Player 2 solves the dual problem:
     \label{thmGameOptimality}
 \end{theorem}
 \section{Transport Problems}
+\subsection{Network Flow Problems}
+\begin{definition}{Directed graph}
+    A \underline{directed graph} is a set $G = (V, E)$ where $V$ is a set of \underline{vertices}, and $E \subseteq V \times V$ is a set of \underline{edges}. The ordering of the vertices in the edge is important, since some edges have only one direction of travel.
+\end{definition}
+Consider a graph with $n$ vertices. Let $b_i$ represent the quantity of a good produced (if positive) or consumed (if negative) at vertex $i$. We assume that the overall amount of goods stays the same:
+\begin{equation*}
+    \sum_{i=1}^{n} b_i = 0.
+\end{equation*}
+Let $x_{ij}$ be the amount of a good flowing from $i$ to $j$ and let $C_{ij}$ be the cost per unit of a good flowing from $i$ to $j$. If there is no edge $(i, j)$ then we notationally set $C_{ij}$ to be undefined or infinite. 
+
+We also have matrices $\underline{M}, \overline{M}$ such that:
+\begin{equation*}
+    \underline{M}_{ij} \leq x_{ij} \leq \overline{M}_{ij}
+\end{equation*}
+\begin{definition}{Network flow problem}
+    A \underline{network flow problem} has the form:
+    \begin{align*}
+        \text{Minimise } & \sum_{(i, j) \in E} C_{ij} x_{ij} \\
+        \text{Subject to } & b_i + \sum_{j : (j, i) \in E} x_{ji} = \sum_{j : (i, j) \in E} x_{ij} ~\forall i \in V \\
+        & \underline{M}_{ij} \leq x_{ij} \leq \overline{M}_{ij}~\forall (i, j) \in E
+    \end{align*}
+\end{definition}
+\subsection{Transport Problem}
+\begin{definition}{Transport problem}
+    A \underline{transport problem} is a network flow problem where each vertex is either a producer or consumer, and goods flow only from producers to consumers.
+\end{definition}
+Consider $n$ producers and $m$ consumers. Let producer $i$ supply $s_i$ of a good and consumer $j$ demand $d_j$ of it.
+\begin{definition}{Transport problem}
+    A \underline{transport problem} has the form:
+    \begin{align*}
+        \text{Minimise } & \sum_{(i, j) \in E} C_{ij} x_{ij} \\
+        \text{Subject to } & \sum_{j=1}^{m} x_{ij} = s_i~\forall 1 \leq i \leq n \\
+        & \sum_{i=1}^{n} x_{ij} = d_j~\forall 1 \leq j \leq m
+    \end{align*}
+\end{definition}
+\begin{theorem}
+    Any network flow problem with finite capacities or non-negative costs has an equivalent transport problem.
+    \label{thmTransportNetFlowEquiv}
+\end{theorem}
+\begin{proof}
+    First observe that $\underline{M}$ can be set to $0$ by re-labelling $x_{ij}$ to $\tilde{x}_{ij} - \underline{M}_{ij}$.
+
+    Define also:
+    \begin{equation*}
+        \tilde{b}_i = \sum_{(i, j)\in E} \underline{M}_{ij}.
+    \end{equation*}
+    Replace any infinite-capacity edge with the finite (but unattainable) capacity $\overline{M}_{ij} = \sum_i \abs{b_i}$.
+
+    For every edge $(i, j) \in E$ construct a supplier and for every vertex construct a consumer. Let the supply from supplier $(i, j)$ be the capacity $\overline{M}_{ij}$. Let the cost to supply $i$ be zero, and to supply $j$ be $c_{ij}$, with no other connections.
+
+    Set the amount of goods consumed by consumer $i$ to:
+    \begin{equation*}
+        \sum_{k : (i, k) \in E} \overline{M}_{ik} - b_i
+    \end{equation*}
+    and by consumer $j$ to:
+    \begin{equation*}
+        \sum_{k : (k, j) \in E} \overline{M}_{jk} - b_j.
+    \end{equation*}
+    Now send a flow $x_{ij}$ from producer $(i, j)$ to consumer $j$. Then the flow from this producer to consumer $i$ must be $\overline{M}_{ij} - x_{ij}$.
+
+    Note that the cost function is therefore the same, and constructs the constraints and show these are the same too. Construct the inflow~$=$~demand equality, and simplify it to show it is equivalent to that of the original problem.
+\end{proof}
+\subsection{Transport Algorithm}
+\begin{theorem}[Transport Optimality Theorem]
+    For a feasible flow $x$, if there exists $\vec{\lambda} \in \R^n$ and $\vec{\mu} \in \R^m$ such that, for all $i$ and $j$,
+    \begin{align*}
+        c_{ij} &\geq \lambda_i + \mu_j \\
+        0 &= (c_{ij} - (\lambda_i + \mu_j))x_{ij}
+    \end{align*}
+    then $x$ is optimal.
+    \label{thmTransportOptimal}
+\end{theorem}
+\begin{proof}
+    The proof is a specialisation of that of \thmref{thmLinearProgOptimality}.
+\end{proof}
+We perform the transport algorithm on a Tableau which keeps track of $\vec{\lambda}, \vec{\mu}$ and $x$.
+
+\begin{tabular}{c|c|c|c|c|c}
+     & $\mu_1$ & $\mu_2$ & & $\mu_m$ & \\
+    \hline
+    $\lambda_1$ & \transportcell{$\lambda_1 + \mu_1$}{$x_{11}$}{$c_{11}$} & \transportcell{$\lambda_1 + \mu_2$}{$x_{12}$}{$c_{12}$} & $\cdots$ & \transportcell{$\lambda_1 + \mu_m$}{$x_{1m}$}{$c_{1m}$} & $s_1$ \\
+    \hline
+    $\lambda_2$ & \transportcell{$\lambda_2 + \mu_1$}{$x_{21}$}{$c_{21}$} & \transportcell{$\lambda_2 + \mu_2$}{$x_{22}$}{$c_{22}$} & $\cdots$ & \transportcell{$\lambda_2 + \mu_m$}{$x_{2m}$}{$c_{2m}$} & $s_2$ \\
+    \hline
+    $\vdots$ & $\vdots$ & $\vdots$ & $\ddots$ & $\vdots$ & $\vdots$ \\
+    \hline
+    $\lambda_n$ & \transportcell{$\lambda_n + \mu_1$}{$x_{n1}$}{$c_{n1}$} & \transportcell{$\lambda_n + \mu_2$}{$x_{n2}$}{$c_{n2}$} & $\cdots$ & \transportcell{$\lambda_n + \mu_m$}{$x_{nm}$}{$c_{nm}$} & $s_n$ \\
+    \hline
+     & $d_1$ & $d_2$ & $\cdots$ & $d_m$
+
+\end{tabular}
+
+We must initialise the algorithm with a basic solution. This can be constructed using the north-west corner rule:
+\begin{enumerate}
+    \item start with the first supplier and first consumer;
+    \item push as much of the good along this edge as possible (either running out of supply or demand);
+    \item if supply was exhausted, move to the next supplier;
+    \item if demand was exhausted, move to the next consumer;
+    \item repeat from step 2.
+\end{enumerate}
+This is guaranteed to generate a feasible solution, except in the case of a degenerate problem.
+
+To perform one step of the algorithm, initially set $\lambda_1$ to zero and use complementary slackness to determine the rest of $\vec{\lambda}$ and $\vec{\mu}$. If then dual feasibility holds, stop.
+
+If dual feasibility does not hold for some $(i, j)$, push an amount $\theta$ along this new edge. Continue around adding and subtracting $\theta$ to ensure feasibility, until reaching a loop. Choose the largest $\theta$ such that no edge has negative flow (thereby deleting an edge).
+
+This is the next feasible solution to check and then perform another step of the algorithm if not yet optimal.
+\section{Max-Flow Min-Cut}
+\begin{definition}{Max-flow min-cut problem}
+    A \underline{max-flow min-cut problem} is a network flow problem with a single source at vertex $1$ and a single sink at vertex $n$. It has the form:
+    \begin{align*}
+        \text{Maximise } &\delta \\
+        \text{Subject to } & \sum_{j : (1, j) \in E} x_{1j} - \sum_{j : (j, 1) \in E} x_{j1} = \delta \\
+        & \sum_{j : (n, j) \in E} x_{nj} - \sum_{j : (j, n) \in E} x_{jn} = -\delta \\
+        & \sum_{j : (i, j) \in E}x_{ij} - \sum_{j : (j, i) \in E} x_{ji} = 0,~~i \neq 1, n \\
+        &0 \leq x_{ij} \leq c_{ij}
+    \end{align*}
+\end{definition}
+\begin{definition}{Graph cut}
+    A \underline{cut} of a graph $G = (V, E)$ is a partition of its vertices into $S$ and $V \backslash S$ such that $1 \in S, n \notin S$.
+\end{definition}
+\begin{definition}{Cut capacity}
+    The \underline{capacity} of a graph cut is:
+    \begin{equation*}
+        C(S) = \sum_{\substack{(i, j) \in E\\i \in S\\j \notin S}} c_{ij}
+    \end{equation*}
+\end{definition}
+\begin{proposition}
+    Let $x$ be a feasible flow. Then for any cut $S$, $C(S) \geq \delta$.
+    \label{propMaxFlowAtLeastMinCut}
+\end{proposition}
+\begin{proof}
+    First define the flow from a set $X$ to $Y$, not necessarily disjoint:
+    \begin{equation*}
+        f_x(X, Y) = \sum_{\substack{(i, j) \in E\\i \in X\\j \in Y}} c_{ij}
+    \end{equation*}
+    Sum up all the flow constraints over the vertices to get:
+    \begin{equation*}
+        \delta = f_x(S, V) - f_x(V, S)
+    \end{equation*}
+    and by splitting $V$ into its partition, show that also:
+    \begin{equation*}
+        \delta = f_x(S, V\backslash S) - f_x(V\backslash S, S) \leq C(S) + 0
+    \end{equation*}
+\end{proof}
+\begin{theorem}[Max-flow min-cut theorem]
+    The value of the maximum flow is the value of the minimum cut capacity.
+    \label{thmMaxFlowMinCut}
+\end{theorem}
+\begin{proof}
+    Define an augmenting path as a sequence of connected vertices along which the flow can be increased. Argue that if an augmenting path from $1$ to $n$ exists then we do not have optimality.
+
+    Define $S$ as the set of vertices that can be reached from $1$ by an augmenting path. In the optimal case $n \notin S$ and so $S$ defines a cut. In the proof of \thmref{propMaxFlowAtLeastMinCut} we see:
+    \begin{equation*}
+        \delta = f_x(S, V\backslash S) - f_x(V\backslash S, S)
+    \end{equation*}
+    where the first term is $C(S)$, and we can show that the second term is $0$ by contradiction.
+\end{proof}
+The Ford-Fulkerson Algorithm uses this idea:
+\begin{enumerate}
+    \item start with a feasible flow (such as zero everywhere);
+    \item find an augmenting path from $1$ to $n$;
+    \item push the max flow along it;
+    \item repeat until there are no more augmenting paths.
+\end{enumerate}
+This will find a solution for integer capacities, but may not find a solution otherwise.
 \end{document}
