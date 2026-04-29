@@ -1,0 +1,111 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+In 3 dimensions, the TISE is:
+\begin{equation*}
+    -\frac{\hbar^2}{2m} \nabla^2 \chi(\vec{x}) + U(\vec{x})\chi(\vec{x}) = E\chi(\vec{x})
+\end{equation*}
+\section{Angular Momentum}
+\begin{definition}{Angular momentum operator}
+    The \underline{angular momentum operator}, $\opvec{L}$, is defined:
+    \begin{equation*}
+        \opvec{L} = \opvec{x} \times \opvec{p} = -i\hbar \opvec{x} \times \nabla
+    \end{equation*}
+\end{definition}
+This operator is Hermitian, along with its individual components.
+\begin{proposition}
+    The commutator of elements of the angular momentum operator is:
+    \begin{equation*}
+        [\hat{L}_i, \hat{L}_j] = i\hbar\epsilon_{ijk} \hat{L}_k
+    \end{equation*}
+    \label{propAngMomElementsCmmt}
+\end{proposition}
+\begin{proof}
+    First find $[\hat{x}_i, \hat{p}_j]$. Then expand out $\hat{L}_i\hat{L}_j$ and $\hat{L}_j\hat{L}_i$. Re-label indices to match such that we get cancellation when subtracting for the commutator.
+\end{proof}
+\begin{definition}{Total angular momentum}
+    The \underline{total angular momentum} is $|\vec{L}|^2$. Its operator is:
+    \begin{equation*}
+        \hat{L}^2 = \hat{L}_1^2 + \hat{L}_2^2 + \hat{L}_3^2
+    \end{equation*}
+\end{definition}
+and we can show that this commutes with $\hat{L}_i$. We generally find joint eigenfunctions of $\hat{L}^2$ and $\hat{L}_3$.
+
+Using spherical coordinates, let $Y(\theta, \phi)$ be the corresponding joint eigenfunctions. We use a separable solution $Y(\theta, \phi) = \Theta(\theta) \Phi(\phi)$ and find:
+\begin{align*}
+    \Phi(\phi) &= e^{im\phi} \\
+    \Theta(\theta) &= P_{l, m}(\cos(\theta))
+\end{align*}
+where $P_{l, m}$ is the associated Legendre polynomial given by:
+\begin{equation*}
+    P_{l, m} = (\sin\theta)^{\abs{m}} \frac{d^{\abs{m}}}{d(\cos{\theta})^{\abs{m}}}P_l(\cos{\theta})
+\end{equation*}
+and $l, m$ are integers bounded such that $\abs{m} \leq l$. We combine these two together and find the \underline{spherical harmonics} $Y_{l, m}$. The eigenvalues are:
+\begin{align*}
+    \hat{L}^2 Y_{l, m} &=\hbar^2 l(l + 1)Y_{l, m} \\
+    \hat{L}_3 Y_{l, m} &= \hbar m Y_{l, m}
+\end{align*}
+\section{Spherically Symmetric Potentials}
+\begin{proposition}
+    For a potential $U(\vec{x}) = U(r)$,
+    \begin{equation*}
+        [\hat{H}, \hat{L}^2] = [\hat{H}, \hat{L}_3] = 0.
+    \end{equation*}
+    \label{propMutCmmtOperators}
+\end{proposition}
+\begin{proof}
+    First find $[\hat{L}_i, \hat{x}_j]$ using the previous expression for $[\hat{p}_i, \hat{x}_j]$. Then find the commutator $[\hat{L}_i, \hat{x}_j^2]$ to be zero using \thmref{propCmmtExpand1Arg}. 
+
+    We can then also conclude that $\hat{H}$ must commute with $\hat{L}^2$.
+\end{proof}
+
+Now look for solutions $\chi(r)$ of the TISE with $\hat{L}^2 \chi(r) = 0$. Substituting $\chi(r)$ into the TISE gives:
+\begin{equation}
+    -\frac{\hbar^2}{2m} \left(\frac{d^{2}\chi}{dr^{2}} + \frac{2}{r} \frac{d\chi}{dr}\right) + U(r) \chi(r) = E\chi(r).
+    \label{eqnTISESphSymm}
+\end{equation}
+The normalisation condition for $\chi$ is:
+\begin{equation*}
+    \int_{0}^{\infty} r^2\abs{\chi(r)}^2 dr = \frac{1}{4\pi}
+\end{equation*}
+and we define $\sigma(r) = r\chi(r)$. Then \eqnref{eqnTISESphSymm} becomes the normal 1-dimensional TISE, but only on the half-line $r > 0$.
+
+We then look for an odd solution of the 1D TISE on the whole line using an even extension of the potential. We need $\sigma(0) = 0$ in order for the Hamiltonian to still be a Hermitian operator.
+\section{Hydrogen Atom}
+To model the Hydrogen atom, we take the potential to be:
+\begin{equation*}
+    U(r) = -\frac{e^2}{4\pi\epsilon_0} \frac1r
+\end{equation*}
+then bound states have $E < 0$. Writing the TISE and involving angular momentum:
+\begin{equation*}
+    E\chi(\vec{x}) = -\frac{\hbar^2}{2m} \frac1r \frac{\partial^{2}(r\chi(\vec{x}))}{\partial r^{2}} + \frac{\hat{L}^2}{2mr^2} \chi(\vec{x}) -\frac{e^2}{4\pi\epsilon_0r} \chi(\vec{x})
+\end{equation*}
+Now separate and look for solutions: $\chi(\vec{x}) = R(r) Y_{l, m}(\theta, \phi)$. The equation for $R$ is:
+\begin{equation*}
+    -\frac{\hbar^2}{2m} \left(\frac{d^{2}R}{dr^{2}} + \frac{2}{r} \frac{dR}{dr}\right) + \left(U(r) + \frac{\hbar^2 l(l+1)}{2mr^2}\right) = ER(r)
+\end{equation*}
+and we have found an effective potential as in the classical case.
+\subsection{Solutions for Zero Angular Momentum}
+In this case define:
+\begin{equation*}
+    \nu^2 = -\frac{2mE}{\hbar^2},\qquad \beta = \frac{e^2m}{2\pi \epsilon_0 \hbar^2}.
+\end{equation*}
+By considering the asymptotic behaviour and normalisation conditions we see that $R \to e^{-\nu r}$, and so consider a trial solution $R(r) = f(r) e^{-\nu r}$.
+
+Use a series solution for $f$,
+\begin{equation*}
+    f(r) = r^c \sum_{n=0}^{\infty} a_nr^n
+\end{equation*}
+and discount $c = -1$. Require that the resulting power series terminates for normalisation, introducing the parameter $N$ for the last non-zero term. The resulting polynomials are the \underline{Laguerre polynomials},
+\begin{equation*}
+    R_N(r) = L_N(\nu r) e^{-\nu r}.
+\end{equation*}
+\subsection{Solutions for Positive Angular Momentum}
+Again set up the power series $R(r) = g(r) e^{-\nu r}$ but now the lowest power of $r$ in $g$ is $l$ (discount a negative solution).
+
+Again require that the polynomial terminates at $n_{max}$, but define $N = n_{max} + l$ for consistency with the $l = 0$ case.
+
+\begin{definition}{Degeneracy}
+    The \underline{degeneracy} of an eigenvalue is the number of linearly independent eigenfunctions with that eigenvalue.
+\end{definition}
+\end{document}
