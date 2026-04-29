@@ -1,5 +1,101 @@
 \documentclass[../Main.tex]{subfiles}
 
 \begin{document}
+\section{Definitions}
+\begin{definition}{Discrete-time Markov chain}
+    A \underline{discrete-time Markov chain} is a sequence $\chain{X} = (X_n)_{n \geq 0}$ of random variables taking values in the same discrete, countably infinite state space $I$ such that:
+    \begin{equation*}
+        \P(X_{n+1} = x_{n + 1} | X_n = x_n, \cdots, X_0 = x_0) = \P(X_{n+1} = x_{n + 1} | X_n = x_n)
+    \end{equation*}
+\end{definition}
+\begin{definition}{Time-homogeneity}
+    A Markov chain is \underline{time-homogeneous} if $\P(X_{n+1} = x_{n+1} | X_n = x_n)$ is always independent of $n$.
+\end{definition}
+We will consider only time-homogeneous Markov chains.
 
+\begin{definition}{Transition matrix}
+    The \underline{transition matrix} of a Markov chain has elements:
+    \begin{equation*}
+        p_{xy} = \P(X_{n+1} = y | X_n = x)
+    \end{equation*}
+    and we also write $P(x, y)$ for this. It is a stochastic matrix, so it satisfies $p_{xy} \geq 0$ and:
+    \begin{equation*}
+        \sum_{y \in I} p_{xy} = 1
+    \end{equation*}
+    that is, rows sum to $1$.
+\end{definition}
+\begin{definition}{Initial distribution}
+    The \underline{initial distribution} of a Markov chain is the vector $\vec{\lambda}$ such that $\lambda_i = \P(X_0 = i)$. Its elements sum to $1$.
+\end{definition}
+We can then fully specify a Markov chain with $\vec{\lambda}$ and $P$, writing $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$.
+\section{Identifying a Markov Chain}
+\begin{proposition}
+    A sequence of random variables $\chain{X}$ is $\Mkv{\vec{\lambda}}{P}$ if and only if:
+    \begin{equation*}
+        \P(X_n = x_n, X_{n-1} = x_{n-1}, \cdots, X_0 = x_0) = \lambda_{x_0} P(x_0, x_1) \cdots P(x_{n-1}, x_n)
+    \end{equation*}
+    for all sequences $X_0$ to $X_n$.
+    \label{propMarkovAsMatrixProduct}
+\end{proposition}
+\begin{proof}
+    \begin{proofdirection}{$\Rightarrow$}{Suppose that $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$}
+        Express the LHS as a product of probabilities of individual steps and then equate this to the RHS.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Suppose that $\chain{X}$ satisfies the matrix product representation}
+        Evaluate the LHS of the definition by splitting it into a quotient of probabilities of paths. Show that it equals $\Pmat{n-1}{n}$.
+    \end{proofdirection}
+\end{proof}
+\begin{definition}{Unit mass function}
+    For $i \in I$, the \underline{unit mass function} $\vec{\delta_i}$ is the probability mass function with probability $1$ at entry $i$.
+\end{definition}
+\begin{definition}{Independence of processes}
+    Random processes $(X_n)_{n \geq 0}$ and $(Y_n)_{n \geq 0}$ are  \underline{independent} if for any two finite sets of indices $\{t_1, \cdots, t_k\}$ and $\{s_1, \cdots, s_m\}$,
+    \begin{equation*}
+        \begin{split}
+            \P(X_{t_1} = x_{t_1}, \cdots, X_{t_k} = x_{t_k}, Y_{s_1} = y_{s_1}, \cdots, Y_{s_m} = y_{s_m}) = \\
+            \P(X_{t_1} = x_{t_1}, \cdots, X_{t_k} = x_{t_k}) \times \P(Y_{s_1} = y_{s_1}, \cdots, Y_{s_m} = y_{s_m})
+        \end{split}
+    \end{equation*}
+\end{definition}
+Note that $X_{n+1}$ is conditionally independent of $X_{n-1}$ given $X_n$ for any Markov chain, but not unconditionally independent.
+\begin{theorem}[Weak Markov Property]
+    Let $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$. For any $m \geq 1$ and $i \in I$, then conditional on $\{X_m = i\}$,
+    \begin{enumerate}
+        \item the process $(X_{n+m})_{n \geq 0}$ is $\Mkv{\vec{\delta_i}}{P}$;
+        \item the process is independent of $X_0, \cdots, X_m$.
+    \end{enumerate}
+    \label{thmWeakMarkov}
+\end{theorem}
+\begin{proof}
+    First, use the Law of Total Probability to expand out the probability of a path from $X_m$ to $X_{m+n}$ as a product of transition matrices and $\P(X_m = x_m)$. Therefore, when conditioning on $X_m = i$, this final probability is $\vec{\delta_i}$ and we have a Markov chain by \thmref{propMarkovAsMatrixProduct}.
+
+    For independence, write down the condition and expand out the long path expression as transition matrices (take out the conditional on $X_m = i$ and put it in the denominator). Resolve as two separate products as required.
+\end{proof}
+\section{More on the Transition Matrix}
+\begin{equation*}
+    \P(X_n = x_n) = (\vec{\lambda} P^n)_{x_n}
+\end{equation*}
+\begin{proposition}
+    For $x, y \in I$,
+    \begin{equation*}
+        \P(X_n = x | X_m = y) = (P^{n-m})_{xy}
+    \end{equation*}
+    \label{propMarkovGeneralPath}
+\end{proposition}
+\begin{proof}
+    Consider, by \thmref{thmWeakMarkov}, starting a new chain from time $m$. Then the above equation suffices.
+\end{proof}
+Introduce notation:
+\begin{itemize}
+    \item for an event $A$, define $\P_x(A) = \P(A | X_0 = x)$ for a Markov chain;
+    \item similarly $\E_x[A] = \E[A | X_0 = x]$;
+    \item for a transition matrix $P$ and $x, y \in I$, let $(P^n)_{xy} = p_{xy}(n)$.
+\end{itemize}
+Now we can consider powers of the transition matrix based on diagonalisation. Let $P \in\R^{k \times k}$:
+\begin{enumerate}
+    \item if $P$ has $k$ distinct real eigenvalues $\lambda_i$ then we can diagonalise it and the resulting expression for $p_{xy}(n)$ contains $a_i\lambda^i$;
+    \item if $P$ has $k$ distinct eigenvalues with some complex $\lambda_j = r_j e^{i\theta_j}$, then we can still diagonalise it and the resulting expression for $p_{xy}(n)$ contains $r_j^n \left(a_j\cos(n\theta_j) + b_j\sin(n\theta_j)\right)$;
+    \item if $P$ has no more than two repeated eigenvalues, we include a term of the form $(a + bn)\lambda^n$.
+\end{enumerate}
+In all cases, it is much easier to work out the first few values of $p_{ij}(n)$ and then solve simultaneous equations.
 \end{document}
