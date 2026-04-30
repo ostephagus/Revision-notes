@@ -19,6 +19,8 @@ We generally find the specific version of the Euler-Lagrange equation for each p
     \item apply relevant boundary conditions on $\partial V$ to ensure the boundary term vanishes;
     \item evaluate the functional derivative as the leftover term.
 \end{enumerate}
+\section{Examples}
+\subsection{Minimal Surface Equation}
 The Minimal Surface Equation gives the function $h(x, y)$ that minimises the area of a surface $z = h(x,y)$ connecting a curve $\partial D$:
 \begin{equation*}
     (1 + h_y^2) h_{xx} + (1 + h_x^2) h_{yy} - 2h_x h_y h_{xy} = 0
@@ -29,4 +31,29 @@ If $h = h(r)$ we find the area functional has a first integral, and solving this
 \begin{equation*}
     r = r_0 \cos(\frac{z - z_0}{r_0}).
 \end{equation*}
+\subsection{Vibrating String}
+The action of a vibrating string is:
+\begin{equation*}
+    I[y] = \frac12 \int_{t = t_1}^{t_2} \int_{x=0}^{a} \rho \dot{y}^2 - Ty^{\prime 2} dx~dt 
+\end{equation*}
+and the Euler-Lagrange equation is the wave equation from IB Methods.
+\section{Actions and Maxwell's Equations}
+Given the following two Maxwell equations:
+\begin{align}
+    \nabla \cdot \vec{B} &= 0 \label{eqnMBD} \\
+    \nabla \times \vec{E} &= -\frac{\partial \vec{B}}{\partial t} \label{eqnMEC}
+\end{align}
+then we can derive the other two. Consider potentials $\vec{A}$ and $\phi$ such that:
+\begin{equation*}
+    B = \nabla \times \vec{A},\qquad \vec{E} + \frac{\partial \vec{A}}{\partial t} = -\nabla \phi
+\end{equation*}
+and then the action is a functional of $\vec{A}$ and $\phi$:
+\begin{equation*}
+    I[\vec{A}, \phi] = \int_{t = 0}^T\int_{\vec{x} \in D} \left(\frac{|\vec{E}|^2}{2\epsilon_0} - \frac{\mu_0|\vec{B}|^2}{2} + \vec{A} \cdot \vec{J} - \rho \phi\right) d^3\vec{x} dt
+\end{equation*}
+Varying this ($\vec{A} \to \vec{A} + \delta\vec{A}$, and the same for $\phi$), integrating by parts and setting the coefficients of $\delta\vec{A}$ and $\delta\phi$ to zero gives the other two Maxwell equations.
+\begin{align}
+    \nabla \cdot \vec{E} &= \frac{\rho}{\epsilon_0} \label{eqnMED} \\
+    \nabla \times \vec{B} &= \mu_0 \vec{J} + \mu_0\epsilon_0 \frac{\partial \vec{E}}{\partial t} \label{eqnMBC}
+\end{align}
 \end{document}
