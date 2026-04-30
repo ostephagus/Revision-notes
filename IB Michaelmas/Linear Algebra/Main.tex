@@ -1,0 +1,71 @@
+\documentclass[british,11pt,a4paper]{report}
+
+\def\course{Linear Algebra}
+\def\degreepart{IB}
+\def\term{Michaelmas}
+\def\academicyear{2025}
+\def\lecturer{Dr H. Bradford}
+
+\input{../../Header.tex}
+\usepackage{scalerel}
+
+\newcommand{\F}{\mathbb{F}} % Field
+\newcommand{\zv}{\boldsymbol{0}} % Zero vector, not \vec{0} to allow things like \zv_W
+\newcommand{\isom}{\cong}
+\newcommand{\kera}{\ker(\alpha)}
+\newcommand{\spn}[1]{\left\langle #1 \right\rangle} % Spanning set
+\newcommand{\mnr}[3]{{#1}_{\widehat{{#2},{#3}}}} % Minor matrix
+\renewcommand{\L}{\mathcal{L}} % Space of linear maps
+\newcommand{\poly}{\mathbb{P}} % Space of polynomials
+\newcommand{\gespace}[2]{{#1}_{[#2]}} % Generalised eigenspace
+\newcommand{\lperp}[1]{{}^\perp {#1}} % Left perpendicular
+\newcommand{\inn}[2]{\left\langle #1~\vert~#2\right\rangle} %Inner product
+\DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\Row}{Row}
+\DeclareMathOperator{\crk}{crk}
+\DeclareMathOperator{\rrk}{rrk}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\adj}{adj}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Id}{Id}
+
+\newcommand{\finitesum}{\sideset{}{'}\sum}
+
+\newcommand{\perpplus}{
+  \mathbin{%
+    \mathchoice%
+      {\perpplusaux\displaystyle}%
+      {\perpplusaux\textstyle}%
+      {\perpplusaux\scriptstyle}%
+      {\perpplusaux\scriptscriptstyle}%
+  }
+}
+\newcommand{\perpplusaux}[1]{
+  \ooalign{%
+    $#1\scaleobj{0.8}{\bigcirc}$\cr%
+    \hfil$#1\scaleobj{0.8}{\perp}$\hfil\cr%
+  }%
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Vector Spaces}
+\subfile{Chapters/1 - Vector Spaces.tex}
+\chapter{Bases}
+%\subfile{Chapters/2 - Bases.tex}
+\chapter{Matrices and Linear Maps}
+%\subfile{Chapters/3 - Matrices.tex}
+\chapter{Determinant and Trace}
+%\subfile{Chapters/4 - Determinants.tex}
+\chapter{Dual Spaces}
+%\subfile{Chapters/5 - Dual Spaces.tex}
+\chapter{Eigenvectors and Eigenvalues}
+%\subfile{Chapters/6 - Eigenvectors.tex}
+\chapter{Bilinear Forms}
+%\subfile{Chapters/7 - Bilinear Forms.tex}
+\chapter{Inner Product Spaces}
+%\subfile{Chapters/8 - Inner Products.tex}
+\end{document}

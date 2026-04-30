@@ -1,0 +1,135 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Defining a Field}
+A field is a set that permits addition and multiplication, including inverses (except the multiplicative inverse of $0$), and has the distribution property:
+\begin{equation*}
+    a(b+c) = ab + ac.
+\end{equation*}
+\section{Defining a Vector Space}
+\begin{definition}{Vector space}
+    A \underline{vector space} over a field $\F$ is an Abelian group $(V, +, \zv)$ equipped with scalar multiplication:
+    \begin{align*}
+        \F \times V &\mapsto V\\
+        (\lambda, v) &\mapsto \lambda v
+    \end{align*}
+    that satisfies, for $\lambda, \mu \in \F$ and $v, w \in V$:
+    \begin{enumerate}
+        \item $(\lambda + \mu) v = \lambda v + \mu v$
+        \item $\lambda(v + w) = \lambda v + \lambda w$
+        \item $\lambda(\mu v) = (\lambda \times \mu) v$
+        \item $1 v = v$.
+    \end{enumerate}
+\end{definition}
+\section{Subspaces}
+\begin{definition}{Subspace}
+    A \underline{subspace} $U$ of a vector space $V$ is a subset of $V$ which is a vector space over $\F$ with the same operations as $V$.
+\end{definition}
+\begin{proposition}[Subspace test]
+    Let $V$ be a vector space over $\F$. Let $U \subseteq V$. Then $U$ is a subspace of $V$ if and only if:
+    \begin{enumerate}
+        \item $U \neq \emptyset$,
+        \item $\forall u, v \in U,~\forall \lambda \in \F,~u + \lambda w \in U$.
+    \end{enumerate}
+    \label{propSubspaceTest}
+\end{proposition}
+\begin{lemma}
+    For vector spaces $U, W \leq V$, the intersection $U \cap W$ is a subspace of $V$.
+    \label{lemIntersecIsSubspace}
+\end{lemma}
+\begin{proof}
+    Apply \thmref{propSubspaceTest}.
+\end{proof}
+\begin{definition}{Subspace sum}
+    The \underline{subspace sum} of $U, W \leq V$ is:
+    \begin{equation*}
+        U + W = \subsetselect{u + w}{u \in U, w \in W}
+    \end{equation*}
+\end{definition}
+\begin{proof}
+    Apply \thmref{propSubspaceTest}.
+\end{proof}
+\section{Linear Maps}
+\begin{definition}{Linear map}
+    A \underline{linear map} from $V$ to $W$ is a function $\alpha : V \mapsto W$ such that for all $u, v \in V$ and $\lambda \in \F$, $\alpha(u + \lambda v) = \alpha(u) + \lambda \alpha(v)$.
+\end{definition}
+\begin{definition}{Isomorphism}
+    An \underline{isomorphism} is a linear map that is bijective. If such a linear map exists for vector spaces $V$ and $W$, they are then \underline{isomorphic} and we write $V \isom W$.
+\end{definition}
+\begin{proposition}
+    Let $\alpha : V \mapsto W$ be an isomorphism. Then so is $\alpha^{-1}$.
+    \label{propIsomInvertible}
+\end{proposition}
+\begin{proof}
+    We know that $\alpha^{-1}$ is a bijection so it remains to show linearity. To do this, let $w_1 = \alpha(v_1)$ and the same for $w_2$ and then apply the definition.
+\end{proof}
+\begin{definition}{Image}
+    The \underline{image} of a linear map $\alpha : V \mapsto W$ is the set:
+    \begin{equation*}
+        \im(\alpha) = \subsetselect{\alpha(v) \in W}{v \in V}
+    \end{equation*}
+\end{definition}
+\begin{definition}{kernel}
+    The \underline{kernel} of a linear map $\alpha : V \mapsto W$ is the set:
+    \begin{equation*}
+        \ker(\alpha) = \subsetselect{v \in V}{\alpha(v) = \zv}
+    \end{equation*}
+\end{definition}
+\begin{propositions}{
+        Let $\alpha : V \mapsto W$ be a linear map.
+        \label{propsImageKernel}
+    }
+    \item $\ker(\alpha) \leq V$
+    \item $\im(\alpha) \leq W$
+    \item $\alpha$ is surjective if and only if $\im(\alpha) = W$
+    \item $\alpha$ is injective if and only if $\ker(\alpha) = \{\zv\}$.
+\end{propositions}
+\begin{proof}
+    The first two are an application of \thmref{propSubspaceTest}. Then the third is very simple from the definition of surjectivity, the fourth is by considering the difference of two elements of the kernel.
+\end{proof}
+\section{Quotient Spaces}
+\begin{definition}{Left coset}
+    Let $V$ be a vector space over $\F$ with a subspace $W$. The \underline{left coset} of $W$ by an element of $V$ is:
+    \begin{equation*}
+        v + W = \subsetselect{v + w}{w \in V}
+    \end{equation*}
+\end{definition}
+The set of left cosets is $V / W$.
+\begin{definition}{Quotient space}
+    The \underline{quotient space} of a vector space $V$ by a subspace $W$ is the vector space $V / W$ with the operations:
+    \begin{enumerate}
+        \item $(u + W) + (v + W) = (u + v) + W$
+        \item $\lambda (v + W) = (\lambda v) + W$.
+    \end{enumerate}
+\end{definition}
+\begin{proposition}
+    The quotient space is a well-defined vector space.
+    \label{propQuotientSpace}
+\end{proposition}
+\begin{proof}
+    The proof is similar to that of IA Groups.
+\end{proof}
+\begin{proposition}[Quotient Map]
+    There exists a well-defined function:
+    \begin{align*}
+        \pi_W : V &\mapsto V / W\\
+        v &\mapsto v + W
+    \end{align*}
+    which is surjective, and has kernel $W$.
+    \label{propQuotientMap}
+\end{proposition}
+\begin{proof}
+    This is again a simple proof and the statements can be tackled one at a time.
+\end{proof}
+\begin{theorem}[First Isomorphism Theorem]
+    Let $\alpha : V \mapsto W$ be a linear map. There exists an isomorphism:
+    \begin{align*}
+        \overline{\alpha} : V / \ker(\alpha) &\mapsto \im(\alpha)\\
+        v + \ker(\alpha) &\mapsto \alpha(v)
+    \end{align*}
+    \label{thmIsomorphism}
+\end{theorem}
+\begin{proof}
+    We can show well-defined and injective at once by chaining equivalences to show $u + \ker(\alpha) = v + \ker(\alpha) \iff \overline{\alpha}(u + \ker(\alpha)) = \overline{\alpha}(v + \ker(\alpha))$. It's then easy to show that $\overline{\alpha}$ is surjective, and that it is linear.
+\end{proof}
+\end{document}
