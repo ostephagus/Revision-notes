@@ -1,0 +1,53 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Calculating the Second Variation}
+For a functional $F[y]$ with the integral form as before, consider a perturbation to $y + \epsilon \xi$ and expand to second-order in $\epsilon$. The second term of $F[y + \epsilon\xi] - F[y]$ is then:
+\begin{equation*}
+    \delta^2 F[y, \xi] = \frac12 \int_{\alpha}^{\beta} \left[\xi^2 \left(\frac{\partial^{2}f}{\partial y^{2}} - \frac{d}{dx}\frac{\partial^{2}f}{\partial y\partial y'}\right) + \xi^{\prime 2} \frac{\partial^{2}f}{\partial y^{\prime 2}}\right] dx 
+\end{equation*}
+after integrating by parts and using $\xi(\alpha) = \xi(\beta) = 0$.
+\begin{theorem}
+    If a functional satisfies $\delta^2 F[y,\xi] > 0$ for all functions $y$ and $\xi$, then any solution $y_0$ of the Euler-Lagrange equation is in fact a global minimum.
+    \label{thmGlobalMin}
+\end{theorem}
+\section{Classifying Optimal Solutions}
+Let $y_0$ be a solution of the Euler-Lagrange equations. Then,
+\begin{itemize}
+    \item if $\delta^2 F[y_0, \xi] > 0$ for all $\xi \not\equiv 0$, $y_0$ is a local minimum;
+    \item if $\delta^2 F[y_0, \xi] < 0$ for all $\xi \not\equiv 0$, $y_0$ is a local maximum.
+\end{itemize}
+The converses are also true: if we can find $\xi$ such that the condition does not hold then $y_0$ is not a local minimum/maximum.
+
+Define $\rho$, $\sigma$ such that:
+\begin{equation*}
+    \delta^2 F[y, \xi] = \frac12 \int_{\alpha}^{\beta} \left[\rho(x) \xi^{\prime 2} + \sigma(x) \xi^2\right] dx 
+\end{equation*}
+\begin{definition}{Legendre condition}
+    For a solution $y_0$ of the Euler-Lagrange equations, a necessary condition for $y_0$ to be a local minimum is the \underline{Legendre condition}:
+    \begin{equation*}
+        \frac{\partial^{2}f}{\partial y^{\prime 2}} \geq 0
+    \end{equation*}
+\end{definition}
+This is $\rho \geq 0$. It is necessary but not sufficient. Another condition is $\rho > 0, \sigma \geq 0$ and this is sufficient but not necessary. Integrating the equation for $\delta^2F$ by parts gives:
+\begin{equation*}
+    \delta^2 F[y, \xi] = \frac12 \int_{\alpha}^{\beta} \xi(x) L\xi(x) dx
+\end{equation*}
+where $L$ is a Sturm-Liouville operator:
+\begin{equation*}
+    L\xi = -\frac{d}{dx} \left(\rho \frac{d\xi}{dx}\right) + \sigma \xi
+\end{equation*}
+and so we consider the eigenvalue problem (for arbitrary weight function $w(x) > 0$):
+\begin{equation*}
+    L\eta = \lambda w(x) \eta
+\end{equation*}
+and if this problem has only positive eigenvalues then $y_0$ is a local minimum of $F$.
+\section{Jacobi Condition for Local Minima}
+TODO: Check if this is examinable. %TODO
+
+If we can find a solution $u(x)$ that is never zero and satisfies:
+\begin{equation*}
+    -\frac{d}{dx} \left(\rho \frac{du}{dx}\right) + \sigma u = 0
+\end{equation*}
+then $y$ is a local minimum.
+\end{document}
