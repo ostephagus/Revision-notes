@@ -1,0 +1,224 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+In this chapter let $A \in M_{n \times n}(\F)$.
+\section{Defining the Determinant}
+\begin{definition}{Volume form}
+    A function $F : M_{n \times n}(\F) \mapsto \F$ is a \underline{volume form} if it is:
+    \begin{enumerate}
+        \item \textbf{alternating}: if $\vec{c_{i}}, \vec{c_{j}}$ are equal columns of $A$ with $i \neq j$, then $F(A) = 0$;
+        \item \textbf{multilinear in columns}: For all $i \in \{1, \cdots, n\}$ and $\vec{v_j} \in \F^n$, the restricted function:
+            \begin{align*}
+                \F^n &\mapsto \F\\
+                \vec{v} &\mapsto F(V)
+            \end{align*}
+            is linear, where $V$ is the matrix with columns $\vec{v_j}$ and $\vec{v}$ as the $i$th column.
+    \end{enumerate}
+\end{definition}
+\begin{propositions}{
+        Let $F$ be an $n$-dimensional volume form.
+        \label{propsVolFormProps}
+    }
+    \item If $A$ has a zero column then $F(A) = 0$;
+    \item $F(AT_{ij}) = -F(A)$;
+    \item $F(AM_{i, \lambda}) = \lambda F(A)$;
+    \item $F(AC_{i, j, \lambda}) = F(A)$.
+\end{propositions}
+\begin{proof}
+    The proofs a simple from the definitions of a volume form. It is helpful to define $\vec{c_{i}}$ as the columns and $f_i(\vec{v})$ as the function evaluating $F$ on $A$ except column $i$ is set to $\vec{v}$.
+\end{proof}
+\begin{theorem}[Determinant uniqueness theorem]
+    There is a unique volume form $F : M_{n \times n}(\F) \mapsto \F$ satisfying non-triviality, $F(I_n) = 1$.
+    \label{thmDeterminant}
+\end{theorem}
+\begin{proof}
+    First note that \thmref{propsVolFormProps} gives us that $F(AE) = F(A) F(E)$ for elementary $E$. We can show uniqueness of $F$ by considering the RRE form of $A$ and expanding and arguing uniqueness of RRE form.
+
+    To show existence of $F$, define:
+    \begin{equation*}
+        F(A) = \sum_{\sigma \in S_n} \sgn(\sigma) \prod_{i=1}^n a_{\sigma(i) i}
+    \end{equation*}
+    and check that it satisfies the required properties. Show the alternating form by considering a transposition $(i~~j)$.
+\end{proof}
+\begin{definition}{Determinant}
+    The \underline{determinant} of $A$ is $\det(A)$ or $|A|$ and is the function defined in \thmref{thmDeterminant}.
+\end{definition}
+\begin{corollary}
+    $\det(A) \neq 0$ if and only if $A$ is invertible.
+    \label{corDetInvert}
+\end{corollary}
+\begin{proof}
+    If $A$ is invertible then it is a product of elementary matrices which have non-zero determinants. Use reversible logic.
+\end{proof}
+\section{Properties of the Determinant}
+\begin{lemma}
+    Determinant is unaffected by transpose:
+    \begin{equation*}
+        \det(A) = \det(A^T)
+    \end{equation*}
+    \label{lemDetTranspose}
+\end{lemma}
+\begin{proof}
+    Use the definition of the determinant directly.
+\end{proof}
+\begin{proposition}
+    For $A, B \in M_{n \times n}(\F)$,
+    \begin{equation}
+        \det(AB) = \det(A) \det(B)
+        \label{eqnDetProduct}
+    \end{equation}
+    \label{propDetProduct}
+\end{proposition}
+\begin{proof}
+    If $A$ or $B$ does not have full rank, then by \thmref{lemRankComposition} neither does $AB$ and so both sides of \eqnref{eqnDetProduct} are zero.
+
+    Otherwise, write $A$ and $B$ as products of elementary matrices for which \eqnref{eqnDetProduct} already holds.
+\end{proof}
+\begin{corollary}
+    If $A$ is invertible then:
+    \begin{equation*}
+        \det(A^{-1}) = \frac{1}{\det(A)}
+    \end{equation*}
+    \label{corDetInverse}
+\end{corollary}
+\begin{proof}
+    \begin{align*}
+        1 &= \det(I_n) = \det(AA^{-1}) \\
+        &= \det(A) \det(A^{-1})
+    \end{align*}
+\end{proof}
+\begin{corollary}
+    Similar matrices have the same determinant
+    \label{corDetSimilar}
+\end{corollary}
+\begin{proof}
+    Trivial using \thmref{propDetProduct}.
+\end{proof}
+\begin{definition}{Determinant (linear map)}
+    For a linear map $\alpha \in \L(V, V)$ represented by matrix $A$ in some basis, the \underline{determinant} of $\alpha$ is:
+    \begin{equation*}
+        \det(\alpha) = \det(A)
+    \end{equation*}
+    and the choice of basis does not matter by \thmref{corDetSimilar}.
+\end{definition}
+\begin{definition}{Singularity (linear map)}
+    A linear map is \underline{singular} if its determinant is zero.
+\end{definition}
+\begin{proposition}
+    Let $\alpha \in \L(V, V)$. Then the following are equivalent:
+    \begin{enumerate}
+        \item $\rk(\alpha) = \dim(V)$;
+        \item $\alpha$ is invertible;
+        \item $\alpha$ is non-singular.
+    \end{enumerate}
+    \label{propLinMapDetEquivs}
+\end{proposition}
+\begin{proof}
+    Easy by considering any matrix of $\alpha$.
+\end{proof}
+\begin{proposition}[Block-triangular determinant]
+    Let $A \in M_{k \times k}(\F), B \in M_{l \times l}(\F)$. Define:
+    \begin{equation*}
+        C = 
+        \begin{pmatrix}
+            A & (\star) \\
+            0 & B
+        \end{pmatrix}
+    \end{equation*}
+    where the star represents any matrix. Then $\det(C) = \det(A) \det(B)$.
+    \label{thmBlockTriDet}
+\end{proposition}
+\begin{proof}
+    Consider the determinant definition and note that the only elements of $S_n$ that contribute are those that preserve $\{1, \cdots, k\}$. Therefore, it must be made up of $\sigma$ and $\tau$ which commute and preserve $\{1, \cdots, k\}$ and $\{k+1, \cdots, k + l\}$ respectively. Then factorise the determinant expression using these.
+\end{proof}
+We can also inductively apply this to any upper-triangular block matrix.
+\begin{definition}{Minor matrix}
+    The \underline{$(i, j)$ minor matrix} is:
+    \begin{equation*}
+        \mnr{A}{i}{j} \in M_{(n - 1) \times (n - 1)}(\F)
+    \end{equation*}
+    obtained by deleting the $i$th row and $j$th column.
+\end{definition}
+\begin{theorem}[Laplace Expansion]
+    For any fixed $i \in \{1, \cdots, n\}$,
+    \begin{equation*}
+        \det(A) = \sum_{j=1}^{n} (-1)^{i+j} a_{ij} \det(\mnr{A}{i}{j})
+    \end{equation*}
+    and similar for expanding about a column.
+    \label{thmLaplaceExpansion}
+\end{theorem}
+\begin{proof}
+    We only need to show the column expansion because we can apply this to the transpose by \thmref{lemDetTranspose}. Therefore fix $j$.
+
+    If $A^{(i)}$ is the matrix with column $j$ set to $\vec{e_i}$, then:
+    \begin{equation*}
+        \det(A) = \sum_{i=1}^{n} a_{ij} \det(A^{(i)})
+    \end{equation*}
+    Use row and column operations to then get $A^{(i)}$ to have the form:
+    \begin{equation*}
+        \begin{pmatrix}
+            1 & (\star) \\
+            0 & \mnr{A}{i}{j}
+        \end{pmatrix}
+    \end{equation*}
+    with some $-1$ pre-factors, simplify for the required form.
+\end{proof}
+\begin{definition}{Adjugate matrix}
+    The \underline{adjugate matrix} $\adj(A)$ of $A$ is given by:
+    \begin{equation*}
+        \left(\adj(A)\right)_{ij} = (-1)^{i+j} \det(\mnr{A}{j}{i})
+    \end{equation*}
+\end{definition}
+\begin{theorem}[Cramer's Rule]
+    \begin{enumerate}
+        \item $\adj(A) A = A \adj(A) = \det(A) I$
+        \item If $A$ is invertible then:
+            \begin{equation*}
+                A^{-1} = \frac{\adj(A)}{\det(A)}
+            \end{equation*}
+    \end{enumerate}
+    \label{thmCramer}
+\end{theorem}
+\begin{proof}
+    2 follows from 1 by uniqueness of the inverse.
+
+    For 1, first use \thmref{thmLaplaceExpansion} to expand around the $j$th column and show that the diagonal entries of $\adj(A) A$ are $\det(A)$.
+
+    Then consider $A'$ which is the same as $A$ except has the $k$th column also in the $j$th position. This has determinant zero, and by expanding the determinant around the $j$th column again we get that the off-diagonal entries of $\adj(A) A$ are zero.
+
+    For the other expression we expand around rows.
+\end{proof}
+\section{Trace}
+\begin{definition}{Trace}
+    The \underline{trace} of $A$ is given by:
+    \begin{equation*}
+        \tr(A) = \sum_{i=1}^{n} a_{ii}
+    \end{equation*}
+\end{definition}
+Trace is a linear operation on matrices. 
+\begin{proposition}
+    For $A, B \in M_{n \times n}(\F)$,
+    \begin{equation*}
+        \tr(AB) = \tr(BA)
+    \end{equation*}
+    \label{propTraceCommute}
+\end{proposition}
+\begin{proof}
+    Simply by expanding the required terms.
+\end{proof}
+Note that $\tr(AB) \neq \tr(A)\tr(B)$ in general.
+\begin{corollary}
+    Similar matrices have the same trace
+    \label{corTraceSimilar}
+\end{corollary}
+\begin{proof}
+    Consider $\tr(PAP^{-1})$ and cycle the terms in the trace for cancellation.
+\end{proof}
+\begin{definition}{Trace (linear map)}
+    A linear map $\alpha : V \mapsto V$ has \underline{trace}:
+    \begin{equation*}
+        \tr(\alpha) = \tr([\alpha]_B^B)
+    \end{equation*}
+    where $B$ is any basis for $V$. This is independent of the chosen basis.
+\end{definition}
+\end{document}
