@@ -1,0 +1,264 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Communicating Classes}
+\begin{definition}{Leads to}
+    A state $i$ \underline{leads to} a state $j$ if:
+    \begin{equation*}
+        \P_i(X_n = j) > 0
+    \end{equation*}
+    for some $n > 0$. In this case we write $i \to j$.
+\end{definition}
+\begin{definition}{Communication}
+    A state $j$ \underline{communicates} with a state $j$ if $i \to j$ and $j \to i$. In this case we write $i \comms j$.
+\end{definition}
+\begin{theorem}
+    The following are equivalent:
+    \begin{enumerate}
+        \item $i \to j$;
+        \item There exists a path between $i$ and $j$ such that each step has non-zero transition probability:
+            \begin{equation*}
+                P_{i, x_1} \cdots P_{x_n, j} > 0
+            \end{equation*}
+        \item $p_{ij}(n) > 0$ for some $n > 0$.
+    \end{enumerate}
+    \label{thmCommProps}
+\end{theorem}
+\begin{proof}
+    Show that statement 1 is equivalent to 3 directly from the fact that $P_i(X_n = j) = p_{ij}(n)$.
+
+    Show that statement 1 is equivalent to statement 2 by expanding out all possible paths from $i$ to $j$ and arguing one must be non-zero.
+\end{proof}
+\begin{corollary}
+    Communication is an equivalence relation on $I$.
+    \label{corCommIsEquiv}
+\end{corollary}
+\begin{definition}{Communicating class}
+    \underline{Communicating classes} are the equivalence classes defined under communication
+\end{definition}
+\begin{definition}{Closed class}
+    A communication class $C \subseteq I$ is \underline{closed} if, for $x \in C$, if $x \to y$ then $y \in C$.
+\end{definition}
+\begin{definition}{Absorbing state}
+    A state $i$ is \underline{absorbing} if $\{i\}$ is a closed communicating class.
+\end{definition}
+\begin{definition}{Irreducibility}
+    A transition matrix $P$ is \underline{irreducible} if the entire state space is one communicating class.
+\end{definition}
+\section{Hitting Times}
+\begin{definition}{First hitting time}
+    Let $A \subseteq I$. The \underline{first hitting time} for $A$ is:
+    \begin{equation*}
+        T_A = \inf \subsetselect{n \geq 0}{X_n \in A}
+    \end{equation*}
+    if such an $n$ exists, otherwise it is $\infty$.
+\end{definition}
+\begin{definition}{Hitting probability}
+    For $A \subseteq I$, the \underline{hitting probability} of $A$ is:
+    \begin{equation*}
+        h_i^A = \P_i (T_A < \infty)
+    \end{equation*}
+    for each $i \in I$.
+\end{definition}
+\begin{definition}{Mean hitting time}
+    The \underline{mean hitting time} for $A \subseteq I$ is:
+    \begin{equation*}
+        k_i^A = \E_i[T_A]
+    \end{equation*}
+\end{definition}
+\begin{theorem}
+    Let $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$ and $A \subseteq I$. Then the hitting probabilities satisfy:
+    \begin{equation}
+        \begin{cases}
+            1 & i \in A \\
+            \sum_{j \in I} P(i, j) h_j^A & i \notin A
+        \end{cases}
+        \label{eqnHittingProbEquations}
+    \end{equation}
+    and $h^A$ is the minimal solution to \eqnref{eqnHittingProbEquations}.
+    \label{thmHitingProbEquations}
+\end{theorem}
+\begin{proof}
+    This proof is very long and boring. See in the supervision whether it comes up.
+\end{proof}
+\section{Mean Hitting Time}
+\begin{theorem}
+    Let $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$ and $A \subseteq I$. Then the mean hitting times satisfy:
+    \begin{equation}
+        k_i^A =
+        \begin{cases}
+            0 & i \in A \\
+            1 + \sum_{j \notin A} P(i, j) k_j^A & i \notin A
+        \end{cases}
+        \label{eqnMeanHittingTimeEquations}
+    \end{equation}
+    and $k^A$ is the minimal solution to \eqnref{eqnMeanHittingTimeEquations}.
+    \label{thmMeanHittingTimeEquations}
+\end{theorem}
+\section{Stopping Times and the Strong Markov Property}
+\begin{definition}{Stopping time}
+    A \underline{stopping time} $T$ for a Markov chain $\chain{X}$ is a random variable taking values in $\N_0$ such that for all $n \geq 0$ the event $\{T = n\}$ depends only on $X_0, \cdots, X_n$.
+\end{definition}
+For example, first hitting times are stopping times.
+\begin{theorem}[Strong Markov Property]
+    Let $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$ on a state space $I$, and let $T$ be a stopping time. Fix $i \in I$. Then, conditional on $\{T < \infty\} \cap \{X_T = i\}$, the process $(X_{T + n})_{n \geq 0}$ is $\Mkv{\vec{\delta_i}}{P}$ and is independent of $X_0, \cdots, X_T$.
+    \label{thmStrongMarkov}
+\end{theorem}
+\begin{proof}
+    We are required to prove that for any path $w$ and sequence of states $x_0, \cdots, x_n \in I$,
+    \begin{align*}
+        &\P((X_0, \cdots, X_T) = w, X_T = x_0, \cdots, X_{T + n} = x_n | T < \infty, X_T = i) \\
+        &= \P((X_0, \cdots, X_T) = w | T < \infty, X_T = i) \\
+        &\qquad\times \ind{X_0 = i} \Pmat{0}{1} \cdots \Pmat{n-1}{n}
+    \end{align*}
+    So consider the LHS, converting the conditioning into a fraction. Consider the numerator of this fraction, include conditioning on $T = k$, which then allows for factorisation by \thmref{thmWeakMarkov} with the conditioning on $T = k$ only appearing for $X_0$ to $X_k$ (since $T$ is a stopping time). Then we can divide by the numerator to get the required RHS.
+\end{proof}
+\section{Recurrence and Transience}
+\begin{definition}{Recurrence}
+    A state $i$ \underline{recurrent} if:
+    \begin{equation*}
+        \P_i(X_n = i \text{ for infinitely many } n) = 1
+    \end{equation*}
+    and we can also write $\P_i(X_n = i \text{ infinitely often})$.
+\end{definition}
+\begin{definition}{Transience}
+    A state $i$ is \underline{transient} if:
+    \begin{equation*}
+        \P_i(X_n = i \text{ infinitely often}) = 0
+    \end{equation*}
+\end{definition}
+A transition matrix $P$ is transient if all its states are transient.
+\begin{definition}{Return time}
+    The $k$th \underline{return time} to $i$, $T_i^{(k)}$, is defined by:
+    \begin{equation*}
+        T_i^{(k)} =
+        \begin{cases}
+            0 & k = 0 \\
+            \inf\subsetselect{n > T_i^{(k-1)}}{X_n = i} & k > 0
+        \end{cases}
+    \end{equation*}
+\end{definition}
+We defined the return time such that $T_i = T_i^{(1)}$.
+\begin{definition}{Return probability}
+    The \underline{return probability} for a state $i$ is:
+    \begin{equation*}
+        f_i = \P_i(T_i < \infty)
+    \end{equation*}
+\end{definition}
+\begin{definition}{Number of visits}
+    The \underline{number of visits} to a state $i$ is:
+    \begin{equation*}
+        v_i = \sum_{t=0}^{\infty}\ind{X_t = i}
+    \end{equation*}
+\end{definition}
+\begin{lemma}
+    For a state $i \in I$ and $r \in \N$,
+    \begin{equation*}
+        \P(v_i > r) = f_i^v
+    \end{equation*}
+    That is, $v_i \sim \operatorname{Geo}(1 - f_i)$
+    \label{lemVisitsDist}
+\end{lemma}
+\begin{proof}
+    The proof is by induction on $r$ and \thmref{thmStrongMarkov}.
+\end{proof}
+\begin{theorem}
+    For a state $i$,
+    \begin{itemize}
+        \item if $f_i = 1$ then $i$ is recurrent and $\sum_{n=0}^{\infty} p_{ii}(n)$ is infinite;
+        \item if $f_i < 1$ then $i$ is transient and $\sum_{n=0}^{\infty} p_{ii}(n)$ is finite.
+    \end{itemize}
+    \label{thmRecurOrTrans}
+\end{theorem}
+\begin{proof}
+    First show that the summed $p_ii$ quantity is $\E_i[v_i]$. Then use the distribution of $v_i$ in \thmref{lemVisitsDist} to conclude.
+\end{proof}
+\begin{proposition}
+    If $x \comms y$ then they are both recurrent or both transient.
+    \label{propCommTransience}
+\end{proposition}
+\begin{proof}
+    Suppose $x$ is recurrent. By communication, we have $p_{xy}(m) \geq 0$ and $p_{yx}(l) \geq 0$. Then bound $\sum_{n \geq 0} p_{yy}(n)$ by going via $x$ along these paths, which then come out of the sum.
+
+    \Thmref{thmRecurOrTrans} then gives the transience.
+\end{proof}
+\begin{corollary}
+    If $S \subseteq I$ then either all states in $S$ are transient or all states in $S$ are recurrent.
+    \label{corRecurIsClassProp}
+\end{corollary}
+\begin{proposition}
+    If $S \subseteq I$ is a recurrent communicating class then it is closed.
+    \label{propRecurImpliesClosed}
+\end{proposition}
+\begin{proof}
+    Suppose $x \to y$ with $y \notin S$. Then once $y$ is visited, $x$ is never visited. Therefore, show $\P_x(v_x < \infty)$ is positive for contradiction.
+\end{proof}
+\begin{proposition}
+    A finite, closed class is recurrent.
+    \label{propFiniteClosedImpliesRecur}
+\end{proposition}
+\begin{proof}
+    Let $C$ be this class and let $x \in C$. Then there exists $y \in C$ such that $\P_x(X_n = y \text{ infinitely often}) > 0$. Then bound $\P_y(X_n = y \text{ infinitely often})$ by $p_{yx}(m)$ times the previous, for $m$ such that it is positive.
+\end{proof}
+\begin{proposition}
+    If a transition matrix $P$ is irreducible and recurrent then:
+    \begin{equation*}
+        \P_x(T_y < \infty) = 1
+    \end{equation*}
+    for all states $x$ and $y$.
+    \label{propFiniteHittingTimes}
+\end{proposition}
+\begin{proof}
+    We have $m$ such that $p_{xy}(m) > 0$, and $\P_y(X_n = \text{ infinitely often}) = 1$. Then bound the expression:
+    \begin{equation*}
+        \sum_{x \in I} \P_x(T_y < \infty)p_{yx}(m)
+    \end{equation*}
+    below by this (and so by 1), and so the individual terms must all be $1$.
+\end{proof}
+\section{Simple Symmetric Random Walk}
+\begin{definition}{Simple symmetric random walk}
+    The \underline{simple symmetric random walk} (SSRW) on the integer lattice $\Z^d$ is the Markov chain $\chain{X} = (X_n)_{n \in \N}$ with transition probabilities:
+    \begin{equation*}
+        P(x, x + e_i) = P(x, x-e_i) = \frac{1}{2d}
+    \end{equation*}
+    where $e_i$ are the standard basis vectors.
+\end{definition}
+\begin{theorem}
+    The SSRW on $\Z^d$ is recurrent for $d = 1$ and $d = 2$, but is transient for $d = 3$.
+    \label{thmSSRWRecurTrans}
+\end{theorem}
+\begin{proof}[$d = 1$]
+    Consider:
+    \begin{equation*}
+        \sum_{n = 0}^{\infty} p_{00}(n) = \sum_{n=0}^{\infty} p_{00}(2n)
+    \end{equation*}
+    and show by Stirling's formula that this is infinite.
+\end{proof}
+\begin{lemma}
+    Let $f(x, y)$ be the projection of $(x, y)$ onto the lines $y = x$ and $y = -x$. That is,
+    \begin{equation*}
+        f(x, y) = \left(\frac{x + y}{\sqrt{2}}, \frac{x - y}{\sqrt{2}}\right)
+    \end{equation*}
+    and let $f(X_n) = (X_n^+, X_n^-)$. Then $X_n^+$ and $X_n^-$ are independent SSRWs.
+    \label{lemSSRWProject}
+\end{lemma}
+\begin{proof}
+    Set $X_0 = 0$ and let $X_n = \sum_{i=1}^{n} \xi_i$ where $\xi_i$ take the basis vectors with probability $\frac14$. Then project each $\xi_i$ to find $X_n^+$ and $X_n^-$. Then these are SSRWs and we can show independence on a case-by-case basis.
+\end{proof}
+\begin{proof}[\Thmref{thmSSRWRecurTrans} with $d = 2$]
+    Split $p_{00}(2n)$ up into the individual SSRWs and argue by the $d = 1$ case that this case is also recurrent.
+\end{proof}
+\begin{proof}[\Thmref{thmSSRWRecurTrans} with $d = 3$]
+    We must show:
+    \begin{equation*}
+        \sum_{n=0}^{\infty} p_{00}(n) < \infty
+    \end{equation*}
+    Use combinatorics to split the sum into individual directions. Split the $6$-nomial coefficient into a $3$-nomial coefficient squared, and then consider cases mod 3. For $n = 3m$ we show:
+    \begin{equation*}
+        \binom{n}{i~j~k} \leq \binom{3m}{m~m~m}
+    \end{equation*}
+    and so use this to show that $p_{00}(2n)$ is bounded above by $Cn^{-3/2}$ which converges when summed.
+
+    Bound the other cases by this, and so the sum converges.
+\end{proof}
+\end{document}
