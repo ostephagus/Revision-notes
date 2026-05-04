@@ -1,0 +1,302 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Polynomials}
+We can use Euclid's Algorithm for division of polynomials $f$ and $g$, writing $f = qg + r$ where $\deg(r) < \deg(q)$.
+
+A polynomial $f$ has at most $\deg(f)$ roots, and in $\C$ it has exactly $\deg(f)$ roots.
+\section{An Introduction to Eigenspaces}
+\begin{definition}{Diagonalisability}
+    Let $V$ be a finite-dimensional vector space. Let $\alpha : V \mapsto V$. Then $\alpha$ is \underline{diagonalisable} if there exists a basis $B$ of $V$ such that $[\alpha]_B^B$ is a diagonal matrix.
+\end{definition}
+Triangularisability is similarly defined.
+
+\begin{definition}{Eigenspace}
+    Let $V$ be a vector space over $\F$. For an eigenvalue $\lambda$ of a linear map $\alpha$, the \underline{$\lambda$-eigenspace} is given by:
+    \begin{equation*}
+        V_\lambda = \subsetselect{v \in V}{\alpha(v) = \lambda v}
+    \end{equation*}
+\end{definition}
+\begin{propositions}{
+        Let $V$ be a vector space over $\F$.
+        \label{propsESpaceProps}
+    }
+    \item $V_\lambda = \ker(\alpha - \lambda \Id_V) \leq V$; \label{propESpaceKernel}
+    \item for $V$ finite-dimensional, $\alpha$ is diagonalisable if and only if $V$ has a basis of eigenvectors of $\alpha$; \label{propDiagByBasis}
+    \item if $v \in V_\mu$ for $\lambda \neq \mu$,
+        \begin{equation*}
+            (\alpha - \lambda \Id_V)(v) = (\mu - \lambda) v
+        \end{equation*}
+        and so $(\alpha - \lambda \Id_V)$ preserves $V_\mu$. \label{propPreserveESpaces}
+\end{propositions}
+\begin{proof}
+    1 is based on a simple equivalence chain.
+
+    For 2, note that the basis required by the diagonalisability definition is exactly the eigenvector basis.
+
+    3 is immediate.
+\end{proof}
+\begin{lemma}
+    Let $\lambda_1, \cdots, \lambda_k$ be a set of distinct eigenvalues with corresponding eigenvectors $v_i$. Then the set $\{v_i\}_{i=1}^k$ is linearly independent.
+    \label{lemEVectorsDiffEValsLI}
+\end{lemma}
+\begin{proof}
+    Suppose not, and so there is some linear combination of eigenvectors that is zero. Assume that the first coefficient is non-zero. Let $\beta$ be the composition of linear maps of the type in \thmref{propPreserveESpaces}, for $\lambda_2$ to $\lambda_k$. Then apply this to $v_j$ and show it must be non-zero only in the case $j = 1$. Apply $\beta$ to the linear combination (which is zero) for contradiction.
+\end{proof}
+\begin{propositions}{
+        Let $V$ be a finite-dimensional vector space over $\F$. Let $\alpha \in \L(V, V)$ with eigenvalues $\lambda_1, \cdots, \lambda_k$. Then:
+        \label{propsESpacesDirSums}
+    }
+    \item $\spn{\cup_{i=1}^k V_{\lambda_k}} = \bigoplus_{i=1}^k V_{\lambda_k}$; \label{propSpanESpaces}
+    \item $\alpha$ is diagonalisable if and only if $V = \oplus_{i=1}^k V_{\lambda_k}$ \label{propDiagIffESpacesFill}
+\end{propositions}
+\begin{proof}
+    For 1, recall that the map in \thmref{propDirSumMapSum} is surjective. Show also by \thmref{lemEVectorsDiffEValsLI} that the kernel is trivial.
+
+    If $\alpha$ is diagonalisable then we have a basis of eigenvectors, so the direct sum is as required.
+
+    If we have the corresponding direct sum, then create a basis for $V$ from the bases of the eigenspaces.
+\end{proof}
+\section{The Characteristic Polynomial}
+\begin{definition}{Characteristic polynomial (matrix)}
+    For $A \in M_{n \times n}(\F)$, the \underline{characteristic polynomial} of $A$ is:
+    \begin{equation*}
+        \chi_A(t) = \det(tI_n - A)
+    \end{equation*}
+\end{definition}
+\begin{definition}{Characteristic polynomial (linear map)}
+    For $V$ finite dimensional and $\alpha \in \L(V, V)$, the \underline{characteristic polynomial} of $\alpha$ is:
+    \begin{equation*}
+        \chi_\alpha(t) = \det(t \Id_V - \alpha)
+    \end{equation*}
+\end{definition}
+\begin{lemma}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. The roots of $\chi_\alpha$ are exactly the eigenvalues of $\alpha$.
+    \label{lemRootsOfCharPoly}
+\end{lemma}
+Note that the $n-1$ coefficient of $\chi_\alpha$ is $-\tr(\alpha)$ and the constant coefficient is $(-1)^n \det(A)$.
+
+\begin{proposition}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. If $\alpha$ is triangularisable then $\chi_\alpha$ can be written as a product of linear factors.
+    \label{propTriangularProdFactors}
+\end{proposition}
+\begin{proof}
+    Let $B$ be the basis in which $A = [\alpha]_B^B$ is triangular. By \thmref{thmBlockTriDet}, the determinant of $t\Id_V - \alpha$ is the product of the diagonal elements which is exactly as required.
+\end{proof}
+\begin{theorem}
+    Every $A \in M_{n \times n}(\C)$ is triangularisable.
+    \label{thmEveryComplexTriangular}
+\end{theorem}
+\begin{proof}
+    By the Fundamental Theorem of Algebra we know that $\chi_A$ has a root $\lambda \in \C$. Induct on the dimension, with the inductive step being to extend the basis from an eigenvalue and use the assumption to choose the basis such that the resulting matrix is upper triangular.
+\end{proof}
+\section{Annihilator Polynomials}
+We can apply a polynomial to a linear map by defining exponentiation to be multiple application.
+
+\begin{definition}{Annihilator polynomial}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. A polynomial $p$ is an \underline{annihilator polynomial} if $p(\alpha)$ gives the zero map.
+\end{definition}
+The set of all such polynomials is the \underline{annihilator ideal}, $I_\alpha$.
+\begin{definition}{Minimal polynomial}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. The \underline{minimal polynomial} $m_\alpha$ is the monic annihilator polynomial of least degree.
+\end{definition}
+\begin{lemma}
+    For any $f \in I_\alpha$, $m_\alpha \mid f$.
+    \label{lemMinimalDividesAnnihPoly}
+\end{lemma}
+\begin{proof}
+    Use the division algorithm on $f$. The remainder must have degree less than $m_\alpha$ and so it can only be the zero polynomial.
+\end{proof}
+\begin{theorem}
+    The minimal polynomial, $m_\alpha$, is unique.
+    \label{thmMinPolyUnique}
+\end{theorem}
+\begin{proof}
+    \Thmref{lemMinimalDividesAnnihPoly} shows that any other minimal polynomial must be a multiple of $m_\alpha$ and this is fixed by requiring $m_\alpha$ monic.
+\end{proof}
+\begin{theorem}[Cayley-Hamilton Theorem]
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. For $\chi_\alpha$ the characteristic polynomial of $\alpha$,
+    \begin{equation*}
+        \chi_\alpha(\alpha) = 0
+    \end{equation*}
+    \label{thmCayleyHamilton}
+\end{theorem}
+\begin{remark}
+    Therefore, $\chi_\alpha \in I_\alpha$.
+\end{remark}
+\begin{proof}[for triangularisable $\alpha$]
+    By Triangularisability, choose the basis $B = \{v_1, \cdots, v_n\}$ in which $[\alpha]_B^B$ is triangular. Then the characteristic polynomial is a product of linear factors. Define $U_j = \spn{v_1, \cdots, v_j}$ so $U_0 = \{\zv\}$ and $U_n = V$. Then $\alpha - \lambda_j \Id_v$ sets $v_j$ to zero and preserves all other eigenspace. Then applying $\chi_\alpha(\alpha)$ to $V$ has image $\{\zv\}$ by telescoping product.
+\end{proof}
+\begin{corollary}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. $m_\alpha$ divides $\chi_\alpha$.
+    \label{corCharDividesMinPoly}
+\end{corollary}
+\begin{definition}{Algebraic multiplicity}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. The \underline{algebraic multiplicity} of an eigenvalue $\lambda$, $a_\lambda$, is the multiplicity of $\lambda$ as a root of $\chi$.
+\end{definition}
+\begin{definition}{Geometric multiplicity}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. The \underline{geometric multiplicity} of an eigenvalue $\lambda$, $g_\lambda$, is the dimension of the eigenspace $V_\lambda$.
+\end{definition}
+\begin{proposition}[The other AM-GM inequality]
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. For an eigenvalue $\lambda$ of $\alpha$,
+    \begin{equation*}
+        g_\lambda \leq a_\lambda.
+    \end{equation*}
+    \label{thmAMGM}
+\end{proposition}
+\begin{proof}
+    Find a basis of $V_\lambda$ and extend to a basis of $V$. The matrix $\alpha$ in this basis is upper triangular with lower-right block $C$. $\chi_\alpha(t) = (t - \lambda)^{g_\lambda} \chi_C(t)$ where $\chi_C$ may have $\lambda$ as a root.
+\end{proof}
+\begin{propositions}{
+        Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. Let the eigenvalues be $\lambda_1, \cdots, \lambda_k$.
+        \label{propsDiagTriAMGM}
+    }
+    \item $\sum_{i=1}^{k} g_{\lambda_i} \leq \dim(V)$ with equality if and only if $\alpha$ is diagonalisable. \label{propDiagAMGM}
+    \item $\sum_{i=1}^{k} a_{\lambda_i} \leq \dim(V)$ with equality if and only if $\alpha$ is triangularisable. \label{propTriAMGM}
+\end{propositions}
+\begin{proof}
+    1 is by \thmref{propsESpacesDirSums}.
+
+    Let $\chi_\alpha(t) = f(t) \times \prod_{i=1}^k (t - \lambda_i)^{a_{\lambda_i}}$. Then $f$ has no linear factors. Then argue by degrees, noting $\deg(\chi_{\alpha}) = \dim(V)$. If in fact we have equality then $f$ is constant and $\chi_\alpha$ is a product of linear factors.
+\end{proof}
+\begin{proposition}
+    Let $V$ be a finite-dimensional vector space over $\C$ and $\alpha \in \L(V, V)$. $\alpha$ is diagonalisable if and only if $a_\lambda = g_\lambda$ for every eigenvalue.
+    \label{propDiagIffFullESpaces}
+\end{proposition}
+\begin{proof}
+    Note that summing algebraic multiplicities must give $\dim(V)$ (because we are over $\C$). Then by \thmref{thmAMGM}, the only way to satisfy \thmref{propDiagAMGM} is if we have full eigenspaces.
+\end{proof}
+\begin{lemma}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. For $\lambda \in \F$,
+    \begin{equation*}
+        m_\alpha(\lambda) = 0 \iff \chi_\alpha(\lambda) = 0.
+    \end{equation*}
+    \label{lemMinCharSameRoots}
+\end{lemma}
+\begin{proof}
+    If $\lambda$ is a root of the minimal polynomial then by \thmref{corCharDividesMinPoly} we are done.
+
+    If $\lambda$ is a root of the characteristic polynomial then it is an eigenvalue. Evaluate both sides of:
+    \begin{equation*}
+        (m_\alpha(\alpha))(v) = m_\alpha(\lambda)v
+    \end{equation*}
+    and show they are zero.
+\end{proof}
+\begin{definition}{Minimal multiplicity}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. The \underline{minimal multiplicity} $c_\lambda$ of an eigenvalue $\lambda$ is the power of $(t - \lambda)$ in the minimal polynomial.
+\end{definition}
+\begin{theorem}
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. If there exists $p \in I_\alpha$ which is a product of distinct linear factors, then $\alpha$ is diagonalisable.
+    \label{thmDiagIfLinearFactors}
+\end{theorem}
+\begin{proof}
+    Assume $p$ monic. Let $p_i$ be $p$ excluding the factor in $\lambda_i$.
+
+    Then by B\'ezout's Theorem there exist $q_i$ such that:
+    \begin{equation*}
+        \sum_{i=1}^k p_i q_i = 1
+    \end{equation*}
+    where $1$ represents the monic constant polynomial.
+
+    Set $\pi_i = p_i(\alpha) q_i(\alpha)$ so summing over $i$ gives the identity map. Therefore, the image of the sum of $\pi_i$ is $V$.
+
+    Next since $p(\alpha) = 0$ expand this and then sum to get $(\alpha - \lambda_i \Id_V) \circ \pi_i = 0$. Therefore $\im(\pi_i) \leq V_{\lambda_i}$. Conclude diagonalisability by \thmref{propDiagIffESpacesFill}.
+\end{proof}
+\begin{theorem}[Characterisation of Diagonalisability]
+    Let $V$ be a finite-dimensional vector space and $\alpha \in \L(V, V)$. The following are equivalent:
+    \begin{enumerate}
+        \item $\alpha$ is diagonalisable;
+        \item $V$ has a basis of eigenvectors of $\alpha$;
+        \item There exists a non-zero polynomial in $I_\alpha$ that is a product of distinct linear factors;
+        \item $m_\alpha$ is a product of linear factors;
+        \item {[only for $\F = \C$]} $a_\lambda = g_\lambda$ for all eigenvalues.
+    \end{enumerate}
+    \label{thmDiagability}
+\end{theorem}
+\begin{definition}{Simultaneous diagonalisability}
+    Let $V$ be a finite-dimensional vector space and $\alpha, \beta \in \L(V, V)$. Then $\alpha$ and $\beta$ are \underline{simultaneously diagonalisable} if there exists a basis in which their corresponding matrices are both diagonal.
+\end{definition}
+\begin{lemma}
+    Let $\alpha, \beta$ be linear maps that commute. Then for an eigenspace $V_\lambda$ of $\alpha$, $\beta(V_\lambda) \leq V_\lambda$.
+    \label{lemCommutePreserveESpace}
+\end{lemma}
+\begin{theorem}
+    Let $V$ be a finite-dimensional vector space and $\alpha, \beta$ diagonalisable linear maps. Then $\alpha$ and $\beta$ are simultaneously diagonalisable if and only if they commute.
+    \label{thmSimDiagIffCommute}
+\end{theorem}
+\begin{proof}
+    The forward direction is easily argued since diagonal matrices commute.
+
+    For the other direction, first label the eigenspaces of $\alpha$ (of which $V$ is a direct product). Then let $p \in I_\beta$ be a product of distinct linear factors. Restrict this polynomial to eigenspaces of $\alpha$ and show that it is still zero, so the restriction of $\beta$ is diagonalisable. Make use of this basis for each eigenspace.
+\end{proof}
+\section{Jordan Normal Form}
+In this section we take $\F = \C$.
+\begin{definition}{Jordan matrix}
+    For $\lambda \in \C$, the $(n \times n)$ \underline{Jordan matrix} is:
+    \begin{equation*}
+        J_n(\lambda) =
+        \begin{pmatrix}
+            \lambda & 1 & 0 & \cdots & 0 \\
+            0 & \lambda & 1 &  & \vdots \\
+            \vdots & & \ddots & \ddots & 0 \\
+            0 & \cdots & 0 & \lambda & 1 \\
+            0 & 0 & \cdots & 0 & \lambda
+        \end{pmatrix}
+    \end{equation*}
+\end{definition}
+\begin{definition}{Jordan normal form}
+    A matrix is in  \underline{Jordan normal form} if it is a block diagonal matrix with blocks $J_n(\lambda)$ for some $n$ and $\lambda$.
+\end{definition}
+\begin{propositions}{
+        Let $A \in M_{n \times n}(\C)$ be in Jordan normal form
+        \label{propsJNFMults}
+    }
+    \item The algebraic multiplicity of an eigenvalue $\lambda$ is the sum of the sizes of $\lambda$ blocks;
+    \item The geometric multiplicity of an eigenvalue $\lambda$ is the number of $\lambda$ blocks;
+    \item The minimal multiplicity of an eigenvalue $\lambda$ is the size of the largest $\lambda$ block.
+\end{propositions}
+\begin{proof}
+    First for $J_n(\lambda)$, this has one eigenvalue $\lambda$ with $g_\lambda = 1$, $c_\lambda = a_\lambda = n$.
+
+    Then use facts about diagonal matrices.
+
+    Note that the minimal polynomial must be the LCM of each of the minimal polynomials for the Jordan blocks.
+\end{proof}
+\begin{theorem}[Existence and uniqueness of Jordan Normal Form]
+    Every matrix $A \in M_{n \times n}(\C)$ is similar to a matrix in JNF, unique up to rearranging the Jordan blocks.
+    \label{thmJNFUnique}
+\end{theorem}
+The existence proof is non-examinable.
+\begin{proof}[of uniqueness]
+    Consider the quantity $R_{\lambda, r}$ which is the number of $\lambda$ blocks of size $\geq r$. Show that this is in fact:
+    \begin{equation*}
+        R_{\lambda, r} = \rk((A - \lambda I)^{r-1}) - \rk((A - \lambda I)^r)
+    \end{equation*}
+    which is independent of basis. Then if two JNFs are similar they will have the same set of $R_{\lambda, r}$ which determine the blocks.
+\end{proof}
+\begin{definition}{Generalised eigenspace}
+    Let $V$ be a finite-dimensional vector space over $\C$, and $\alpha \in \L(V, V)$. The \underline{generalised $\lambda$-eigenspace} of $\alpha$ is:
+    \begin{equation*}
+        \gespace{V}{\lambda} = \ker((\alpha - \lambda \Id_V)^{c_\lambda})
+    \end{equation*}
+    where $c_\lambda$ is the minimal multiplicity.
+\end{definition}
+\begin{lemma}
+    Non-zero elements of distinct generalised eigenspaces are linearly independent.
+    \label{lemGESpaceLIVectors}
+\end{lemma}
+\begin{proof}
+    Label the generalised eigenvectors and eigenspaces. Let $w_i = (\alpha - \lambda_i \Id_V)^{d_i}(v_i)$ be an eigenvector with eigenvalue $\lambda_i$. Define:
+    \begin{equation*}
+        \beta = \prod_{j=1}^k (\alpha - \lambda_j \Id_V)^{d_j}
+    \end{equation*}
+    and apply it to $v_i$ to get $\mu_i w_i$. Then suppose a linear combination of the $v_i$ sum to zero. Apply $\beta$ and argue that the $w_i$ are all linearly independent so in fact the coefficients of the linear combination are zero.
+\end{proof}
+\begin{theorem}[Generalised Eigenspace Decomposition Theorem]
+    $V$ is a direct sum of generalised eigenspaces.
+    \label{thmGEDecompose}
+\end{theorem}
+\begin{proof}
+    We must only show that the dimensions of the generalised eigenspaces sums to $\dim(V)$ because we have done linear independence. Here argue by JNF.
+\end{proof}
+\end{document}
