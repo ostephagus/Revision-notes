@@ -1,0 +1,246 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\begin{definition}{Bilinear form}
+    For vector spaces $U, V$ over a field $\F$, a \underline{bilinear form} is a map $\varphi : U \times V \mapsto \F$ such that for each fixed $u_0 \in U$ and $v_0 \in V$ the maps:
+    \begin{align*}
+        \varphi_{u_0} : V &\mapsto \F & \varphi^{v_0} : U &\mapsto \F \\
+        v &\mapsto \varphi(u_0, v) & u &\mapsto \varphi(u, v_0)
+    \end{align*}
+    are linear.
+\end{definition}
+\begin{definition}{Matrix of a bilinear form}
+    For $U, V$ finite-dimensional vector spaces over $\F$ with bases $B = \{b_1, \cdots, b_m\}$ and $C = \{c_1, \cdots, c_n\}$ and a bilinear form $\varphi$, the \underline{matrix of $\varphi$} with respect to $B$ and $C$ is:
+    \begin{equation*}
+        [\varphi]_{B, C} = (\varphi(b_i, c_j))_{i, j} \in M_{m \times n}(\F)
+    \end{equation*}
+\end{definition}
+\begin{proposition}
+    The matrix $[\varphi]_{B, C}$ as above defined satisfies:
+    \begin{equation}
+        \left([u]_B\right)^T [\varphi]_{B, C} [v]_C = \varphi(u, v)
+        \label{eqnBFMatrix}
+    \end{equation}
+    for all $u \in U, v \in V$. Furthermore, $[\varphi]_{B, C}$ is the only such matrix.
+    \label{propBFMatrix}
+\end{proposition}
+\begin{proof}
+    Argue by linear combinations.
+\end{proof}
+\begin{corollary}
+    If $B', C'$ are alternative bases for $U, V$ as defined above, then the change of basis formula for $\varphi$ is:
+    \begin{equation*}
+        [\varphi]_{B', C'} = \left([\Id_V]^{B'}_{B}\right)^T [\varphi]_{B, C} [\Id_V]^{C'}_C
+    \end{equation*}
+    \label{corBFChangeBasis}
+\end{corollary}
+\begin{definition}{Rank (bilinear form)}
+    For a bilinear form $\varphi : U \times V \mapsto \F$ with $U, V$ finite-dimensional, the \underline{rank} of $\varphi$ is the rank of $[\varphi]_{B, C}$ with respect to any bases $B, C$.
+\end{definition}
+\begin{definition}{Congruence}
+    Two matrices $A, B \in M_{n \times n}(\F)$ are \underline{congruent} if there exists $P \in GL_n(\F)$ such that:
+    \begin{equation*}
+        B = P^TAP
+    \end{equation*}
+\end{definition}
+\begin{proposition}
+    Congruence is an equivalence relation over $M_{n \times n}(\F)$.
+    \label{propCongruenceEquiv}
+\end{proposition}
+\begin{definition}{Left / right linear map}
+    For a bilinear form $\varphi : U \times V \mapsto \F$, the \underline{left linear map} is:
+    \begin{align*}
+        \varphi_L : U &\mapsto V^*\\
+        u &\mapsto \varphi_L(u)
+    \end{align*}
+    such that $(\varphi_L(u))(v) = \varphi(u, v)$. The \underline{right linear map} is similarly defined.
+\end{definition}
+Linearity comes from the definition of a bilinear form. The kernels of these maps are called the \underline{left / right kernel} of $\varphi$.
+\begin{proposition}
+    Let $\varphi : U \times V \mapsto \F$ where $U$ and $V$ are finite-dimensional. Let $B, C$ be bases. Then:
+    \begin{align*}
+        [\varphi_L]^B_{C^*} &= \left([\varphi]_{B, C}\right)^T \\
+        [\varphi_R]^C_{B^*} &= [\varphi]_{B, C}
+    \end{align*}
+    \label{propLRLinMapMatrices}
+\end{proposition}
+\begin{proof}
+    Again prove by linear combinations.
+\end{proof}
+\begin{corollary}
+    The ranks of $\varphi, \varphi_L$ and $\varphi_R$ are equal.
+    \label{corRankBF}
+\end{corollary}
+\begin{definition}{Perpendiculars}
+    For $\varphi : U \times V \mapsto \R$ and $S \subseteq U$, $T \subseteq V$, the \underline{perpendiculars} of $S$ and $T$ are:
+    \begin{align*}
+        S^\perp &= \subsetselect{v \in V}{\forall s \in S, \varphi(s, v) = 0} \\
+        \lperp{T} &= \subsetselect{u \in U}{\forall t \in T, \varphi(u, t) = 0} \\
+    \end{align*}
+\end{definition}
+\begin{definition}{Degeneracy}
+    A bilinear form $\varphi$ is \underline{degenerate} if one of the perpendiculars $U^\perp = \ker(\varphi_R)$ or $\lperp{V} = \ker(\varphi_R)$ are nontrivial.
+\end{definition}
+\begin{proposition}
+    For $U, V$ finite-dimensional with bases $B, C$, the bilinear form $\varphi : U \times V \mapsto \F$ is non-degenerate if and only if:
+    \begin{itemize}
+        \item $U$ and $V$ have the same dimension, and
+        \item $[\varphi]_{B, C}$ is invertible.
+    \end{itemize}
+    \label{propBFNonDegen}
+\end{proposition}
+\begin{proof}
+    Use reversible logic and consider the ranks of $\varphi_L$ and $\varphi_R$.
+\end{proof}
+\section{Symmetric Bilinear Forms}
+\begin{definition}{Symmetric bilinear form}
+    Let $V$ be a vector space over $\F$. A bilinear form $\varphi : V \times V \mapsto \F$ is \underline{symmetric} if, for all $v_1, v_2 \in V$,
+    \begin{equation*}
+        \varphi(v_1, v_2) = \varphi(v_2, v_1).
+    \end{equation*}
+\end{definition}
+\begin{proposition}
+    Let $V$ be a finite-dimensional vector space over $\F$. A bilinear form $\varphi : V \times V \mapsto \F$ is symmetric if and only if its matrix $[\varphi]_{B, B}$ is symmetric in some (and therefore any) basis $B$.
+    \label{propSymBMSymMatrix}
+\end{proposition}
+\begin{proof}
+    Convert $\varphi(v_1, v_2) = \varphi(v_2, v_1)$ to vectors and matrices using \thmref{propBFMatrix}.
+\end{proof}
+For a symmetric bilinear form, left and right perpendiculars are equal, and left and right kernels are equal so we can refer just to the \underline{kernel} of $\varphi$.
+
+\begin{definition}{Quadratic form}
+    For a vector space $V$ over a field $\F$, a \underline{quadratic form} is a map $Q : V \mapsto \F$ such that there exists a bilinear form $\varphi : V \times V \mapsto \F$ with the property that $Q(v) = \varphi(v, v)$.
+\end{definition}
+\begin{proposition}[Polarisation Identity]
+    Let $V$ be a vector space over a field $\F$ such that $1 + 1 \neq 0$. Let $Q : V \mapsto \F$ be a quadratic form. There exists a unique symmetric bilinear form $\psi : V \times V \mapsto \F$ such that $Q(v) = \psi(v, v)$ given by:
+    \begin{equation*}
+        \psi(u, v) = \frac12 \left(Q(u + v) - Q(u) - Q(v)\right)
+    \end{equation*}
+    \label{propPolarisationIdentity}
+\end{proposition}
+\begin{proof}
+    Define $\psi$ by symmetrising the bilinear form $\varphi$ from the definition of $Q$. For uniqueness, evaluate $Q(u + v)$ and show that only $\psi$ satisfies the required equation.
+\end{proof}
+\begin{theorem}
+    Let $V$ be a finite-dimensional vector space over a field $\F$ such that $1 + 1 \neq 0$. For a symmetric bilinear form $\varphi : V \times V \mapsto \F$, there exists a basis $B$ for $V$ such that $[\varphi]_{B, B}$ is diagonal.
+    \label{thmSBFDiag}
+\end{theorem}
+\begin{proof}
+    The proof is by induction on $n$.
+
+    Define $Q$ from $\varphi$. If $Q(v) = 0$ for all $v$ then $[\varphi]_{B, B}$ is the zero matrix and we are done.
+
+    If not, find the vector $v_1$ such that $Q(v_1) \neq 0$. Define $U = \spn{v_1}^\perp$. Use \thmref{thmRankNullity} to show that $\spn{v_1} \oplus U = V$, and apply the inductive assumption to find a basis $B$ in which the matrix of $\varphi$ is diagonal.
+\end{proof}
+\begin{corollary}
+    For fields with $1 + 1 \neq 0$, every symmetric matrix is congruent to a diagonal matrix.
+    \label{corSymCongDiag}
+\end{corollary}
+\begin{corollary}
+    For the following fields there exists a basis such that:
+    \begin{enumerate}
+        \item for $\F = \C$,
+            \begin{equation*}
+                [\varphi]_{B, B} =
+                \begin{pmatrix}
+                    I_{\rk(\varphi)} & 0 \\
+                    0 & 0
+                \end{pmatrix}
+            \end{equation*}
+        \item for $\F = \R$,
+            \begin{equation*}
+                [\varphi]_{B, B} =
+                \begin{pmatrix}
+                    I_p & 0 & 0 \\
+                    0 & I_q & 0 \\
+                    0 & 0 & 0
+                \end{pmatrix}
+            \end{equation*}
+            where $p + q = \rk(\varphi)$.
+    \end{enumerate}
+    \label{corSBFDiagonalForm}
+\end{corollary}
+\begin{proof}
+    We use the basis from \thmref{thmSBFDiag} and normalise as required for the cases $\F = \C$ and $\F = \R$.
+\end{proof}
+\begin{definition}{Definiteness}
+    Let $V$ be a real vector space, and $\varphi : V \times V \mapsto \R$. If $\varphi$ has the same sign for all $v \in V$, we say:
+
+    \begin{tabular}{|c|c|}
+        \hline
+        Definiteness & Sign of $\varphi$ \\
+        \hline
+        Positive definite & $>0$ \\
+        Positive semi-definite & $\geq0$ \\
+        Negative definite & $<0$ \\
+        Negative semi-definite & $\leq0$ \\
+        \hline
+    \end{tabular}
+
+    and otherwise $\varphi$ is \underline{indefinite}.
+\end{definition}
+\begin{lemma}
+    Let $U, W$ be subspaces of a real vector space $V$. If $\varphi|_U$ is positive definite and $\varphi|_W$ is negative semi-definite then $U \cap W = \{\zv\}$.
+    \label{lemDefiniteIntersections}
+\end{lemma}
+\begin{proof}
+    Simple contradiction.
+\end{proof}
+\begin{definition}{Signature}
+    The \underline{signature} of a real symmetric bilinear form is $\sigma(\varphi) = p - q$ in the representation of \thmref{corSBFDiagonalForm}.
+\end{definition}
+\begin{theorem}[Sylvester's Law of Inertia]
+    For $V$ a finite-dimensional real vector space and $\varphi : V \times V \mapsto \R$ a symmetric bilinear form, if $B$ and $B'$ are bases for $V$ such that:
+    \begin{align*}
+        [\varphi]_{B, B} =
+        \begin{pmatrix}
+            I_p & 0 & 0 \\
+            0 & I_q & 0 \\
+            0 & 0 & 0
+        \end{pmatrix}
+        , [\varphi]_{B', B'} =
+        \begin{pmatrix}
+            I_{p'} & 0 & 0 \\
+            0 & I_{q'} & 0 \\
+            0 & 0 & 0
+        \end{pmatrix}
+    \end{align*}
+    then $p = p'$ and $q = q'$.
+    \label{thmSylvesterInertia}
+\end{theorem}
+\begin{proof}
+    We aim to show that $p$ is the maximal dimension of a subspace $U$ such that $\varphi|_U$ is positive definite, and similar for $q$ and $W$ with negative-definite.
+
+    Label the elements of $B$ and define $U$ to be the span of the first $p$ elements, and $W$ the span of the next $q$. Let $U'$ then be a larger positive-definite subspace. Consider $U, U', W$ as subspaces of $U + W$, and apply \thmref{lemDefiniteIntersections} to show that $U'$ cannot be larger than $U$. Same for $W$. This is now independent of basis.
+\end{proof}
+\begin{definition}{Totally isotropic subspace}
+    Let $V$ be a real vector space and $\varphi : V \times V \mapsto \R$ a bilinear form. A subspace $T \leq V$ is \underline{totally isotropic} if, for all $u, v \in T$, $\varphi(u, v) = 0$.
+\end{definition}
+\begin{proposition}
+    Let $V$ be an $n$-dimensional real vector space and $\varphi$ a symmetric bilinear form. The maximal dimension of a totally isotropic subspace is then $n - \max{p, q}$ (where $p$ and $q$ are as given in \thmref{corSBFDiagonalForm}).
+    \label{propTISpaceMaxDim}
+\end{proposition}
+\begin{proof}
+    We construct a basis for $T$ by adding $v_i$ to $v_{p + i}$ for all $i < p$, then including the basis vectors from $v_{p + q + 1}$ onwards. Show this is maximal by using \thmref{lemDefiniteIntersections} with $T$ and $U$.
+\end{proof}
+\section{Sesquilinear and Hermitian Forms}
+\begin{definition}{Sesquilinear form}
+    Let $U, V$ be complex vector spaces. A \underline{sesquilinear form} is a map $U \times V \mapsto \C$ such that, for $u_1, u_2 \in U$ and $v_1, v_2 \in V$, and scalars $\lambda, \mu \in \C$,
+    \begin{enumerate}
+        \item $\varphi(\lambda u_1 + u_2, v_1) = \lambda \varphi(u_1, v_1) + \varphi(u_2, v_1)$,
+        \item $\varphi(u_1, \mu v_1 + v_2) = \mu \varphi(u_1, v_1) + \varphi(u_1, v_2)$.
+    \end{enumerate}
+\end{definition}
+The only difference from the theory of bilinear forms is that the matrix equation is given by:
+\begin{equation*}
+    \varphi(u, v) = \left([u]_B\right)^T [\varphi]_{B, C} \overline{[v]_C}
+\end{equation*}
+\begin{definition}{Hermitian form}
+    A sesquilinear form is \underline{Hermitian} if it satisfies $\varphi(u, v) = \overline{\varphi(v, u)}$.
+\end{definition}
+The sesquilinear polarisation identity is:
+\begin{equation*}
+    \varphi(u, v) = \frac14 \left(Q(u + v) - Q(u - v) + iQ(u + i v) - i Q(u - i v)\right)
+\end{equation*}
+The rest is as with symmetric bilinear forms.
+\end{document}
