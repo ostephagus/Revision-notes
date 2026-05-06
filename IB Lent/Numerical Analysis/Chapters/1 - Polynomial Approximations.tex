@@ -1,5 +1,213 @@
 \documentclass[../Main.tex]{subfiles}
 
 \begin{document}
+\section{Polynomial Interpolation}
+\subsection{Lagrange Polynomials}
+\begin{definition}{Lagrange polynomial}
+    Given distinct points $(x_i)_{i=0}^n$, the $k$th \underline{Lagrange polynomial} is defined as:
+    \begin{equation*}
+        L_k(x) = \prod_{\substack{l=0\\l\neq k}}^n \frac{x - x_l}{x_k - x_l}
+    \end{equation*}
+    and has degree $n$.
+\end{definition}
+The set of all such polynomials is the \underline{Lagrange basis}. They are $1$ at $x_k$ and zero at the other given points. Then we can find a polynomial interpolation as a linear combination of the above.
+\begin{proposition}
+    The solution to the polynomial interpolation problem is unique
+    \label{propPolyInterpUnique}
+\end{proposition}
+\begin{proof}
+    Prove this by considering the difference of two polynomials solving the problem, which has too many roots.
+\end{proof}
+\subsection{Error in Polynomial Interpolation}
+\begin{theorem}[Polynomial Interpolation Error]
+    Let $f \in C^{n+1}[a, b]$ be a function and $x_0, \cdots, x_n$ distinct points in $[a, b]$. Let $p$ be an $n$-degree polynomial that interpolates $f$ at the points. Then for all $x \in [a, b]$, there exists $\xi \in [a, b]$ such that:
+    \begin{equation*}
+        f(x) - p(x) = \frac{1}{(n+1)!}f^{(n+1)}(\xi) \prod_{i=0}^{n} (x - x_i)
+    \end{equation*}
+    \label{thmPolyInterpError}
+\end{theorem}
+\begin{proof}
+    If $x$ is one of the $x_i$ then done. If not, define the auxiliary function:
+    \begin{equation*}
+        \phi(t) = f(t) - p(t) - \left(f(x) - p(x)\right) \frac{\prod_{i=0}^{n}(t - x_i)}{\prod_{i=0}^{n}(x - x_i)}
+    \end{equation*}
+    and apply Rolle's Theorem $(n+1)$ times.
+\end{proof}
+The best interpolating points are the Chebyshev points:
+\begin{equation*}
+    x_i = \frac{b+a}{2} + \frac{b-a}{2} \cos \left(\frac{(n-i)\pi}{n}\right)
+\end{equation*}
+\section{Divided Differences}
+\begin{definition}{Divided difference}
+    Given a function $f : \R \mapsto \R$ and a polynomial $p$ interpolating it, the \underline{divided difference} of $f$ at $\{x_0, \cdots, x_n\}$ is the leading coefficient of $p$ given by:
+    \begin{equation*}
+        f[x_0, \cdots, x_n] = \sum_{i=0}^{n} f(x_i) \prod_{\substack{j=0\\j \neq i}}^{n} \frac{1}{x_i - x_j}
+    \end{equation*}
+\end{definition}
+\begin{theorem}
+    The divided differences obey:
+    \begin{equation*}
+        f[x_0, \cdots, x_{n+1}] = \frac{f[x_1, \cdots, x_{n+1}] - f[x_0, \cdots, x_n]}{x_{n+1} - x_0}
+    \end{equation*}
+    \label{thmDividedDifferences}
+\end{theorem}
+\begin{proof}
+    Proceed by induction. For the inductive step, let $p$ interpolate from $x_0$ to $x_n$ and let $q$ interpolate from $x_1$ to $x_{n+1}$. Show that the polynomial interpolating on all the points is:
+    \begin{equation*}
+        r(x) = \frac{(x_{k+1} - x)p(x) + (x - x_0)q(x)}{x_{k+1}}
+    \end{equation*}
+    and find the leading coefficient.
+\end{proof}
+\begin{theorem}
+    Let $f \in C^n[a, b]$ and let $x_0, \cdots, x_n$ be distinct points in $[a, b]$. Then there exists $\xi \in [a,b]$ such that:
+    \begin{equation*}
+        f[x_0, \cdots, x_n] = \frac{f^{(n)}(\xi)}{n!}
+    \end{equation*}
+    \label{thmDividedDifferenceDerivative}
+\end{theorem}
+\begin{proof}
+    Let $p$ be the relevant interpolating polynomial. Let $\phi = f - p$ and apply Rolle's theorem $n$ times.
+\end{proof}
+\begin{theorem}[Newton Interpolation Formula]
+    Let $x_0, \cdots, x_n$ be distinct points in $[a, b], f \in C[a, b]$. Let $p$ interpolate $f$ at the points. Then:
+    \begin{equation}
+        \begin{split}
+            p(x) = f[x_0] + f[x_0, x_1](x - x_0) + f[x_0, x_1, x_2] (x - x_0)(x - x_1) + \cdots \\
+            +f[x_0, \cdots, x_n] \prod_{j=1}^{n-1} (x - x_j)
+        \end{split}
+        \label{eqnNewtonInterp}
+    \end{equation}
+    \label{thmNewtonInterp}
+\end{theorem}
+\begin{proof}
+    Let $p_k$ have degree $k$ and interpolate $f$ at the points up to $x_k$. Evaluate the difference $p_{k+1} - p_k$ in terms of divided differences, and use a telescoping sum to find $p = p_n$.
+\end{proof}
+\section{Orthogonal Polynomials}
+\begin{theorem}
+    For any $n \geq 0$, there exists a unique orthogonal sequence $\{p_0, \cdots, p_n\}$ of monic polynomials.
+    \label{thmOrthoPoly}
+\end{theorem}
+\begin{proof}
+    Proceed by induction, use Gram-Schmidt. For uniqueness, show that the difference of two monic orthogonal polynomials is one degree less and orthogonal to all the previous polynomials (so is zero).
+\end{proof}
+\begin{theorem}[Three-Term Recurrence]
+    Suppose that the inner product satisfies, for all polynomials $p, q$,
+    \begin{equation*}
+        \inn{xp}{q} = \inn{p}{xq}
+    \end{equation*}
+    and let $p_i$ be the $i$th orthogonal polynomial for this inner product. Then for all $n \in \N$,
+    \begin{equation*}
+        p_{n+1} = (x - \alpha_n)p_n - \beta_n p_{n-1}
+    \end{equation*}
+    where $p_0 = 1, p_{-1} = 0$ and:
+    \begin{equation*}
+        \alpha_n = \frac{\inn{xp_n}{p_n}}{\norm{p_n}^2},\qquad \beta_n = \frac{\norm{p_n}^2}{\norm{p_{n-1}}^2}
+    \end{equation*}
+    \label{thmThreeTermRecur}
+\end{theorem}
+\begin{remark}
+    The assumption on the inner product holds for all weighted integral inner products.
+\end{remark}
+\begin{proof}
+    Let $\psi = p_{n+1} - (x - \alpha_n) p_n + \beta_n p_{n-1}$. Note that this has degree $n$ since the polynomials are monic. Show that $\inn{\psi}{p_m} = 0$ for the cases $m = n$, $m = n-1$ and $m < n-1$.
+\end{proof}
 
+Suppose now we want to find the polynomial that minimises, for a function $f$, $\norm{f - p}$.
+\begin{theorem}[Least-Squares Polynomial Theorem]
+    Let $f \in C[a, b]$. Then the polynomial $p$ of degree $n$ that minimises $\norm{f-p}$ is:
+    \begin{equation*}
+        p = \sum_{k=0}^{n} \frac{\inn{f}{p_k}}{\norm{p_k}^2} p_k
+    \end{equation*}
+    where $(p_k)$ are the orthogonal polynomials.
+    \label{thmLeastSquares}
+\end{theorem}
+\begin{proof}
+    Start with general $p$ and express it as a linear combination of the $p_k$. Expand out $\norm{f-p}^2$ and minimise the terms individually by differentiation.
+\end{proof}
+\begin{lemma}
+    Let $[a, b]$ be a finite interval and let $f \in C[a, b]$. For any $\epsilon > 0$ there exists a polynomial $p$ (of sufficiently high degree) such that:
+    \begin{equation*}
+        \norm{f - p}_\infty \leq \epsilon
+    \end{equation*}
+    \label{lemPolyLimitError}
+\end{lemma}
+\begin{theorem}
+    Given a finite interval $[a, b]$ and a function $f \in C[a, b]$, the least-squares polynomial $\hat{p}_n$ of degree $n$ has:
+    \begin{equation*}
+        \norm{f - \hat{p}_n}^2 \to 0
+    \end{equation*}
+    as $n \to \infty$.
+    \label{thmPolyLeastSquareError}
+\end{theorem}
+\begin{proof}
+    Assume an integral norm with weight function and bound the norm by an $L^\infty$ norm. Apply \thmref{lemPolyLimitError} and get a polynomial $p$ from it. Note that $\norm{f - \hat{p}_n}^2 \leq \norm{f - p}^2$ and join the bounds together.
+\end{proof}
+\section{Gaussian Quadrature}
+We want to compute quantities of the form:
+\begin{equation}
+    \int_{a}^{b} w(x)f(x) dx \approx \sum_{k=1}^{\nu} b_k f(c_k)
+    \label{eqnGaussQuadrat}
+\end{equation}
+where $b_k$ are weights and $c_k$ are nodes.
+\begin{definition}{Order}
+    The \underline{order} of a quadrature formula (as in \eqnref{eqnGaussQuadrat}) is the largest integer $m$ such that \eqnref{eqnGaussQuadrat} is an equality for all $f \in \P_m[x]$.
+\end{definition}
+\begin{proposition}
+    The order of a quadrature formula must be less than $2\nu$.
+    \label{propOrderUpperBound}
+\end{proposition}
+\begin{proof}
+    Construct:
+    \begin{equation*}
+        f(x) = \prod_{k=1}^{\nu} (x - c_k)^2
+    \end{equation*}
+    for which the integral is positive but the sampling is zero.
+\end{proof}
+\begin{lemma}
+    Let $p_n$ be the $n$th orthogonal polynomial for a weighted integral inner product. Then for any $n \geq 1$, $p_n$ has $n$ distinct roots.
+    \label{lemOrthoPolyRoots}
+\end{lemma}
+\begin{proof}
+    Let $\xi_i$ be the $m$ points where $p_n$ changes sign. Define:
+    \begin{equation*}
+        q(x) = \prod_{i=1}^{m} (x - \xi_i)
+    \end{equation*}
+    which has order $m$. By considering signs of terms, show that $\inn{p_n}{q} \neq 0$ and so $q \notin \P_{n-1}$ by orthogonality. Show $m \geq n$ and then in fact $m = n$.
+\end{proof}
+\begin{theorem}[Gaussian Quadrature]
+    Let $\nu \in \N$ and $w \in C[a, b]$ with $w(x) > 0$.
+    \begin{enumerate}
+        \item Let $c_1, \cdots, c_\nu$ be distinct points in $(a, b)$. When the weights are given by:
+            \begin{equation*}
+                b_k = \int_{a}^{b} w(x)L_k(x) dx 
+            \end{equation*}
+            (where $L_k$ is defined with respect to the $c_i$), then the order of the quadrature formula is at least $\nu - 1$.
+        \item If the $c_i$ are the $\nu$ roots of $p_\nu$, and the weights are chosen as above, then the order is now $2\nu - 1$.
+    \end{enumerate}
+    \label{thmGaussQuadrat}
+\end{theorem}
+\begin{proof}
+    For 1, let $f \in P_{\nu - 1}[x]$. Define:
+    \begin{equation*}
+        \tilde{f}(x) = \sum_{k=1}^{n}f(c_k)L_k(x)
+    \end{equation*}
+    and show that $\tilde{f} = f$ by considering the difference, which has too many roots.
+
+    For 2, let $f \in \P_{2\nu-1}[x]$. By the polynomial division algorithm, $f = p_\nu q + r$. Note that $f(c_k) = r(c_k)$ and evaluate:
+    \begin{equation*}
+        \int_{a}^{b} w(x)f(x) dx 
+    \end{equation*}
+    in terms of $q$ and $r$. Use point 1 to convert an integral to a sum.
+\end{proof}
+\begin{theorem}[Peano Kernel Theorem]
+    Let $L$ be a linear functional such that $L(p) = 0$ for all polynomials of degree $\leq n$. For all $f \in C^{n+1}[a, b]$ we have:
+    \begin{equation*}
+        L(f) = \frac1{n!} \int_{a}^{b} f^{n+1}(\theta)K(\theta) d\theta
+    \end{equation*}
+    where $K(\theta)$ is the Peano kernel given by $L((\max\{x-\theta, 0\})^n)$.
+    \label{thmPeanoKernel}
+\end{theorem}
+\begin{proof}
+    Consider Taylor's Theorem with integral remainder and apply $L$. The only remaining term is the one above.
+\end{proof}
 \end{document}
