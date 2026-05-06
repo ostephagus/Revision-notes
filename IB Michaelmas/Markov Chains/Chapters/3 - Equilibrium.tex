@@ -1,0 +1,199 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Invariant Distributions}
+\begin{definition}{Invariant distribution}
+    A distribution $\pi(i)$ is \underline{invariant} for a transition matrix $P$ if:
+    \begin{equation*}
+        \pi(j) = \sum_{i \in I} \pi(i) P(i, j)
+    \end{equation*}
+\end{definition}
+\begin{proposition}
+    Let $\chain{X}$ be a Markov chain on a finite state space. Suppose that, for any initial distribution, $p_{ij}(n) \xrightarrow[n \to \infty]{} \pi(j)$. Then $\pi$ is invariant.
+    \label{propLimitDistIsInv}
+\end{proposition}
+\begin{proof}
+    Consider a 1-step analysis and take the limit $n \to \infty$. We can interchange the sum with the limit because $I$ is finite.
+\end{proof}
+\begin{proposition}
+    If $X \sim \Mkv{\pi}{P}$ for an invariant distribution $\pi$, then $X_i \sim \pi$ for all time.
+    \label{propStartWithInvDist}
+\end{proposition}
+\begin{proof}
+    Proceed by induction on the time step.
+\end{proof}
+\begin{definition}{Measure}
+    A \underline{measure} on $I$ is a vector $\vec{\lambda}$ of size $|I|$ of non-negative elements.
+\end{definition}
+\begin{definition}{First return time}
+    For $k \in I$, the \underline{first return time} to $k$ is:
+    \begin{equation*}
+        T_k = \inf \subsetselect{n \geq 1}{X_n = k}
+    \end{equation*}
+    where we assume $X_0 = k$.
+\end{definition}
+Note that this is different to a first hitting time because now the chain starts at $k$.
+
+Define a measure $\nu_k$ as follows:
+\begin{equation*}
+    \nu_k(i) = \E_k \left(\sum_{n=0}^{T_k - 1}\ind{X_k = i}\right)
+\end{equation*}
+which is the expected number of visits to $i$ during an excursion from $k$ back to itself.
+\begin{equation*}
+    \sum_{i \in I} \nu_k(i) = \E_k(T_k)
+\end{equation*}
+\begin{theorem}
+    Suppose $P$ is irreducible and recurrent. Then:
+    \begin{enumerate}
+        \item $0 < \nu_k(i) < \infty$ for all $i$;
+        \item $\nu_k(k) = 1$
+        \item $\nu_k$ is an invariant measure for $P$.
+    \end{enumerate}
+    \label{thmExpVisitsProps}
+\end{theorem}
+\begin{proof}
+    2 is trivial.
+
+    For $3$, fix $i \in I$. Bring $\ind{n \leq T_k}$ into the sum and then sum to infinity. Use the expectation to turn the indicators into probabilities. Perform a 1-step analysis to reach:
+    \begin{equation*}
+        \nu_k(i) = \sum_{n=1}^{\infty} \sum_{j \in I} \P_k(X_n = i | X_{n-1} = j, T_k \geq n)\P_k(X_{n-1} = j, T_k \geq n)
+    \end{equation*}
+    and note that $T_k$ is a stopping time. Then by \thmref{thmStrongMarkov}, convert the first probability to $P(j, i)$ and the second back to $\nu_k(j)$.
+
+    For 1, again fix $i \in I$. Use invariance to bound $\nu_k(i) \geq p_{ki}(n)$. But by irreducibility there exists $n$ such that this is positive.
+
+    For finiteness, bound $1 = \nu_k(k) \geq \nu_k(i) p_{ik}(n)$ and again find $n$ such that this is non-zero. Then we have $\nu_k(i) \leq \frac{1}{p_{ik}(n)}$.
+\end{proof}
+\begin{theorem}[$\nu_k$ is unique]
+    Let $P$ be a transition matrix. Suppose that $P$ is irreducible and that $\vec{\lambda}$ is an invariant measure for $P$ satisfying $\lambda_k = 1$ for a fixed $k \in I$.
+
+    Then $\lambda \geq \nu_k$ with $\lambda = \nu_k$ if $P$ is also recurrent.
+    \label{thmNuUnique}
+\end{theorem}
+\begin{proof}
+    By invariance, $\lambda_i = \sum_{j_1 \in I} \lambda_{j_1} P(j_1, i)$. Continue the process to reach:
+    \begin{equation*}
+        \lambda_i = P(k, i) + \cdots + \sum_{j_1, \cdots, j_n \neq k}\lambda_{j_n}P(j_n, j_{n-1}) \cdots P(j_1, i)
+    \end{equation*}
+    Now take $i \neq k$ and simplify the above to:
+    \begin{equation*}
+        \lambda_i \geq P_k(X_1 = i, T_k \geq 1) + \cdots + \P_k(X_n = i, T_k \geq n)
+    \end{equation*}
+    where the inequality comes from deleting the last term (which is non-negative).
+
+    Express this RHS as a sum up to $n$ and take $n \to \infty$ for the result.
+
+    Next, assume $P$ is recurrent. Consider $\lambda_k - \nu_k(k)$ and express as:
+    \begin{equation*}
+        \sum_{j \in I} (\lambda_j - \nu_k(j)) p_{jk}(n)
+    \end{equation*}
+    by invariance. By recurrence, we can find $n$ such that $p_{jk}(n) > 0$ and then show that $\lambda_j - \nu_k(j) = 0$.
+\end{proof}
+\section{Positive Recurrence}
+\begin{definition}{Positive recurrence}
+    Let $P$ be a transition matrix over a state space $I$. Let $i$ be a recurrent state for $P$. Then $i$ is \underline{positive recurrent} if $\E_i(T_i) < \infty$. Otherwise the state is \underline{null recurrent}.
+\end{definition}
+\begin{theorem}
+    Let $P$ be an irreducible transition matrix. Then the following are equivalent:
+    \begin{enumerate}
+        \item all states are positive recurrent;
+        \item there exists a positive recurrent state;
+        \item $P$ has an invariant distribution.
+    \end{enumerate}
+    Further, under any (and therefore all) of these conditions, the invariant distribution is given by:
+    \begin{equation*}
+        \pi(i) = \frac{1}{\E_i[T_i]}
+    \end{equation*}
+    \label{thmPosRecurEquivs}
+\end{theorem}
+\begin{proof}
+    Statement 1 trivially implies statement 2.
+    
+    For statement 2, define:
+    \begin{equation*}
+        \pi(i) = \frac{\nu_k(i)}{\E_k(T_k)}
+    \end{equation*}
+    and use previous theorems to show this is invariant.
+
+    For statement 3, fix $k \in I$. Find a state $i$ such that $\pi(i) > 0$, and find $n$ such that $p_{ik}(n) > 0$. Then bound $\pi(k) > \pi(i) p_{ik}(n)$. Now define:
+    \begin{equation*}
+        \lambda_i = \frac{\pi(i)}{\pi(k)}
+    \end{equation*}
+    which satisfies the requirements of \thmref{thmNuUnique}. Show recurrence based on this, and argue that $k$ was arbitrary.
+
+    Finally, \thmref{thmNuUnique} also gives us that $\lambda = \nu_k$ and we can identify $\pi$ using this.
+\end{proof}
+\begin{corollary}
+    If $P$ is an irreducible transition matrix with invariant distribution $\pi$, then:
+    \begin{equation*}
+        \nu_k(i) = \frac{\pi(i)}{\pi(k)}
+    \end{equation*}
+    \label{corNuFromAnyDist}
+\end{corollary}
+\section{Reversibility}
+\begin{proposition}
+    Let $\chain(X) = (X_n)_{n \geq 0}$ be an irreducible Markov chain with transition matrix $P$. Suppose that it has an invariant distribution $\pi$ and require $\chain{X}$ to be stationary around this distribution: $X_0 \sim \pi$.
+
+    Then $\chain{Y} = (Y_n)_{n = 0}^N$ defined as $Y_n = X_{N -n}$ is a Markov chain with transition matrix:
+    \begin{equation}
+        \hat{P}(x, y) = P(y, x) \frac{\pi(y)}{\pi(x)}
+        \label{eqnTimeReverseMatrix}
+    \end{equation}
+    and $\hat{P}$ is irreducible with $\pi$ invariant.
+    \label{propTimeReverseMatrix}
+\end{proposition}
+\begin{proof}
+    \begin{subproof}{$\hat{P}$ is a transition matrix}
+        Check that its rows sum to 1.
+    \end{subproof}
+    \begin{subproof}{$Y$ is a Markov chain with transition matrix $\hat{P}$}
+        Evaluate the probability of a given path for $\chain{Y}$ in terms of $\chain{X}$ and use \eqnref{eqnTimeReverseMatrix} to get the form required in \thmref{propMarkovAsMatrixProduct}.
+    \end{subproof}
+    Irreducibility: $P(x, y) > 0 \iff \hat{P}(y, x) > 0$.
+
+    Prove from the definition that $\pi$ is an invariant measure for $\hat{P}$.
+\end{proof}
+\begin{definition}{Time-reversibility}
+    A Markov chain $\chain{X}$ with invariant distribution $\pi$ and transition matrix $P$ is \underline{time-reversible} if $\hat{P} = P$.
+\end{definition}
+Time-reversibility is equivalent to $P$ satisfying the \underline{detailed balance equations}:
+\begin{equation}
+    \pi(x) P(x, y) = \pi(y) P(y, x)
+    \label{eqnDetailedBalance}
+\end{equation}
+Also, given $P$, if $\pi$ satisfies \eqnref{eqnDetailedBalance} then it must be invariant. However, this is sufficient but not necessary for invariance.
+\section{Convergence of Markov Chains}
+\subsection{Periodicity}
+\begin{definition}{Period}
+    For a transition matrix $P$, the \underline{period} of a state $i \in I$ is:
+    \begin{equation*}
+        d_i = \hcf\subsetselect{n \geq 1}{p_{ii} > 0}
+    \end{equation*}
+\end{definition}
+\begin{definition}{Aperiodicity}
+    For a transition matrix $P$, a state $i \in I$ is \underline{aperiodic} if $d_i = 1$. $P$ is \underline{aperiodic} if all states are aperiodic.
+\end{definition}
+\begin{lemma}
+    Let $A \subseteq \N_0$ be closed under addition. Then $\hcf(A) = 1$ if and only if there exists $N \in \N$ such that all $n \geq N$ are contained in $A$.
+    \label{lemHCFOne}
+\end{lemma}
+\begin{corollary}
+    A state $i \in I$ is aperiodic if and only if there exists $N_i \in \N$ such that $p_{ii}(n) > 0$ for all $n \geq N_i$.
+    \label{corAperiodicLimit}
+\end{corollary}
+\begin{lemma}
+    If $P$ is an irreducible transition matrix with an aperiodic state $i$, then $P$ is aperiodic.
+    \label{lemAperiodIsClassProp}
+\end{lemma}
+\begin{proof}
+    Fix any state $j$. Use \thmref{corAperiodicLimit} and a path from $j$ back to itself via $i$.
+\end{proof}
+\subsection{Fundamental Convergence Theorem}
+\begin{theorem}[Fundamental Convergence Theorem of Markov Chains]
+    Let $\chain{X} \sim \Mkv{\vec{\lambda}}{P}$. If $P$ is irreducible and aperiodic with invariant distribution $\pi$ then:
+    \begin{equation*}
+        \P(X_n = j) \to \pi(j) \text{ as $n \to \infty$ for all $j \in I$.}
+    \end{equation*}
+    \label{thmFundamentalConvergence}
+\end{theorem}
+\end{document}
