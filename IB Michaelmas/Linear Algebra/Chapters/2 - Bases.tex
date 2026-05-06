@@ -45,7 +45,7 @@ Note that every subset of a linearly independent set is linearly independent.
     \label{corFinDimFinBasis}
 \end{corollary}
 \begin{theorem}[Steinitz Exchange Lemma]
-    Let $S, T$ be finite subsets of a vector space $V$. Let $S$ span $V$ and let $T$ be linearly independent. Then:
+    Let $S, T$ be finite subsets of a vector space $V$. Let $S$ be linearly independent and let $T$ span $V$. Then:
     \begin{enumerate}
         \item $|S| \leq |T|$;
         \item There exists $T' \subseteq T$ such that $|T'| = |T| - |S|$ and $S \cup T'$ spans $V$.
@@ -194,7 +194,7 @@ In this section, let $\alpha : V \mapsto W$ be a linear map, $V, W$ vector space
 \begin{corollary}[Sum-intersection formula]
     Let $V$ be a finite dimensional vector space over $\F$ with $U, W \leq V$:
     \begin{equation*}
-        \dim(U + V) = \dim(U) + \dim(W) - \dim(U \cap W)
+        \dim(U + W) = \dim(U) + \dim(W) - \dim(U \cap W)
     \end{equation*}
     \label{corSumIntersection}
 \end{corollary}

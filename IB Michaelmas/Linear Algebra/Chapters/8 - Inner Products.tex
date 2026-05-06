@@ -1,0 +1,136 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Inner Products}
+\begin{definition}{Inner product}
+    For a vector space $V$, an \underline{inner product} is a positive-definite symmetric bilinear form (for $\F = \R$) or a Hermitian sesquilinear form (if $\F = \C$) $\varphi : V \times V \mapsto \F$. The pair $(V, \varphi)$ is an \underline{inner product space}.
+\end{definition}
+We denote $\varphi(u, v) = \inn{u}{v}$.
+
+\begin{lemma}[Cauchy-Schwarz Inequality]
+    For vectors $u, v$ in an inner product space,
+    \begin{equation*}
+        \abs{\inn{u}{v}} = \norm{u} \norm{v}
+    \end{equation*}
+    \label{lemCauchySchwarz}
+\end{lemma}
+\begin{proof}
+    Consider the discriminant of $\norm{tu + v}^2$ for $t \in \F$.
+\end{proof}
+\begin{corollary}[Triangle Inequality]
+    For all $u, v$ in an inner product space,
+    \begin{equation*}
+        \norm{u + v} \leq \norm{u} + \norm{v}
+    \end{equation*}
+    \label{corTriangleIneq}
+\end{corollary}
+\begin{proof}
+    Evaluate $\norm{u + v}^2$
+\end{proof}
+\section{Orthogonality}
+\begin{definition}{Orthogonal set}
+    For an inner product space $(V, \varphi)$, a set $E \subseteq V$ is \underline{orthogonal} if, for distinct $d, e \in E$, $\inn{d}{e} = 0$. If also $\norm{e} = 1$ for all $e\in E$ then the set is \underline{orthonormal}.
+\end{definition}
+% The rest of this section is quite boring.
+\section{Maps of Inner Product Spaces}
+\subsection{Adjoint Map}
+\begin{theorem}[Adjoint map]
+    Let $V, W$ be finite-dimensional inner product spaces, $\alpha \in \L(V, W)$. There exists a unique linear map $\alpha^* : W \mapsto V$ such that:
+    \begin{equation*}
+        \inn{\alpha(v)}{w}_W = \inn{v}{\alpha^*(w)}_V
+    \end{equation*}
+    and further, for orthonormal bases $B, C$:
+    \begin{equation*}
+        [\alpha^*]^C_B = \left([\alpha]^B_C\right)^\dagger
+    \end{equation*}
+    \label{thmAdjoint}
+\end{theorem}
+\begin{proof}
+    First, define $\alpha^*$ by the transpose of the matrix of $\alpha$. Show that this satisfies the inner product property by considering vectors and matrices.
+
+    Show uniqueness by considering another map $\beta$ and matrix $B$ satisfying the condition (the adjoint of $\alpha$). Find the elements by considering the inner product condition on the basis vectors, and show that $B = A^\dagger$ and so $\beta = \alpha^*$ as already defined.
+\end{proof}
+\begin{definition}{Adjoint}
+    For $V, W$ finite-dimensional inner product spaces, and $\alpha \in \L(V, W)$, the \underline{adjoint} to $\alpha$ is $\alpha^*$ as defined in \thmref{thmAdjoint}.
+\end{definition}
+\begin{theorem}[Riesz Representation Theorem]
+    For $(V, \varphi)$ a finite-dimensional real inner product space, the map:
+    \begin{equation*}
+        \varphi_R : V \mapsto V^*
+    \end{equation*}
+    where $(\varphi_R(v))(u) = \inn{u}{v}$ is an isomorphism.
+    \label{thmRieszRepresentation}
+\end{theorem}
+\begin{proof}
+    We already know that $\varphi_R$ is linear, so we just need to show the kernel is trivial. For $v \in \ker(\varphi)$, we must have $\inn{v}{v} = 0$ and so $v = \zv$.
+\end{proof}
+\begin{definition}{Self-adjoint}
+    For a finite-dimensional inner product space $(V, \varphi)$, $\alpha \in \L(V, V)$ is \underline{self-adjoint} if $\alpha^* = \alpha$.
+\end{definition}
+This is equivalent to $[\alpha]^B_B$ Hermitian in any orthonormal basis.
+\subsection{Isometries}
+\begin{definition}{Isometry}
+    For $V, W$ inner product spaces, $\alpha\in \L(V, W)$ is an \underline{isometry} if, for all $u, v \in V$,
+    \begin{equation*}
+        \inn{\alpha(u)}{\alpha(v)}_W = \inn{u}{v}_V
+    \end{equation*}
+\end{definition}
+\begin{proposition}
+    For $\alpha$ an invertible linear map of finite inner product spaces $\alpha : V \mapsto W$, $\alpha$ is an isometry if and only if $\alpha^{-1} = \alpha^*$.
+    \label{propIsomIffInverseAdj}
+\end{proposition}
+\begin{proof}
+    If we have the inverse condition then we can easily show $\alpha$ is an isometry.
+
+    If instead $\alpha$ is an isometry, consider $\inn{u}{\alpha^*(\alpha(v)) - v}$ and show it is zero.
+\end{proof}
+This condition is equivalent to the matrix of $\alpha$ being unitary (for $\C$) or orthogonal (for $\R$).
+\section{Eigenvectors and Eigenvalues}
+Let $V$ be a finite-dimensional vector space over $\R$ or $\C$ and let $\alpha \in \L(V, V)$.
+\begin{propositions}{
+        Let $\alpha$ be self-adjoint. Then:
+        \label{propsSelfAdjEVecEVal}
+    }
+    \item all eigenvalues of $\alpha$ are real; \label{propSelfAdjRealEVals}
+    \item eigenvectors corresponding to different eigenvalues are orthogonal. \label{propSelfAdjEVecOrtho}
+\end{propositions}
+\begin{proof}
+    First consider $\inn{\lambda v}{v}$ and move the $\lambda$ to the right by self-adjointness.
+
+    Then consider $\lambda \inn{v}{w}$ with $v, w$ having different eigenvalues.
+\end{proof}
+\begin{lemma}
+    For any subspace $W$ of $V$, if $\alpha(W) \leq W$ then also $\alpha^*(W^\perp) \leq W^\perp$.
+    \label{lemSelfAdjSubspaces}
+\end{lemma}
+\begin{proof}
+    Take an inner product between $w \in W$ and $\alpha^*(u)$ where $u \in W^\perp$.
+\end{proof}
+\begin{lemma}
+    Let $\alpha$ be self-adjoint. Then $\alpha$ has a real eigenvector.
+    \label{lemRealEVec}
+\end{lemma}
+\begin{proof}
+    We must have an eigenvalue of $\alpha$ and by \thmref{propSelfAdjRealEVals} it is real. Decompose the eigenvector $v$ into real and imaginary parts, and apply $A = [\alpha]_B^B$. Take the real part to show $\Re(v)$ is an eigenvector.
+\end{proof}
+\begin{theorem}[Spectral Theorem for Self-Adjoint Endomorphisms]
+    Let $\alpha$ be self-adjoint. Then $V$ has an orthonormal basis of real eigenvectors of $\alpha$.
+    \label{thmSpectral}
+\end{theorem}
+\begin{proof}
+    Proceed by induction.
+
+    Use the above lemmas to do the following:
+    \begin{enumerate}
+        \item find a real eigenvector $v$ and eigenvalue $\lambda$;
+        \item note that $\alpha$ preserves $\spn{v}^\perp$ so define $\beta$ to be the restriction to this subspace;
+        \item show that $\beta$ is self-adjoint and apply the inductive hypothesis to get a basis;
+        \item normalise $v$ and add it as a basis vector.
+    \end{enumerate}
+\end{proof}
+There also exists a spectral theorem for unitary matrices. In this case, all eigenvalues are of unit modulus. There is no spectral theorem for orthogonal matrices, as illustrated by the general 2D rotation matrix.
+\begin{definition}{Normal map}
+    Let $V$ be a finite-dimensional complex inner product space. $\alpha \in \L(V,V)$ is \underline{normal} if $\alpha\alpha^* = \alpha^*\alpha$.
+\end{definition}
+Both self-adjoint and unitary maps are normal. We can in fact prove that normal maps have a spectral theorem. This is the largest class of maps with a spectral theorem.
+\end{document}
