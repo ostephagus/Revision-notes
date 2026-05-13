@@ -1,5 +1,31 @@
 \documentclass[../Main.tex]{subfiles}
 
 \begin{document}
-
+\section{Charges and Currents}
+The \underline{electric charge density} is $\rho(\vec{x}, t)$. The total charge in a volume $V$ is:
+\begin{equation*}
+    Q_V = \int_V \rho dV
+\end{equation*}
+The \underline{electric current density} is $\vec{J}(\vec{x}, t)$. The total current flowing through a surface $S$ is:
+\begin{equation*}
+    I_S = \int_S \vec{J} \cdot \vec{dS}
+\end{equation*}
+The equation for charge conservation is:
+\begin{equation}
+    \frac{\partial \rho}{\partial t} + \nabla \cdot \vec{J} = 0
+    \label{eqnChargeConserve}
+\end{equation}
+\begin{definition}{Lorentz force}
+    The \underline{Lorentz force} on a particle of charge $q$ and velocity $\vec{v}$ is:
+    \begin{equation*}
+        \vec{F} = q(\vec{E} + \vec{v} \times \vec{B})
+    \end{equation*}
+\end{definition}
+\section{Maxwell's Equations}
+\begin{align}
+    \nabla \cdot \vec{E} &= \frac{\rho}{\epsilon_0} \label{eqnMED} \\
+    \nabla \cdot \vec{B} &= 0 \label{eqnMBD} \\
+    \nabla \times \vec{E} &= - \frac{\partial B}{\partial t} \label{eqnMEC} \\
+    \nabla \cdot \vec{B} &= \mu_0 \left(\vec{J} + \epsilon_0 \frac{\partial E}{\partial t}\right) \label{eqnMBC}
+\end{align}
 \end{document}
