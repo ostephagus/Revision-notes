@@ -1,0 +1,122 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{LU Factorisation}
+\begin{definition}{Unit lower triangular}
+    A matrix $L$ is \underline{unit lower triangular} if it is lower triangular and all the diagonal entries are 1.
+\end{definition}
+\begin{definition}{$LU$ factorisation}
+    An \underline{$LU$ factorisation} of a matrix $A$ is a product $A = LU$ where $L$ is unit lower triangular and $U$ is upper triangular.
+\end{definition}
+We can then solve $A\vec{x} = \vec{b}$ in two stages, $L\vec{y} = \vec{b}$ and $U\vec{x} = \vec{y}$ which both have complexity $O(n^2)$.
+\subsection{Algorithm}
+The algorithm is:
+\begin{enumerate}
+    \item Input $A \in \R^{n \times n}$.
+    \item Let $A_0 = A$.
+    \item For $k = 1$ to $n$,
+    \begin{enumerate}
+        \item take the $k$th column of $A_{k-1}$ and divide it by $A_{kk}$ to get $\vec{L_k}$,
+        \item take the $k$th row of $A_{k-1}$ to get $\vec{u_{k}}^T$,
+        \item set $A_k = A_{k-1} - \vec{L_{k}} \vec{u_{k}}^T$ (an outer product).
+    \end{enumerate}
+\end{enumerate}
+This has computational complexity $O(n^3)$.
+\subsection{Pivoting}
+Column pivoting is a modification to the above algorithm in the case that $(A_{k-1})_{kk} = 0$ for some $k$. We swap the $k$th row with the first row to have a non-zero entry in column $k$, and so we find $LU = PA$ where $P$ is a product of row swapping matrices. We can also apply pivoting to select the largest magnitude entry in a column to use as $(A_{k-1})_{kk}$.
+\subsection{Symmetric Matrices}
+In the case that $A$ is symmetric we use an $LDL^T$ factorisation where $D$ is diagonal. We take $D_{kk}$ to be $(A_{k-1})_{kk}$ and $L_k$ as normal at each stage.
+
+If we apply pivoting here we also need to swap corresponding columns to maintain symmetry.
+\begin{proposition}
+    Let $A \in \R^{n \times n}$ be symmetric. Then $A$ is positive definite if and only if $A$ has an $LDL^T$ factorisation with $D_{kk} > 0$.
+    \label{propDiagPosDef}
+\end{proposition}
+\begin{proof}
+    \begin{proofdirection}{$\Leftarrow$}{Let $D_{kk} > 0$}
+        Simply evaluate $\vec{x}^T A \vec{x}$
+    \end{proofdirection}
+    \begin{proofdirection}{$\Rightarrow$}{Let $A$ be positive definite}
+        Define $\vec{x_k}$ such that $L^T \vec{x_{k}} = \vec{e_k}$ (the standard basis vector). Then taking $\vec{x_k}^T A \vec{x_k}$ shows that $D_{kk} > 0$.
+    \end{proofdirection}
+\end{proof}
+The Cholesky Factorisation is the special case $A = \tilde{L}\tilde{L}^T$ where $\tilde{L}$ is lower triangular (not unit) formed of $L\sqrt{D}$ in the above.
+\subsection{Sparsity}
+\begin{definition}{Banded matrix}
+    A matrix $A$ is \underline{banded} with band width $r$ if $a_{ij} = 0$ wherever $\abs{i-j} > r$.
+\end{definition}
+\begin{theorem}
+    Let $A$ be a matrix with $LU$ factorisation with non-zero diagonal elements. Then:
+    \begin{enumerate}
+        \item all leading zeroes in any row of $A$ to the left of the diagonal are inherited by $L$,
+        \item all leading zeroes in any column of $A$ above the diagonal are inherited by $U$.
+    \end{enumerate}
+    \label{thmBandedLU}
+\end{theorem}
+\begin{proof}
+    Run the algorithm and keep track of zeroes.
+\end{proof}
+\section{QR Factorisation}
+\begin{definition}{$QR$ factorisation}
+    A \underline{$QR$ factorisation} of a matrix $A \in \R^{n \times n}$ is a product $A = QR$ where $Q$ is orthogonal and $R$ is upper triangular.
+\end{definition}
+\begin{definition}{Reduced $QR$ factorisation}
+    A \underline{reduced $QR$ factorisation} of a matrix $A \in \R^{m \times n}$ with $m > n$ is $A = QR$ where $Q \in \R^{m \times n}$ has orthogonal columns, and $R \in \R^{n \times n}$ is upper triangular.
+\end{definition}
+\subsection{Gram-Schmidt Orthogonalisation}
+The Gram-Schmidt algorithm is:
+\begin{enumerate}
+    \item For $i = 1$ to $n$,
+    \begin{enumerate}
+        \item let $\vec{b_{i}} = \vec{A_i} - \sum_{i=1}^{j} \frac{\inn{\vec{A_i}}{\vec{b_j}}}{\norm{\vec{b_j}}^2}\vec{b_j}$,
+        \item let $\vec{Q_i} = \frac{\vec{b_i}}{\norm{\vec{b_i}}}$,
+        \item let $R_{ij} = \inn{\vec{A_j}}{\vec{q_{i}}}$ for $i < j$,
+        \item let $R_{ii} = \norm{\vec{b_i}}$.
+    \end{enumerate}
+    \item Let $Q$ have columns $\vec{Q_i}$ and $R$ have elements $R_{ij}$.
+\end{enumerate}
+\subsection{Givens Rotations}
+\begin{definition}{Givens rotation matrix}
+    A \underline{Givens rotation matrix} $\Omega^{[p, q]}(\theta)$ is an $n \times n$ matrix where $1 \leq p < q \leq n$. It is the identity matrix except:
+    \begin{align*}
+        (\Omega^{[p, q]}(\theta))_{p, p} &= \cos(\theta) & (\Omega^{[p, q]}(\theta))_{p, q} &= \sin(\theta) \\
+        (\Omega^{[p, q]}(\theta))_{q, p} &= -\sin(\theta) & (\Omega^{[p, q]}(\theta))_{q, q} &= \cos(\theta)
+    \end{align*}
+\end{definition}
+In order to make $A_{qj}$ zero, we choose another row $p$ and apply $\Omega^{[p, q]}(\theta)$ where $\theta$ is chosen such that:
+\begin{equation*}
+    \cos(\theta) = \frac{A_{pj}}{\sqrt{A_{pj}^2 + A_{qj}^2}},\qquad \sin(\theta) = \frac{A_{qj}}{\sqrt{A_{pj}^2 + A_{qj}^2}}
+\end{equation*}
+and note that this only affects rows $p$ and $q$. If both of the elements in some column are zero, applying $\Omega$ will maintain these zeroes. Therefore, the algorithm works down each column starting with the first applying Givens rotations to zero the elements. This order is such that the previous zeroes are not overwritten.
+\subsection{Householder Reflections}
+\begin{definition}{Householder reflection matrix}
+    A \underline{Householder reflection matrix} $H = H_{\vec{u}} \in \R^{m \times m}$ is the matrix corresponding to a reflection in the $(m-1)$-surface normal to $\vec{u}$, given by:
+    \begin{equation*}
+        H = I - 2 \frac{\vec{u} \vec{u}^T}{\norm{\vec{u}}^2}
+    \end{equation*}
+\end{definition}
+Then the algorithm zeroes the below-diagonal elements in each column one by one. Setting $\vec{a}$ to be the below-diagonal elements in a column, use $H_{\vec{u}}$ where $\vec{u} = \vec{a} \pm \norm{a}\vec{e_1}$. Here the Householder reflection is only applied to the square submatrix with first column $\vec{a}$.
+\subsection{Least-Squares Problems}
+We now consider an overdetermined system $A\vec{x} \approx \vec{b}$ where $A \in \R^{m \times n}$ with $m > n$. We find the solution to the \underline{least-squares problem} minimising $\norm{A\vec{x} - \vec{b}}^2$.
+\begin{theorem}
+    For a least-squares problem with $\operatorname{rk}(A) = n$, $\vec{x}$ is a solution if and only if:
+    \begin{equation*}
+        A^T(A\vec{x} - \vec{b}) = 0
+    \end{equation*}
+    \label{thmLeastSquaresProblem}
+\end{theorem}
+\begin{proof}
+    First derive $\nabla f = A^T(A\vec{x} - \vec{b})$, such as by $f(\vec{x} + \vec{\delta x}) - f(\vec{x})$.
+
+    Then show convexity of $f$, so we have the required equivalence.
+\end{proof}
+
+Then consider a full $QR$ decomposition such that $Q = \begin{pmatrix}Q_1 & Q_2\end{pmatrix}$ and $R = \begin{pmatrix} R_1 \\ 0\end{pmatrix}$ where $Q_1 \in \R^{n \times n}$. The solution is then:
+\begin{equation*}
+    \vec{x} = R_1^{-1} Q_1^T \vec{b},
+\end{equation*}
+and the residual is:
+\begin{equation*}
+    \norm{Q_2^T \vec{b}}^2.
+\end{equation*}
+\end{document}
