@@ -1,0 +1,194 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+We will consider:
+\begin{equation}
+    \begin{cases}
+        \frac{d\vec{y}}{dt} = f(t, \vec{y}) & \vec{y}(t) \in \R^n, t \in \R \\
+        \vec{y}(0) = \vec{y_0} & 
+    \end{cases}
+    \label{eqnGeneralODE}
+\end{equation}
+\section{One-Step Explicit Methods}
+These methods produce a sequence $\vec{y_n}$ to approximate $\vec{y}(t)$ from $0$ to $t^\star$, therefore $n$ runs from $0$ to $\lfloor \frac{t^\star}{h}\rfloor$.
+\begin{definition}{Convergent method}
+    A method producing iterates $\vec{y_n}$ is \underline{convergent} if:
+    \begin{equation*}
+        \norm{y_n - y(nh)}_{\infty} \xrightarrow[h \to 0]{} 0
+    \end{equation*}
+\end{definition}
+\begin{definition}{Euler's Method}
+    Given an ODE as above, \underline{Euler's method} is the iteration scheme:
+    \begin{equation*}
+        \vec{y_{n+1}} = \vec{y_{n}} + h \vec{f}(t_n, \vec{y_{n}}).
+    \end{equation*}
+\end{definition}
+\begin{definition}{Lipschitz continuity}
+    A function $\vec{f} : \C^n \mapsto \C^n$ is \underline{$\lambda$-Lipschitz continuous} if for all $\vec{x}, \vec{y} \in \C^n$,
+    \begin{equation*}
+        \norm{\vec{f}(\vec{x}) - \vec{f}(\vec{y})} \leq \lambda \norm{\vec{x} - \vec{y}}
+    \end{equation*}
+\end{definition}
+\begin{theorem}[Convergence of Euler's Method]
+    For an ODE of the form in \eqnref{eqnGeneralODE}, if $\vec{f}(t, \cdot)$ is $\lambda$-Lipschitz continuous for all $t \in [0, t^\star]$ then Euler's method is convergent.
+    \label{thmEulerConvergence}
+\end{theorem}
+\begin{proof}
+    Prove by Taylor expanding the error term, defined as $\vec{e_n} = \vec{y_n} - \vec{y}(t_n)$. Use the Lagrange remainder for the second order term and assume $\vec{y}$ has a bounded second derivative (write as $c h^2$). Take norms and use the triangle inequality along with Lipschitz continuity to obtain:
+    \begin{equation*}
+        \norm{\vec{e_{n+1}}} \leq (1 + h \lambda)\norm{\vec{e_n}} + ch^2
+    \end{equation*}
+    Recursively apply this to conclude that:
+    \begin{equation*}
+        \norm{\vec{e_{n}}} \leq \frac{ch}{\lambda}e^{\lambda t^\star}
+    \end{equation*}
+    which tends to $0$ as $h \to 0$.
+\end{proof}
+\section{Multistep Methods}
+We will consider methods of the form:
+\begin{equation*}
+    \vec{y_{n+s}} = - \sum_{l=0}^{s-1} \rho_l \vec{y_{n+l}} + h \left(\sum_{l=0}^{s} \sigma_l \vec{f}(t_{n+1} \vec{y_{n+l}})\right)
+\end{equation*}
+If $\sigma_s = 0$ then the method is \underline{explicit}, otherwise it is \underline{implicit} and we need to solve an algebraic equation to get $\vec{y_{n+s}}$.
+
+With the convention $\rho_s = 1$,
+\begin{equation}
+    \sum_{l=0}^{s} \rho_l \vec{y_{n+l}} = h\sum_{l=0}^{s} \sigma_l \vec{f}(t_{n+l}, \vec{y_{n+l}})
+    \label{eqnMultistep}
+\end{equation}
+\begin{definition}{Local truncation error}
+    For a numerical method $y_{n+s}$ evaluated at time $t_{n+s}$, approximating the true solution $\vec{y}(t_{n+s})$, the \underline{local truncation error} of this method is:
+    \begin{equation*}
+        \vec{y}(t_{n+s}) - \vec{y_{n+s}}
+    \end{equation*}
+    where the numerical method is calculated using exact values for previous timesteps.
+\end{definition}
+\begin{definition}{Order}
+    A numerical method has \underline{order} $p$ if the local truncation error is $O(h^{p+1})$.
+\end{definition}
+Define the polynomials $\rho$ and $\sigma$ based on the coefficients $\rho_l$ and $\sigma_l$.
+\begin{theorem}
+    For a multistep method specified using polynomials $\rho$ and $\sigma$, the method has order $p$ if and only if:
+    \begin{equation*}
+        \rho(e^z) - z\sigma(e^z) = O(z^{p+1})
+    \end{equation*}
+    as $z \to 0$.
+    \label{thmOrderPolynomials}
+\end{theorem}
+\begin{proof}
+    First expand out the truncation error of an $s$-step method. Separate coefficients from derivatives of $\vec{y}$, and by equating each coefficient to $0$ up to order $p$ show that:
+    \begin{equation*}
+        \sum_{l=0}^{s} \rho_l = 0,\qquad \sum_{l=0}^{s} \left(\rho_l l^k - k \sigma^l l^{k-1}\right) = 0
+    \end{equation*}
+    for $k = 1$ to $p$. By then expanding out the exponentials, show that this gives equivalent conditions.
+\end{proof}
+\begin{definition}{Root condition}
+    A polynomial $\rho$ satisfies the \underline{root condition} if:
+    \begin{enumerate}
+        \item all roots $z_0$ satisfy $\abs{z_0} \leq 1$;
+        \item any roots with modulus 1 have multiplicity 1.
+    \end{enumerate}
+\end{definition}
+\begin{theorem}[Dahlquist Equivalence Theorem]
+    An $s$-step method specified by polynomials $\rho$ and $\sigma$, with $\rho$ monic, is convergent if and only if:
+    \begin{enumerate}
+        \item the order of the method is at least 1,
+        \item $\rho$ satisfies the root condition.
+    \end{enumerate}
+    \label{thmDahlquistEquiv}
+\end{theorem}
+\begin{proof}
+    The proof of this theorem is \textbf{non-examinable}.
+\end{proof}
+Then we can construct convergent methods from a given $\rho$ or given $\sigma$. We require $\rho(1) = 0$ and that $\rho$ satisfies the root condition, and then choose $\sigma$ such that:
+\begin{equation*}
+    \sigma(w) = \frac{\rho(w)}{\log(w)} + O((w - 1)^s)
+\end{equation*}
+\section{Runge-Kutta Methods}
+\begin{definition}{Runge-Kutta method}
+    The $\nu$-stage \underline{Runge-Kutta method} is derived from a quadrature formula and is given by:
+    \begin{equation*}
+        \vec{y_{n+1}} = \vec{y_{n}} + h \sum_{l=1}^{\nu} b_l \vec{k_l}
+    \end{equation*}
+    \begin{equation*}
+        \vec{k_l} = \vec{f}(t_n + hc_l,\vec{y_n} + h \sum_{j=1}^{\nu} a_{l, j} \vec{k_j})
+    \end{equation*}
+    It is \underline{explicit} if $a_{\nu, j} = 0$, otherwise is \underline{implicit}.
+\end{definition}
+\section{Absolute Stability}
+Consider the scalar ODE:
+\begin{equation}
+    \begin{cases}
+        y'(t) = \lambda y(t) & t \in \R \\
+        y(0) = 1 &
+    \end{cases}
+    \label{eqnScalarODE}
+\end{equation}
+for which the solution is $e^{\lambda t}$.
+\begin{definition}{Linear stability domain}
+    For a numerical method applied to the ODE in \eqnref{eqnScalarODE}, producing iterates $y_n$, the \underline{linear stability domain} of this method is:
+    \begin{equation*}
+        \dom = \subsetselect{h\lambda \in \C}{y_n \to 0 \text{ as } n \to \infty}
+    \end{equation*}
+\end{definition}
+\begin{definition}{A-stable}
+    A method is \underline{A-stable} if:
+    \begin{equation*}
+        \C^- = \subsetselect{z \in \C}{\Re(z) < 0} \subseteq \dom
+    \end{equation*}
+\end{definition}
+The linear stability domain for a multistep method defined by $\rho$ and $\sigma$ is:
+\begin{equation*}
+    \dom = \subsetselect{z \in \C}{\text{all roots of $\rho - z \sigma$ are in the unit disc}}
+\end{equation*}
+\begin{proposition}
+    Suppose that a linear multistep method is defined by polynomials $\rho$ and $\sigma$. If the following hold,
+    \begin{enumerate}
+        \item there exists $z_0$ with $\Re(z_0) < 0$ such that $\rho - z_0 \sigma$ has all roots within the unit disc,
+        \item for all $\theta \in [0, 2\pi)$ and $z \in \C$,
+            \begin{equation*}
+                \rho(e^{i\theta}) - z\sigma(e^{i\theta}) = 0 \implies \Re(z) \geq 0,
+            \end{equation*}
+    \end{enumerate}
+    then the method is A-stable.
+    \label{propMultiStepStability}
+\end{proposition}
+\begin{proof}
+    Consider a point $z_1 \in \C^-$ but not in the LSD. Draw a line from $z_0$ to $z_1$ and use the auxiliary function:
+    \begin{equation*}
+        \phi(t) = \max\{|w|~\mid~\rho(w) - ((1-t)z_0 + tz_1)\sigma(w) = 0 \}
+    \end{equation*}
+    which is the maximum modulus of roots when $z$ travels along this line. By continuity (which we claim without proof), we can find a point that contradicts assumption 2.
+\end{proof}
+\begin{theorem}[Second Dahlquist Barrier]
+    No multistep method of order $\geq 3$ can be A-stable.
+    \label{thmDahlquistBarrier}
+\end{theorem}
+\begin{proof}
+    The proof of this theorem is \textbf{non-examinable}.
+\end{proof}
+We prove on Ex2Q6 that no explicit Runge-Kutta method can be A-stable. We can consider the 2-stage implicit method:
+\begin{align*}
+    \vec{k_1} &= \vec{f}\left(t_n, \vec{y_{n}} + \frac14 h (\vec{k_{1}} - \vec{k_{2}})\right) \\
+    \vec{k_2} &= \vec{f}\left(t_n + \frac23h, \vec{y_{n}} + \frac{1}{12} h (3\vec{k_{1}} + 5\vec{k_{2}})\right) \\
+    \vec{y_{n+1}} &= \vec{y_{n}} + \frac14 h (\vec{k_1} + 3\vec{k_2})
+\end{align*}
+We can prove that this method is A-stable using \thmref{propMultiStepStability}.
+\section{Implementation of ODE Methods}
+For implicit methods we often have to solve a nonlinear algebraic equation and we can do this by fixed point iteration or by the Newton-Raphson method.
+
+We can run two methods in parallel to estimate the error without knowing an analytic solution. Generally we can show that an upper bound for the error is given by the difference between two methods. The two examples illustrate the concept:
+\begin{example}[Trapezoidal rule]
+    Let $\vec{y_n}^{Tr}$ be the $n$th iterate of the trapezoidal rule, and $\vec{y_{n}}^{AB}$ the $n$th iterate of the Adams-Bashforth method. Then by considering the sizes of the $h^3$ terms in both errors, we estimate:
+    \begin{equation*}
+        \vec{y}(t_n) - \vec{y_n}^{Tr} \approx \frac16 \left(\vec{y_{n}}^{AB} - \vec{y_{n}}^{Tr}\right).
+    \end{equation*}
+\end{example}
+\begin{example}[Embedded Runge-Kutta Methods]
+    We consider an explicit 2-stage Runge-Kutta method with iterates $\vec{y_n}^{[2]}$, and an explicit 3-stage method with iterates $\vec{y_{n}}^{[3]}$. Then we can obtain an error estimate:
+    \begin{equation*}
+        \vec{y}(t_{n}) - \vec{y_{n}}^{[1]} \approx \vec{y_{n}}^{[2]} - \vec{y_{n}}^{[1]}
+    \end{equation*}
+\end{example}
+% TODO: Add Ex2Q11 here.
+\end{document}
