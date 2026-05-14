@@ -1,0 +1,65 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Ampere's Law}
+For an open surface $S$ with boundary curve $C$, Ampere's Law is:
+\begin{equation*}
+    \int_C \vec{B} \cdot \vec{dx} = \mu_0 \int_S \vec{J} \cdot \vec{dS} = \mu_0 I.
+\end{equation*}
+In the case of a long straight wire, apply Ampere's law to a circle of radius $r$ around it to get:
+\begin{equation*}
+    \vec{B} = \frac{\mu_0 I}{2\pi r}\vec{e_\phi}
+\end{equation*}
+In the case of a solenoid with $N$ turns per unit length (wire wound in a cylinder) let $C$ be a rectangle with one edge inside the cylinder and one edge outside (taking both inside or both outside gives a magnetic field zero). Then:
+\begin{equation*}
+    \vec{B}(r) =
+    \begin{cases}
+        \mu_0 N I \vec{e_z} & \text{inside solenoid} \\
+        \vec0 & \text{outside solenoid}
+    \end{cases}
+\end{equation*}
+and this is an example of a surface current $\vec{K}$. This produces discontinuities:
+\begin{equation*}
+    [\vec{n} \cdot \vec{B}] = 0, \qquad [\vec{n} \times \vec{B}] = \mu_0 \vec{K}.
+\end{equation*}
+\section{Magnetic Vector Potential}
+We can find a vector potential $\vec{A}$ such that $\vec{B} = \nabla \times \vec{A}$. $\vec{A}$ is not unique: we can find a gauge transformation $A + \nabla \chi$ such that $\vec{A}$ is in \underline{Coulomb gauge} in which $\nabla \cdot \vec{A} = 0$.
+
+In coulomb gauge, $\nabla^2 \vec{A} = -\mu_0 \vec{J}$. Then we can find the solution:
+\begin{equation*}
+    \vec{A}(\vec{x}) = \frac{\mu_0}{4\pi} \int_{\R^3} \frac{\vec{J}(\vec{y})}{|\vec{x} - \vec{y}|}d^3\vec{y}
+\end{equation*}
+and corresponding magnetic field:
+\begin{equation*}
+    \vec{B} = \frac{\mu_0}{4\pi} \int_{\R^3} \frac{\vec{J}(\vec{x}) \times (\vec{x} - \vec{y})}{|\vec{x} - \vec{y}|^3} d^3\vec{y}
+\end{equation*}
+\section{Magnetic Dipoles}
+We can find a multipole expansion in magnetostatics. A point dipole $\vec{m}$ at the origin corresponds to:
+\begin{equation*}
+    \vec{J} = \nabla \times (\vec{m}\delta(\vec{x})),\qquad \vec{A} = \frac{\mu_0}{4\pi} \nabla \times \left(\frac{\vec{m}}{|\vec{x}|}\right)
+\end{equation*}
+For an arbitrary current distribution $\vec{J}(\vec{x})$, we define the magnetic dipole moment as:
+\begin{equation*}
+    \vec{m} = \frac12 \int_V \vec{x} \times \vec{J} d^3\vec{x}
+\end{equation*}
+then the magnetic multipole expansion has leading order term:
+\begin{equation*}
+    A\vec{x} \approx \frac{\mu_0}{4\pi} \frac{\vec{m} \times \vec{x}}{|\vec{x}|^3}.
+\end{equation*}
+By considering $\vec{m} \cdot \vec{a}$ for arbitrary $\vec{a}$, the magnetic dipole moment for a thin wire carring current $I$ around a closed curve $C$ is:
+\begin{equation*}
+    \vec{m} = I \int_S \vec{dS}
+\end{equation*}
+\section{Magnetic Forces}
+The magnetic force on a current density $\vec{J}$ in a magnetic field $\vec{B}$ is:
+\begin{equation*}
+    \vec{J} \times \vec{B}
+\end{equation*}
+per unit volume.
+
+The force between two thin wires $i$ and $j$ carrying currents $I_i$ and $I_j$ is:
+\begin{equation*}
+    \vec{F_{ij}} = \frac{\mu_0 I_i I_j}{4\pi} \int_{C_i} \int_{C_j} \vec{dx_i} \times \left(\frac{\vec{dx_j} \times (\vec{x_i} - \vec{x_j})}{|\vec{x_i} - \vec{x_j}|^3}\right)
+\end{equation*}
+The torque on a magnetic dipole by an external field is $\vec{\tau} = \vec{m} \times \vec{B}$. The force on a magnetic dipole from an external field is $\vec{F} = \nabla (\vec{m} \cdot \vec{B})$ and this is a conservative force $F = -\nabla U$ where $U = -\vec{m} \cdot \vec{B}$.
+\end{document}
