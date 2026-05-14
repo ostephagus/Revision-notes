@@ -1,0 +1,90 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+In time-independent situations, Maxwell's equations reduce to:
+\begin{align}
+    \nabla \cdot \vec{E} &= \frac{\rho}{\epsilon_0} \label{eqnMTED} \\
+    \nabla \cdot \vec{B} &= 0 \label{eqnMTBD} \\
+    \nabla \times \vec{E} &= 0 \label{eqnMTEC} \\
+    \nabla \cdot \vec{B} &= \mu_0 \vec{J} \label{eqnMTBC}
+\end{align}
+We have now decoupled $\vec{E}$ and $\vec{B}$ so we can study $\vec{E}$ on its own.
+\section{Gauss's Law}
+Consider a volume $V$ with $S = \partial V$.
+\begin{equation*}
+    \int_S \vec{E} \cdot \vec{dS} = \frac{1}{\epsilon_0} \int\rho dV = \frac{Q_V}{\epsilon_0}
+\end{equation*}
+In the case of spherical symmetry, let $V$ be a sphere centred on the origin and reduce the LHS to $4\pi r^2 E(r)$ and evaluate the RHS. For a point charge $Q$,
+\begin{equation*}
+    E = \frac{Q}{4\pi \epsilon_0} \vec{e_r}
+\end{equation*}
+
+In the case of cylindrical symmetry, use a cylinder of length $L$ and reduce the LHS to $2\pi r LE(r)$. The $L$ should cancel with the RHS.
+
+In the case of planar symmetry, integrate over a \underline{Gaussian pillbox}, a prism of height $2z$ and arbitrary cross-sectional area (the appropriate choice depends on the problem). For a surface charge $\sigma$ in $-d < z < d$, the electric field is:
+\begin{equation*}
+    E(z) = \begin{cases}
+        \frac{\sigma}{2\epsilon_0}\vec{e_z} & z > d \\
+        -\frac{\sigma}{2\epsilon_0}\vec{e_z} & z < -d
+    \end{cases}
+\end{equation*}
+and sending $d \to 0$ gives the electric field for an infinitesimally thin plate. For such a surface charge, the discontinuities in the normal and tangential directions are:
+\begin{equation*}
+    \left[\vec{E} \cdot \vec{n}\right] = \frac{\sigma}{\epsilon_0},\qquad \left[\vec{E} \times \vec{n}\right] = \vec0.
+\end{equation*}
+\section{Electrostatic Potential}
+\begin{definition}{Electrostatic potential}
+    The \underline{electrostatic potential} $\Phi(\vec{x})$ is a scalar field such that:
+    \begin{equation*}
+        \vec{E} = -\nabla \Phi
+    \end{equation*}
+    and is unique up to an additive constant.
+\end{definition}
+\Eqnref{eqnMTED} gives that $\Phi$ satisfies Poisson's equation:
+\begin{equation*}
+    \nabla^2 \Phi = -\frac{\rho}{\epsilon_0}
+\end{equation*}
+and we have the solution:
+\begin{equation*}
+    \Phi(\vec{x}) = \frac1{4\pi\epsilon_0}\int_{\R^3} \frac{\rho(\vec{y})}{|\vec{x} - \vec{y}|} d^3\vec{y}
+\end{equation*}
+For a point charge we have $\rho(\vec{x}) = q\delta(\vec{x})$.
+
+For an electric dipole we introduce a point charge of $-q$ at the origin and $q$ at $\vec{d}$, then take $\vec{d} \to \vec0$ while keeping $\vec{p} = q\vec{d}$ finite.
+
+The associated potential energy is $U(\vec{x}) = q\Phi(\vec{x})$.
+
+The \underline{multipole expansion} of a charge distribution $\rho(\vec{x})$ constrained to a radius $R$ around the origin is:
+\begin{equation*}
+    \Phi(\vec{x}) = \frac{1}{4\pi\epsilon_0} \left(\frac{Q}{r} + \frac{\vec{p} \cdot \vec{x}}{r^3} + \frac{Q_{ij} x_i x_j}{2r^5}\right) + O(r^7)
+\end{equation*}
+where $Q$ is total charge, $\vec{p}$ is the dipole moment given by $\int_V x\rho(\vec{x}) d^3\vec{x}$, and $Q_{ij}$ is the quadrupole moment tensor given by:
+\begin{equation*}
+    Q_{ij} = \int_V \left(3x_i x_j - |\vec{x}|^2 \delta_{ij}\right)\rho(\vec{x}) d^3\vec{x}
+\end{equation*}
+which is symmetric and traceless. This expansion is valid for $r \gg R$. We are generally interested in the leading term.
+\section{Electrostatic Energy}
+The electrostatic energy stored in a continuous charge distribution $\rho(\vec{x})$ over a finite volume $V$ is:
+\begin{equation*}
+    U = \frac12 \int_V \rho(\vec{x}) \Phi(\vec{x}) d^3\vec{x}.
+\end{equation*}
+Splitting this into:
+\begin{equation*}
+    U = \frac{\epsilon_0}{2} \int_{\partial V} \Phi \vec{E} \cdot \vec{dS} + \frac{\epsilon_0}{2} \int_V |\vec{E}|^2 dV
+\end{equation*}
+and taking $V$ to be all space,
+\begin{equation*}
+    U = \frac{\epsilon_0}{2}\int_{\R^3} |\vec{E}|^2 dV
+\end{equation*}
+\section{Conductors}
+A conductor has $\vec{E} = \vec0, \rho = 0, \Phi = \text{const}$. $\Phi = 0$ for an earthed conductor. A surface charge density can exist. 
+
+A capacitor consists of two separate conductors with charges $Q$ and $-Q$. If the potential difference between them is $V$, the \underline{capacitance} is:
+\begin{equation*}
+    C = \frac{Q}{V}
+\end{equation*}
+which is a function only of the geometry of the capacitor. The energy stored in a capacitor is:
+\begin{equation*}
+    U = \frac12 CV^2 = \frac{Q^2}{2C} = \frac{1}{2}QV.
+\end{equation*}
+\end{document}
