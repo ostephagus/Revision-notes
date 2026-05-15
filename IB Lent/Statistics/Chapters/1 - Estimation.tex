@@ -1,5 +1,165 @@
 \documentclass[../Main.tex]{subfiles}
 
 \begin{document}
+\section{Parametric Estimation}
+Consider multiple observations $X_1, \cdots, X_n$ of a probability distribution (so these are independent and identically distributed random variables). Let these exist in a sample space $\samplespace$. Let $\vec{X}$ be the vector of the $X_i$.
+\begin{definition}{Statistical model}
+    A \underline{statistical model} is a pair $(\Omega, \mathcal{P})$ where $\Omega$ is a sample space and $\mathcal{P}$ is a set of probability distributions on that sample space. We will assume that the probability distributions are parameterised by $\vec{\theta}$, so $f(\vec{x};\vec{\theta})$ is a probability distribution.
+\end{definition}
+\begin{definition}{Statistic}
+    A \underline{statistic} is a function $T : \samplespace \mapsto \R$. For $\vec{X}$ as given above, the distribution of the random variable $T(\vec{X})$ has the \underline{sampling distribution}.
+\end{definition}
+\begin{definition}{Estimator}
+    An \underline{estimator} $\hat{\theta}$ is a statistic where we are interested in how close the value of the estimator is to the distribution parameter $\vec{\theta}$. Given observed data $\vec{x}$, $\hat{\theta}(\vec{x})$ is the \underline{estimate}.
+\end{definition}
+\begin{definition}{Estimator bias}
+    The \underline{bias} of an estimator is:
+    \begin{equation*}
+        \bias{\theta} = \E_{\vec{\theta}}[\hat{\theta}] - \theta
+    \end{equation*}
+\end{definition}
+\begin{definition}{Mean-squared error}
+    The \underline{mean-squared error (MSE)} of an estimator is:
+    \begin{equation*}
+        \mse(\hat{\theta}) = \E_{\vec{\theta}}\left[(\hat{\theta} - \theta)^2\right]
+    \end{equation*}
+\end{definition}
+\begin{proposition}[Bias-Variance Decomposition]
+    For $\hat{\theta}$ an estimator for $\theta$,
+    \begin{equation*}
+        \mse{\hat{\theta}} = (\bias{\hat{\theta}})^2 + \Var_{\vec{\theta}}(\hat{\theta})
+    \end{equation*}
+    \label{propBiasVarDecompose}
+\end{proposition}
+\section{Sufficient Statistics}
+\begin{definition}{Sufficiency}
+    A statistic $T$ is \underline{sufficient} for $\theta$ if the distribution $\vec{X} \mid T(\vec{X})$ is independent of $\theta$.
+\end{definition}
+\begin{theorem}[Factorisation Criterion]
+    A statistic $T$ is sufficient for $\theta$ if and only if:
+    \begin{equation*}
+        f_{\vec{X}}(\vec{x}, \vec{\theta}) = g(T(\vec{x}), \vec{\theta}) h(\vec{x})
+    \end{equation*}
+    for functions $g$ and $h$.
+    \label{thmFactorCriterion}
+\end{theorem}
+\begin{proof}
+    \begin{proofdirection}{$\Rightarrow$}{Let $f$ factorise}
+        Consider the distribution:
+        \begin{equation*}
+            f_{\vec{X} \mid T = t} = \frac{\P_\theta(\vec{X} = \vec{x}, T(\vec{x}) = t)}{\P_\theta(T(\vec{x}) = t)}
+        \end{equation*}
+        and cancel the $\theta$ dependence.
+    \end{proofdirection}
+    \begin{proofdirection}{$\Leftarrow$}{Let $T$ be sufficient}
+        Write:
+        \begin{equation*}
+            \P_\theta(\vec{X} = \vec{x}) = \P_\theta(\vec{X} = \vec{x}, T(\vec{X}) = t(\vec{x}))
+        \end{equation*}
+        and expand out as a product of a conditional probability and a probability, these are $g$ and $h$.
+    \end{proofdirection}
+\end{proof}
+\begin{definition}{Minimal sufficiency}
+    A statistic $T$ is \underline{minimal sufficient} if it is a function of every other sufficient statistic. That is, given another sufficient statistic $R$,
+    \begin{equation*}
+        R(\vec{X}) = R(\vec{Y}) \implies T(\vec{X}) = T(\vec{Y}).
+    \end{equation*}
+\end{definition}
+\begin{theorem}[Minimality Criterion]
+    Suppose $T(\vec{X})$ is a statistic such that:
+    \begin{equation*}
+        \frac{f_{\vec{X}}(\vec{x}, \theta)}{f_{\vec{X}}(\vec{y}, \theta)} \text{ is constant in $\theta$} \iff T(\vec{x}) = T(\vec{y})
+    \end{equation*}
+    then $T$ is minimal sufficient.
+    \label{thmMinimalCriterion}
+\end{theorem}
+\begin{proof}
+    \begin{subproof}{$T$ is sufficient}
+        Let $\vec{x} \in \samplespace$ and let $\vec{y}$ be a randomly chosen member of $\subsetselect{\vec{z} \in \samplespace}{T(\vec{z}) = T(\vec{x})}$.
+        Then argue by \thmref{thmFactorCriterion} by considering:
+        \begin{equation*}
+            f_{\vec{X}}(\vec{x}, \theta) = f_{\vec{X}}(\vec{y}, \theta) \frac{f_{\vec{X}}(\vec{x}, \theta)}{f_{\vec{X}}(\vec{y}, \theta)}
+        \end{equation*}
+    \end{subproof}
+    \begin{subproof}{$T$ is minimal}
+        Let $R$ be another sufficient statistic. Factorise it as in \thmref{thmFactorCriterion}. Consider the quotient:
+        \begin{equation*}
+            \frac{f_{\vec{X}}(\vec{x}, \theta)}{f_{\vec{X}}(\vec{y}, \theta)}
+        \end{equation*}
+        and use the factorised form of $R$ to show this is independent of $\theta$. By hypothesis, this means that $T(\vec{x}) = T(\vec{y})$ as required.
+    \end{subproof}
+\end{proof}
+\begin{theorem}[Rao-Blackwell Theorem]
+    Let $T$ be a sufficient statistic for $\theta$ and let $\tilde{\theta}$ be an estimator of $\theta$ such that $\E_\theta[(\tilde{\theta})^2]$ is finite.
 
+    Define a new estimator $\hat{\theta} = \E[\tilde{\theta} \mid T(\vec{X})]$. Then this has strictly smaller MSE than $\tilde{\theta}$, unless $\tilde{\theta}$ is a function of $T(\vec{X})$.
+    \label{thmRaoBlackwell}
+\end{theorem}
+\begin{proof}
+    First show that the two estimators have the same expectation and thus the same bias.
+
+    The conditional variance formula is:
+    \begin{equation*}
+        \Var(X) = \E[\Var(X | Y)] + \Var(\E[X | Y])
+    \end{equation*}
+    Use this with $\tilde{\theta}$ to find an inequality for the variances, and use \thmref{propBiasVarDecompose} to turn this into an inequality in terms of the MSEs. The term deleted for the inequality is only zero if $\tilde\theta$ is a function of $T$.
+\end{proof}
+\section{Maximum Likelihood Estimation}
+\begin{definition}{Likelihood}
+    The \underline{likelihood} of a parameterised set of distributions is a function:
+    \begin{align*}
+        L : \Theta &\mapsto \R\\
+        \theta &\mapsto f_{\vec{X}}(\vec{x}, \theta)
+    \end{align*}
+    with given data $\vec{x}$.
+\end{definition}
+The maximum likelihood estimator (MLE) is then:
+\begin{equation*}
+    \hat{\theta}_{MLE} = \max_{\theta \in \Theta} L(\theta).
+\end{equation*}
+It is often relevant to consider the log likelihood, which the MLE also maximises.
+
+If $T$ is a sufficient statistic, then the likelihood function factorises (as we expect because it is nothing more than the probability density function).
+
+Stein's Paradox is the idea that the estimator for a mean of independent random variables will make use of all the data (even if it is not relevant). If $X_1, X_2, X_3$ are samples from different distributions, then $(1 - 1/\norm{\vec{X}})\vec{X}$ is an estimator for the mean with lower MSE than $\vec{X}$ itself.
+\section{Confidence Intervals}
+\begin{definition}{Confidence interval}
+    A \underline{$100\gamma\%$ confidence interval} for a parameter $\theta$ is a random interval $(A(\vec{X}), B(\vec{X}))$ such that for all $\theta$,
+    \begin{equation*}
+        \P(A(\vec{X}) \leq \theta \leq B(\vec{X})) = \gamma
+    \end{equation*}
+\end{definition}
+The process for finding confidence intervals is as follows:
+\begin{enumerate}
+    \item Find a quantity $R(\vec{X}, \theta)$ such that the $\P_\theta$ distribution of $R$ does not depend on $\theta$.
+    \item Rearrange $\P(c_1 \leq R(\vec{X}, \theta) \leq c_2)$ where $c_1$ and $c_2$ are quantiles of the distribution.
+\end{enumerate}
+\section{Bayesian Estimation}
+Now treat $\theta$ as a random variable.
+\begin{definition}{Prior/posterior distributions}
+    The \underline{prior distribution} $\pi(\theta)$ is the initial guess at a distribution for $\theta$. The \underline{posterior distribution} is $\pi(\theta | \vec{x})$ given by:
+    \begin{equation*}
+        \pi(\theta | \vec{x}) = \frac{\pi(\theta) f_{\vec{X}}(\vec{x}, \theta)}{\int_\Theta \pi(\theta) f_{\vec{X}}(\vec{x}, \theta) d\theta}
+    \end{equation*}
+\end{definition}
+Because in Bayesian estimation we consider $\vec{X} = \vec{x}$ fixed, we can ignore the denominator and consider it a normalisation constant. Then $\pi(\theta | \vec{x}) \propto \pi(\theta) f_{\vec{X}}(\vec{x}, \theta)$.
+
+\begin{definition}{Bayesian estimator}
+    The \underline{Bayesian estimator} $\hat{\theta}_B$ is defined:
+    \begin{equation*}
+        \hat{\theta}_B = \argmin_{\delta \in D} h(\delta)
+    \end{equation*}
+    where $\delta$ is the decision (estimate of $\theta$) and $h$ is defined:
+    \begin{equation*}
+        h(\delta) = \int_\Theta \pi(\theta | \vec{x}) L(\delta, \theta) d\theta
+    \end{equation*}
+    where $L$ is a loss function.
+\end{definition}
+Absolute loss is $|\theta - \delta|$ and quadratic loss is its square. The Bayesian estimator minimises the expected loss over the posterior distribution.
+\begin{definition}{Credible interval}
+    A \underline{$100\gamma\%$ credible interval} is an interval $(A(\vec{X}), B(\vec{X}))$ such that
+    \begin{equation*}
+        \pi(A(\vec{X}) \leq \theta \leq B(\vec{X}) | \vec{X} = \vec{x}) = \gamma.
+    \end{equation*}
+\end{definition}
 \end{document}
