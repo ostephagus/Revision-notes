@@ -1,0 +1,121 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Faraday's Law of Induction}
+Integrating \eqnref{eqnMEC} over a fixed, closed curve $C$ that bounds an open surface $S$,
+\begin{equation*}
+    \int_C \vec{E} \cdot \vec{dx} = - \int_S \frac{\partial \vec{B}}{\partial t} \cdot \vec{dS} = -\frac{d}{dt} \vec{B} \cdot \vec{dS}
+\end{equation*}
+We can also write:
+\begin{equation*}
+    \emf = -\frac{d\flux}{dt}
+\end{equation*}
+where $\emf = \int_C \vec{E} \cdot \vec{dx}$ and $\flux = \int_S \vec{B} \cdot \vec{dS}$.
+
+Considering the vector potential $\vec{A}$ we can also find:
+\begin{equation*}
+    \flux = \int_C \vec{A} \cdot \vec{dx},\quad\text{and, for a particle of charge $q$,}\quad\emf = \frac1q\int_C \vec{F} \cdot \vec{dx}
+\end{equation*}
+where $\vec{F}$ is the Lorentz force for a stationary charge, $\vec{F} = q\vec{E}$.
+
+If, however, $C$ and $S$ depend on time, we still recover Faraday's Law but this time with a different form of the Lorentz force:
+\begin{equation*}
+    \frac{d\flux}{dt} = -\int_C (\vec{E} + \vec{v} \times \vec{B}) \cdot \vec{dx} = -\emf
+\end{equation*}
+however $\vec{v}$ is the velocity of a particle on the curve $C$.
+\section{Inductance and Magnetic Energy}
+\begin{definition}{Inductance}
+    If a current $I$ around a circuit $C$ generates a magnetic field with flux $\flux$, the \underline{inductance} of the circuit is given by:
+    \begin{equation*}
+        L = \frac{\flux}{I}
+    \end{equation*}
+    and this depends only on the geometry of the circuit.
+\end{definition}
+For two circuits $C_i$ and $C_j$, the flux through $C_i$ is $F_{ij} = L_{ij} I_j$, where $L_{ij}$ is the mutual inductance given by:
+\begin{equation*}
+    L_{ij} = \frac{\mu_0}{4\pi} \int_{C_i} \int_{C_j} \frac{\vec{dx_i} \cdot \vec{dx_j}}{|\vec{x_{i}} - \vec{x_{j}}}
+\end{equation*}
+The rate at which work is done by the current on the electromagnetic field is:
+\begin{equation*}
+    -\frac{dW}{dt} = LI \frac{dI}{dt}.
+\end{equation*}
+The magnetostatic energy is given by:
+\begin{equation*}
+    U = \frac12 \int_{\R^3} \vec{J} \cdot \vec{A} dV = \frac{\mu_0}{2} \int_{\R^3} |\vec{B}|^2dV
+\end{equation*}
+\section{Ohm's Law}
+In a stationary conductor, Ohm's Law is:
+\begin{equation*}
+    \vec{J} = \sigma \vec{E}
+\end{equation*}
+where $\sigma$ is the electrical conductivity.
+
+Joule heating is the energy lost to resistance and is given by $I^2 R$.
+\section{Time-Dependent Electric Fields}
+We can consider the new scalar potential $\phi$:
+\begin{equation*}
+    -\nabla \phi = \vec{E} + \frac{\partial \vec{A}}{\partial t}
+\end{equation*}
+where $\vec{A}$ is the standard magnetic vector potential. If we now make a gauge transformation $\vec{A} \mapsto \vec{A} + \nabla \chi$, we must make the corresponding transformation:
+\begin{equation*}
+    \Phi \mapsto \Phi - \frac{\partial \chi}{\partial t}.
+\end{equation*}
+\section{Electromagnetic Waves}
+We will now take $\rho = 0$ and $\vec{J} = \vec0$. In this case we get, for any Cartesian component $u$ of $\vec{E}$ or $\vec{B}$,
+\begin{equation*}
+    \frac{\partial^{2}u}{\partial t^{2}} = c^2 \nabla^2 u
+\end{equation*}
+where $c = \frac1{\sqrt{\mu_0 \epsilon_0}}$ is the speed of light.
+\subsection{Plane Electromagnetic Waves}
+In a plane wave, $\vec{E}$ and $\vec{B}$ depend only on $x, t$. The wave propagates in the $x$ direction.
+
+A monochromatic wave is given by:
+\begin{align*}
+    \vec{E} &= E_0 \cos(kx - \omega t)\vec{e_y} \\
+    \vec{B} &= \frac{E_0}{c} \cos(kx - \omega t) \vec{e_z}
+\end{align*}
+here $k$ is the wave number $k = \frac{\omega}{c}$ (the dispersion relation is $\omega^2 = c^2 k^2$, and we take the positive solution).
+\subsection{Polarisation}
+We can look for solutions of the form:
+\begin{align*}
+    \vec{E} &= \Re(\vec{E_0} \exp(i\vec{k} \cdot \vec{x} - i\omega t)) \\
+    \vec{B} &= \Re(\vec{B_0} \exp(i\vec{k} \cdot \vec{x} - i\omega t))
+\end{align*}
+Maxwell's equations give that:
+\begin{align*}
+    \vec{K} \cdot \vec{E_0} &= 0, & \vec{k} \cdot \vec{B_0} &= 0 & \vec{k} \times \vec{E_0} &= \omega \vec{B_0} & \vec{k} \times \vec{B_0} &= -\frac{\omega}{c^2} \vec{E_0}
+\end{align*}
+The case of linear polarisation is when these vectors are real. Then they are all orthogonal.
+
+The case of elliptic polarisation is when $\vec{E_0} = \vec{a} - i\vec{b}$. Then:
+\begin{equation*}
+    \vec{E} = \vec{a} \cos(\vec{k} \cdot \vec{x} - \omega t) + \vec{b} \sin(\vec{k} \cdot \vec{x} - \omega t)
+\end{equation*}
+which traces an ellipse in the plane orthogonal to $\vec{k}$. The special case of circular polarisation occurs when $\vec{a}$ and $\vec{b}$ are orthogonal with the same magnitude.
+\subsection{Reflection from a Conductor}
+When an electromagnetic wave reaches a conductor we must add a reflected wave propagating in the opposite direction such that $\vec{E} = \vec0$ at the conductor surface. The electric field is a standing wave with a node at the conductor surface; the magnetic field is a standing wave with an antinode there, and we have a surface current induced in the conductor.
+\section{Electromagnetic Energy}
+The equation of energy conservation in electromagnetism is:
+\begin{equation*}
+    \frac{\partial W}{\partial t} + \nabla \cdot \vec{S} = -\vec{E} \cdot \vec{J}
+\end{equation*}
+where $W$ is the work done by the field,
+\begin{equation*}
+    W = \frac12 \left(\epsilon_0 |\vec{E}|^2 + \frac{1}{\mu_0} |\vec{B}|^2\right),
+\end{equation*}
+$S$ is the Poynting vector (related to the flow of energy),
+\begin{equation*}
+    \vec{S} = \frac{1}{\mu_0} \vec{E} \times \vec{B},
+\end{equation*}
+and $\vec{E} \cdot \vec{J}$ is the rate of energy loss via the Lorentz force.
+
+For electromagnetic waves, it makes sense to consider time-averaged quantities:
+\begin{equation*}
+    \langle W \rangle = \frac12 \epsilon_0 |\vec{E_0}|^2
+\end{equation*}
+and
+\begin{equation*}
+    \langle \vec{S} \rangle = \langle W \rangle c\vec{k}
+\end{equation*}
+so we conclude that EM waves transport energy at speed $c$ along the direction of propagation $\vec{k}$.
+\end{document}
