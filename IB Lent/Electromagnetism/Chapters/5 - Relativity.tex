@@ -1,0 +1,127 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Covectors and Tensors}
+For vectors, we use superscript indices and these transform as:
+\begin{equation*}
+    (X')^\mu = \indx{\Lambda}{\mu}{\nu} X^\nu
+\end{equation*}
+A covector is an object $Y_\mu$ that transforms as:
+\begin{equation*}
+    (Y')_\mu = \indx{(\Lambda)^{-1}}{\nu}{\mu}
+\end{equation*}
+The derivative operator is a covector:
+\begin{equation*}
+    \partial_\mu = \frac{\partial}{\partial x^\mu}
+\end{equation*}
+\begin{definition}{Tensor}
+    A \underline{tensor} of type $(r, s)$ is an object whose $4^{r + s}$ elements transform as:
+    \begin{equation*}
+        \indx{T'}{\mu_1\cdots\mu_r}{\nu_1\cdots\nu_s} = \indx{\Lambda}{\mu_1}{\rho_1}\cdots\indx{\Lambda}{\mu_r}{\rho_r}\indx{(\Lambda^{-1})}{\sigma_1}{\nu_1}\indx{(\Lambda^{-1})}{\sigma_s}{\nu_s}\indx{T}{\rho_1\cdots\rho_r}{\sigma_1\cdots\sigma_s}
+    \end{equation*}
+\end{definition}
+An isotropic tensor has the same components in every reference frame. Below are examples of isotropic tensors.
+
+The \underline{Minkowski metric} $\eta_{\mu\nu}$ is the tensor given by $\operatorname{diag}(-1, 1, 1, 1)$. Its inverse is $\eta^{\mu\nu}$ which has the same components.
+
+The \underline{Kronecker delta} $\indx{\delta}{\mu}{\nu}$ is the tensor given by $\operatorname{diag}(1, 1, 1, 1)$.
+
+The \underline{Levi-Civita Epsilon} symbol is defined by:
+\begin{equation*}
+    \epsilon_{\mu\nu\rho\sigma} =
+    \begin{cases}
+        1 & \text{if $(\mu, \nu, \rho, \sigma)$ is an even permutation of $(0, 1, 2, 3)$} \\
+        -1 & \text{if $(\mu, \nu, \rho, \sigma)$ is an odd permutation of $(0, 1, 2, 3)$} \\
+        0 & \text{otherwise}
+    \end{cases}
+\end{equation*}
+This is an isotropic pseudo-tensor: it picks up a factor of $\det(\Lambda)$ under Lorentz transformations.
+\section{Vector Calculus in Spacetime}
+\subsection{Generalisations of Derivatives}
+The spacetime derivative of a scalar field is a covector field:
+\begin{equation*}
+    \partial_\mu f(X) = \begin{pmatrix}\frac1c \frac{\partial f}{\partial t} \\ \nabla f\end{pmatrix}
+\end{equation*}
+The spacetime divergence of a 4-vector field is a scalar field:
+\begin{equation*}
+    \partial_\mu V^\mu(X) = \frac1c \frac{\partial V^0}{\partial t} + \nabla \cdot \vec{v}
+\end{equation*}
+We do not define the curl in spacetime, and instead define the antisymmetric derivative of a covector field:
+\begin{equation*}
+    \partial_\mu Y_\nu - \partial_\nu Y_\mu
+\end{equation*}
+which is a $(0, 2)$ tensor.
+
+The generalisation of the Laplacian operator is the d'Alambertian operator:
+\begin{equation*}
+    \Box = \eta^{\mu\nu}\partial_\mu\partial_\nu = -\frac{1}{c^2} \frac{\partial^{2}}{\partial t^{2}} + \nabla^2
+\end{equation*}
+\subsection{Raising and Lowering Indices}
+To raise an index, contract with $\eta^{\mu\nu}$. To lower an index, contract with $\eta_{\mu\nu}$. Both correspond to negating the time (or zeroth) component.
+\section{Electromagnetic Tensor}
+First define the charge-current tensor:
+\begin{equation*}
+    J = \begin{pmatrix}c\rho \\ \vec{J}\end{pmatrix}
+\end{equation*}
+The \underline{electromagnetic tensor} is:
+\begin{equation*}
+    F_{\mu \nu} =
+    \begin{pmatrix}
+        0 & -E_x / c & -E_y / c & -E_z / c \\
+        E_x / c & 0 & B_z & -B_y \\
+        E_y / c & -B_z & 0 & B_x \\
+        E_z / c & B_y & -B_x & 0
+    \end{pmatrix}
+\end{equation*}
+which is antisymmetric.
+
+The components are such that:
+\begin{equation*}
+    F_{i0} = \frac{E_i}{c},\qquad F_{ij} = \epsilon_{ijk} B_k
+\end{equation*}
+and the equation of motion for a massive particle with charge $q$ is:
+\begin{equation*}
+    \frac{\partial P}{\partial \tau} = f^\mu = q F_{\mu \nu} U^\nu
+\end{equation*}
+\section{The 4-Potential}
+We define the electromagnetic 4-potential as:
+\begin{equation*}
+    A^\mu = \begin{pmatrix}\frac{\Phi}{c} \\ \vec{A}\end{pmatrix}
+\end{equation*}
+A gauge transformation corresponds to:
+\begin{equation*}
+    \tilde{A}_\mu = A_\mu + \partial_\mu \chi
+\end{equation*}
+and this potential is related to the electromagnetic tensor by:
+\begin{equation*}
+    F_{\mu \nu} = \partial_\mu A_\nu - \partial_\nu A_\mu.
+\end{equation*}
+The Lorentz gauge is the generalisation of Coulomb gauge and has $\partial_\mu A^\mu = 0$. We can transform to the gauge with the $\chi$ that solves $\Box \chi = -\partial_\mu A^\mu$.
+\section{Lorentz Transformation of the Electromagnetic Tensor}
+If $\vec{v}$ is the velocity of a Lorentz transformation, the electric and magnetic fields transform as:
+\begin{align*}
+    \vec{E_\parallel}' &= \vec{E_\parallel} & \vec{E_\perp}' &= \gamma (\vec{E_\perp} + \vec{v} \times \vec{B_\perp}) \\
+    \vec{B_\parallel}' &= \vec{B_\parallel} & \vec{B_\perp}' &= \gamma \left(\vec{B_\perp} - \frac{1}{c^2} \vec{v} \times \vec{E_\perp}\right)
+\end{align*}
+so for example, if $\vec{v} = v\vec{e_x}$, $E_\parallel$ is the $x$ component and:
+\begin{equation*}
+    \vec{E_\perp} = \begin{pmatrix}0 \\ E_y \\ E_z\end{pmatrix}
+\end{equation*}
+
+We can find 2 Lorentz invariant scalars:
+\begin{align*}
+    F^{\mu\nu}F_{\mu\nu} &= -\frac{2}{c^2}\left(|\vec{E}|^2 - c^2 |\vec{B}|^2\right) \\
+    \epsilon_{\mu\nu\rho\sigma} F^{\mu\nu}F^{\rho\sigma} = \frac{8}{c} \vec{E} \cdot \vec{B}
+\end{align*}
+and so $|\vec{E}|^2 - c^2 |\vec{B}|^2$ is a scalar, $\vec{E} \cdot \vec{B}$ is a pseudo-scalar (may change sign but not magnitude).
+\section{Maxwell's Equations}
+Maxwell's Equations can be written as:
+\begin{align*}
+    \partial_\nu F^{\mu \nu} &= \mu_0 J^\mu \\
+    \epsilon^{\mu\nu\rho\sigma} \partial_\nu&F_{\rho\sigma} = 0
+\end{align*}
+The second Maxwell equation tells us that we can write $F_{\mu\nu}$ in terms of the potential $A^\mu$, and the first tells us it must satisfy:
+\begin{equation*}
+    -\Box A^\mu = \mu_0 J^\mu
+\end{equation*}
+\end{document}
