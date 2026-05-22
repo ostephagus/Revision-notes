@@ -1,0 +1,86 @@
+\documentclass[british,11pt,a4paper]{report}
+
+\def\course{Complex Methods}
+\def\degreepart{IB}
+\def\term{Lent}
+\def\academicyear{2026}
+\def\lecturer{Prof J. Santos}
+
+\input{../../Header.tex}
+
+\usetikzlibrary{decorations.pathmorphing, decorations.markings}
+
+\tikzset{branchcut/.style={color=blue, decorate, decoration={zigzag, segment length=3mm}}}
+
+\newcommand{\Cstar}{\C^*}
+\newcommand{\moeb}{M\"obius~}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ft}[1]{\tilde{#1}}
+\newcommand{\FT}{\mathcal{F}}
+\newcommand{\LT}{\mathcal{L}}
+
+\def\Xint#1{\mathchoice
+   {\XXint\displaystyle\textstyle{#1}}%
+   {\XXint\textstyle\scriptstyle{#1}}%
+   {\XXint\scriptstyle\scriptscriptstyle{#1}}%
+   {\XXint\scriptscriptstyle\scriptscriptstyle{#1}}%
+   \!\int}
+\def\XXint#1#2#3{{\setbox0=\hbox{$#1{#2#3}{\int}$}
+     \vcenter{\hbox{$#2#3$}}\kern-.5\wd0}}
+\def\ddashint{\Xint=}
+\def\dashint{\Xint-}
+
+\DeclareMathOperator*{\res}{Res}
+
+\graphicspath{{./.assets}}
+
+\tikzset{
+    patharrow/.pic={
+        \draw (-0.1, -0.05) -- (0, 0.05) -- (0.1, -0.05);
+    }
+}
+
+\tikzset{
+    pics/integration loop/.style={
+        code={
+      
+            \def\loopn{#1}%
+      
+            \pgfmathsetmacro{\Cx}{-0.2*cos(80)}%
+            \pgfmathsetmacro{\Cy}{-1-0.2*sin(80)}%
+            \pgfmathsetmacro{\Ex}{-0.4*cos(80)}%   x-coord of arc end point
+            \pgfmathsetmacro{\BottomY}{\Cy-0.2}%   y-coord of arc bottom
+            \pgfmathsetmacro{\LabelBottom}{\BottomY - 0.3}
+
+            \draw (0,0) -- (0,-1) arc[start angle=80, end angle=-260, radius=0.2] -- (\Ex, 0);
+            \fill (\Cx,\Cy) circle[radius=0.05];
+            
+            \node at (\Cx+0.4,\Cy) {$z_{\loopn}$};
+            
+            \begin{scope}[shift={(\Cx,\BottomY)}, rotate=90]
+                \draw (-0.1, -0.05) -- (0, 0.05) -- (0.1, -0.05);
+            \end{scope}
+            
+            \node at (\Cx,\LabelBottom) {$\gamma_{\loopn}$};
+        }
+    }
+}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\chapter{Background Material}
+\subfile{Chapters/1 - Background Material.tex}
+\chapter{Analytic Functions}
+%\subfile{Chapters/2 - Analytic Functions.tex}
+\chapter{Integration over \texorpdfstring{$\C$}{C}}
+%\subfile{Chapters/3 - Integration.tex}
+\chapter{Laurent Series and Singularities}
+%\subfile{Chapters/4 - Laurent Series.tex}
+\chapter{Calculus of Residues}
+%\subfile{Chapters/5 - Calculus of Residues.tex}
+\chapter{Transform Theory}
+%\subfile{Chapters/6 - Transform Theory.tex}
+
+\end{document}
