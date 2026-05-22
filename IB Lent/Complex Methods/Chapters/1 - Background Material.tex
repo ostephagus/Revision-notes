@@ -1,5 +1,19 @@
 \documentclass[../Main.tex]{subfiles}
 
 \begin{document}
-
+\begin{definition}{Principal argument}
+    The \underline{principal argument} of a complex number $z = x + i y$ is the value:
+    \begin{equation*}
+        \arg(z) =
+        \begin{cases}
+            \arctan\left(\frac{y}{x}\right) & x > 0 \\
+            \arctan\left(\frac{y}{x}\right) + \pi & x < 0, y \geq 0 \\
+            \arctan\left(\frac{y}{x}\right) - \pi & x < 0, y < 0 \\
+            \frac\pi2 & x = 0, y > 0 \\
+            -\frac\pi2 & x = 0, y < 0 \\
+            \text{undefined} & z = 0
+        \end{cases}
+    \end{equation*}
+    assuming that $\arctan$ takes values in $\left(-\frac{\pi}{2}, \frac{\pi}{2}\right)$.
+\end{definition}
 \end{document}
