@@ -1,0 +1,246 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Definitions}
+\begin{definition}{Hypothesis}
+    A \underline{hypothesis} is an assumption about the distribution of data $\vec{X} \in \samplespace$.
+\end{definition}
+The null hypothesis $H_0$ is the no effect hypothesis, or base case. The alternative hypothesis $H_1$ is the hypothesis of positive/negative effect (or both).
+\begin{definition}{Simple hypothesis}
+    A hypothesis is \underline{simple} if it fully specifies the distribution of the data $\vec{X}$. If not it is \underline{composite}.
+\end{definition}
+A hypothesis test is then defined by a critical region $C$: when $\vec{X} \in C$ we reject $H_0$.
+\begin{definition}{Type I/II errors}
+    A \underline{type I error} is the case of rejecting $H_0$ when $H_0$ was in fact true. A type II error is the case of failing to reject $H_0$ when $H_1$ was in fact true.
+\end{definition}
+\begin{definition}{Size}
+    The \underline{size} of a hypothesis test is the probability of a type I error,
+    \begin{equation*}
+        \alpha = \P_{H_0}(\text{$H_0$ rejected}).
+    \end{equation*}
+\end{definition}
+\begin{definition}{Power}
+    The \underline{power} of a hypothesis test is the probability of no type II errors. We write the power as $1-\beta$ where $\beta = \P_{H_1}(\text{$H_0$ not rejected})$.
+\end{definition}
+\section{Neyman-Pearson Lemma}
+\begin{definition}{Likelihood ratio test}
+    Given simple hypotheses $H_0$ and $H_1$ that specify the probability distribution of $\vec{X}$ as $f_0$ or $f_1$ (respectively), a \underline{likelihood ratio test} has critical region $\Lambda_{\vec{X}}(H_0, H_1) < k$ where $\Lambda$ is the likelihood ratio statistic:
+    \begin{equation*}
+        \Lambda_{\vec{X}}(H_0, H_1) = \frac{f_1(\vec{X})}{f_0(\vec{X})}
+    \end{equation*}
+\end{definition}
+\begin{theorem}[Neyman-Pearson Lemma]
+    Consider hypotheses as above. Suppose that $f_0$ and $f_1$ are non-zero on the same set and there exists $k$ such that the critical region:
+    \begin{equation*}
+        C_k = \subsetselect{\vec{X} \in \samplespace}{\Lambda_{\vec{X}}(H_0, H_1) < k}
+    \end{equation*}
+    has size $\alpha$. Then for all tests with size $\leq \alpha$, the likelihood ratio test is the test with the smallest $\beta$ (largest power).
+    \label{thmNeymanPearson}
+\end{theorem}
+\begin{proof}
+    The below proof is for the continuous case. For the discrete case, replace integrals with sums.
+
+    Let $\overline{C}$ be the complement of $C$ and define $\alpha$ and $\beta$ in terms of integrals of $f_0$ and $f_1$.
+
+    Let $C^*$ be the critical region of another test of size $\alpha^* \leq \alpha$. Express $\alpha^*$ and $\beta^*$ in terms of $C^*$, its complement, and the probability density functions $f_0$ and $f_1$.
+
+    Consider the difference $\beta - \beta^*$. By splitting the integration domains, reach:
+    \begin{equation*}
+        \int_{\overline{C} \cap C^*} f_1(\vec{x}) d^n\vec{x} - \int_{\overline{C^*}\cap C} f_1(\vec{x}) d^n \vec{x}
+    \end{equation*}
+    in order to have both integrals over (a subset of) $C$ and $\overline{C}$.
+
+    Next, express the integrands as likelihood ratios times $f_0$, and use the LRT bounds to relate the integrals to $k$ times an integral of $f_0$.
+    
+    By further integral splitting, work back to the definitions of $\alpha$ and $\alpha^*$ to conclude that:
+    \begin{equation*}
+        \beta - \beta^* \leq k(\alpha^* - \alpha)
+    \end{equation*}
+\end{proof}
+\section{\texorpdfstring{$p$}{p}-Values}
+\begin{definition}{$p$-value}
+    For a test with critical region defined by a statistic $T$, so $C = \subsetselect{\vec{X} \in \samplespace}{T(\vec{X}) > k}$, the \underline{$p$-value} is:
+    \begin{equation*}
+        p = \P_{H_0}(T(\vec{X}) > T(\vec{x}^*))
+    \end{equation*}
+    where $\vec{x}^*$ is the observed data.
+\end{definition}
+\begin{proposition}
+    Under $H_0$, $p \sim U[0, 1]$.
+    \label{propPValueUnif}
+\end{proposition}
+\section{Tests and Confidence Intervals}
+\begin{definition}{Acceptance region}
+    The \underline{acceptance region} $A$ of a test is the complement of the critical region.
+\end{definition}
+\begin{theorem}
+    Let $\vec{X}$ have pdf $f_{\vec{X}}(\vec{x}, \theta)$ for some $\theta \in \Theta$.
+    \begin{enumerate}
+        \item Suppose that for each $\theta_0 \in \Theta$ there exists a test of $H_0 : \theta = \theta_0$ of size $\alpha$ with acceptance region $A(\theta_0)$. Then the set:
+            \begin{equation*}
+                I(\vec{X}) = \subsetselect{\theta}{\vec{X} \in A(\theta)}
+            \end{equation*}
+            is a $100(1-\alpha)\%$ confidence set.
+        \item Suppose that $I(\vec{X})$ is a $100(1-\alpha)\%$ confidence set for $\theta$. Then:
+            \begin{equation*}
+                A(\theta_0) = \subsetselect{\vec{x} \in \samplespace}{\theta_0 \in I(\vec{x})}
+            \end{equation*}
+            is the acceptance region of a test of size $\alpha$ of $H_0: \theta = \theta_0$.
+    \end{enumerate}
+    \label{thmCCICREquiv}
+\end{theorem}
+\begin{proof}
+    In both cases, we know:
+    \begin{equation*}
+        \theta_0 \in I(\vec{X}) \iff \vec{X} \in A(\theta_0)
+    \end{equation*}
+    Use this equivalence to prove:
+    \begin{equation*}
+        \P_{\theta_0}(\theta_0 \in I(\vec{X})) = 1 - \alpha
+    \end{equation*}
+    and
+    \begin{equation*}
+        \P_{\theta_0}(\vec{X} \notin A(\theta_0)) = \alpha.
+    \end{equation*}
+\end{proof}
+\section{The Chi-Squared Distribution}
+\begin{definition}{$\chi^2$ distribution}
+    The \underline{$\chi^2$ distribution} with $n$ degrees of freedom is the distribution of a sum of $n$ squared standard normal random variables.
+\end{definition}
+It is a special case of the $\Gamma$ distribution,
+\begin{equation*}
+    \chi_n^2 \sim \Gamma\left(\frac{n}{2}, \frac12\right)
+\end{equation*}
+with mean $n$ and variance $2n$.
+\section{Composite Hypotheses}
+We now suppose that $f_{\vec{X}}(\vec{x};\theta)$ is parameterised by $\theta \in \Theta$. We test:
+\begin{align*}
+    H_0&: \theta \in \Theta_0 \\
+    H_1&: \theta \in \Theta_1
+\end{align*}
+where $\Theta_0, \Theta_1 \subseteq \Theta$.
+\begin{definition}{Power function}
+    The \underline{power function} of a test as above is:
+    \begin{equation*}
+        W(\theta) = \P_\theta(\vec{X} \in C)
+    \end{equation*}
+    and is the probability of a type I error for a given true value of $\theta$.
+\end{definition}
+Using the power function we define the size of a test as:
+\begin{equation*}
+    \alpha = \sup_{\theta \in \Theta_0} W(\theta)
+\end{equation*}
+\subsection{Uniformly Most Powerful Test}
+\begin{definition}{Uniformly most powerful}
+    A test of size $\alpha$ of the form above is \underline{uniformly most powerful (UMP)} if, for any other test of size $\alpha$, with power function $W^*$,
+    \begin{equation*}
+        W(\theta) > W^*(\theta)~\forall \theta \in \Theta_1
+    \end{equation*}
+\end{definition}
+\begin{example}[One-sided test for normal location]
+    Consider $\vec{X}$ a vector of independent and identically distributed normal random variables, $N(\mu, \sigma^2)$ with $\sigma^2$ known. Consider the hypotheses:
+    \begin{align*}
+        H_0&: \mu \leq \mu_0 \\
+        H_1&: \mu > \mu_0
+    \end{align*}
+    and recall that a GLRT for $\mu_0$ against $\mu_1$ had critical region:
+    \begin{equation*}
+        \left\{\frac{\sqrt{n} \left(\overline{X} - \mu_0\right)}{\sigma_0} > \Phi^{-1}(1 - \alpha)\right\}
+    \end{equation*}
+    Now show that the power function is monotonically increasing, with $W(\mu_0 = \alpha)$.
+
+    Consider any other test of size $\alpha$ with power function $W^*(\mu)$. When this test is used with the hypotheses:
+    \begin{align*}
+        H_0'&: \mu = \mu_0 \\
+        H_1&: \mu > \mu_0
+    \end{align*}
+    we can use \thmref{thmNeymanPearson} to find $W(\mu_1) \geq W^*(\mu_1)$ for any $\mu_1$, and thus all $\mu > \mu_0$.
+\end{example}
+\subsection{Generalised Likelihood Ratio Test}
+The Generalised Likelihood Ratio Test (GLRT) makes use of the GLR statistic:
+\begin{equation*}
+    \Lambda_{\vec{X}}(H_0, H_1) = \frac{\sup_{\theta \in \Theta_1}f_{\vec{X}}(\vec{x}, \theta)}{\sup_{\theta \in \Theta_0} f_{\vec{X}}(\vec{x}, \theta)}
+\end{equation*}
+\subsection{Wilk's Theorem}
+The dimension of a hypothesis is the number of free parameters is the corresponding set $\Theta_i$.
+\begin{theorem}[Wilk's Theorem]
+    Let $\Theta_0 \subseteq \Theta_1$ and $\dim(\Theta_1) - \dim(\Theta_0) = p$. Then under regularity conditions as $n \to \infty$,
+    \begin{equation*}
+        \Lambda_{\vec{X}}(H_0, H_1) \chi_p^2
+    \end{equation*}
+    \label{thmWilk}
+\end{theorem}
+\section{Chi-Squared Testing}
+\subsection{Goodness of Fit Tests}
+For a set of data and expected probabilities $p_i$ for the data, Pearson's Chi-Squared Statistic is:
+\begin{equation*}
+    \sum_{i=1}^N \frac{(o_i - e_i)^2}{e_i}
+\end{equation*}
+where $o_i$ is the observed number of type $i$, $e_i$ is the expected number of type $i$ (based on the $p_i$). It will have approximately $\chi_p^2$ distribution.
+\subsection{Composite Null Hypotheses}
+In this case we parameterise the null hypothesis by some $\theta$. The GLRT Pearson Chi-Squared Statistic is still the same, but now we have to be careful with the dimensions.
+\section{Contingency Tables}
+\subsection{Test for Independence}
+We consider a two-way table with entries $N_{ij}$. Denoting $\sum_{i=1}^{r} p_{ij}$ by $p_{+j}$ and $\sum_{j=1}^{c} p_{ij}$ by $p_{i+}$, we have the hypotheses:
+\begin{align*}
+    H_0&: p_{ij} = p_{i+} \times p_{+j} \\
+    H_1&: p_{ij} \text{ is any probability distribution}
+\end{align*}
+The dimensions are $\dim(H_0) = (r - 1) + (c - 1)$ and $\dim(H_1) = rc-1$, so $p = (r-1)(c-1)$.
+\subsection{Test for Homogeneity}
+Now consider a two-way table where the row totals are the same, $N$. The hypotheses are:
+\begin{align*}
+    H_0&: p_{1j} = p_{2j} = \cdots = p_{rj} ~\forall j \\
+    H_1&: (p_{i1}, \cdots, p_{ic}) \text{ is any probability distribution}
+\end{align*}
+so $H_0$ is the hypothesis that the probabilities are the same across rows (groups), and $H_1$ is that each row has its own probability distribution. The dimensions are $\dim(H_0) = c-1$, $\dim(H_1) = r(c-1)$ and so $p$ is the same as above, $(r-1)(c-1)$. This means that in fact the test is the same.
+\section{Facts about Normal Random Variables}
+\subsection{Multivariate Normal Theory}
+The multivariate normal distribution is a vector $\vec{X}$ such that for any constant vector $\vec{t}$, $\vec{t} \cdot \vec{X}$ is normal. It is fully specified by the mean (a vector) and covariance matrix.
+\subsection{Distribution of \texorpdfstring{$\overline{X}$}{the mean of X} and \texorpdfstring{$S_{XX}$}{Sxx}}
+Consider a vector of independent and identically distributed $N(\mu, \sigma^2)$ random variables, where both parameters are unknown. The MLEs for $\mu$ and $\sigma^2$ are:
+\begin{align*}
+    \hat{\mu} &= \overline{X} = \frac{1}{n} \sum_{i=1}^{n} X_i \\
+    \hat{\sigma}^2 &= \frac{S_{XX}}{n} = \frac{1}{n} \sum_{i=1}^{n} (X_i - \overline{X})^2
+\end{align*}
+\begin{theorem}
+    With the above setup,
+    \begin{enumerate}
+        \item $\overline{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)$
+        \item $\frac{S_{XX}}{\sigma^2} \sim \chi_{n-1}^2$
+        \item $\overline{X}$ and $S_{XX}$ are independent.
+    \end{enumerate}
+    \label{thmXBarSxx}
+\end{theorem}
+\section{\texorpdfstring{$t$}{T} tests}
+The $t$ distribution is:
+\begin{equation*}
+    T = \frac{U}{\sqrt{V / n}}
+\end{equation*}
+where $U \sim N(0, 1)$, $V \sim \chi_n^2$ and they are independent. We write $T \sim t_n$.
+
+This is used for testing a normal distribution when both $\mu$ and $\sigma^2$ are unknown.
+\section{Analysis of Variance (ANOVA)}
+Consider the data $X_{ij} = \mu_i + \epsilon_{ij}$ where $\epsilon_{ij} \sim N(0, \sigma^2)$ are independent and model random noise. We have the hypotheses:
+\begin{align*}
+    H_0&: \text{$\mu_i$ are equal} \\
+    H_1&: \text{$\mu_i$ take any value}
+\end{align*}
+We use a GLRT which rejects $H_0$ when $\frac{s_0}{s_1}$ is large, or when $\frac{s_2}{s_1}$ is large, where:
+\begin{align*}
+    s_0&= \sum_{i=1}^{k} \sum_{j=1}^{n_i} (X_{ij} - \overline{X})^2 \\
+    s_1&= \sum_{i=1}^{k} \sum_{j=1}^{n_i} (X_{ij} - \overline{X_i})^2 \\
+    s_2&= \sum_{i=1}^{k} n_i (\overline{X_i} - \overline{X})^2 \\
+\end{align*}
+where $\overline{X}$ is the average of all the $X_{ij}$, and $\overline{X_i}$ is the average of $X_{ij}$ when fixing $i$.
+
+The $F$ distribution is the quotient of normalised independent $\chi^2$ distributions. If $V \sim \chi_n^2$ and $W \sim \chi_m^2$,
+\begin{equation*}
+    F = \frac{V / n}{W / m} \sim F_{n, m}
+\end{equation*}
+
+Then with this distribution we see that:
+\begin{equation*}
+    \frac{s_2 / (k - 1)}{s_1 / (N - k)} \sim F_{k-1, N-k}
+\end{equation*}
+\end{document}
