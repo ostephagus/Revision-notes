@@ -1,0 +1,127 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+The extended complex plane is $\C^*$ which includes the single point at infinity.
+\section{Complex Differentiation}
+\begin{definition}{Differentiability}
+    A function $f : \C \mapsto \C$ is \underline{differentiable} at $z \in \C$ if:
+    \begin{equation*}
+        \lim_{\delta z \to 0} \frac{f(z + \delta z) - f(z)}{\delta z} = f'(z)
+    \end{equation*}
+    exists and is independent of the direction of the limit.
+\end{definition}
+\begin{definition}{Neighbourhood}
+    A \underline{neighbourhood} $V$ around a point $z_0$ is a set that contains a circle centred at $z_0$ of radius $r > 0$. Often $r$ is very small.
+\end{definition}
+\begin{definition}{Analytic function}
+    A function $f : \C \mapsto \C$ is \underline{analytic} at a point $z_0$ if it is differentiable in a neighbourhood (however small) around $z_0$.
+\end{definition}
+If $f$ is analytic on $\C$ then it is \underline{entire}.
+
+If $f$ has the form $f(x + i y) = u(x, y) + i v(x, y)$ then we have the following proposition.
+\begin{proposition}[Cauchy-Riemann Identities]
+    A function of the form $f = u + i v$ that is differentiable at a point satisfies:
+    \begin{equation}
+        \frac{\partial u}{\partial x} = \frac{\partial v}{\partial y},\qquad \frac{\partial u}{\partial y} = - \frac{\partial v}{\partial z}
+        \label{eqnCauchyRiemann}
+    \end{equation}
+    at the point.
+
+    If a function satisfies \eqnref{eqnCauchyRiemann} and the partial derivatives are continuous in a neighbourhood around $z_0$, then it is differentiable at $z_0$.
+    \label{propCauchyRiemann}
+\end{proposition}
+\section{Harmonic Functions}
+\begin{definition}{Harmonic conjugate}
+    Two functions $u, v : \R^2 \mapsto \C$ are \underline{harmonic conjugates} if they satisfy \eqnref{eqnCauchyRiemann}. Then also $f = u + i v$ is analytic.
+\end{definition}
+We can find the harmonic conjugate for a function using \eqnref{eqnCauchyRiemann} up to a constant.
+\section{Multivalued Functions}
+A multivalued function has many outputs for a single input. The complex logarithm is a classic example.
+\subsection{Branch Points}
+\begin{definition}{Branch point}
+    A \underline{branch point} $z_0$ of a function $f : \C \mapsto \C$ is a point such that no closed curve that encircles $z_0$ and for which $f$ is single-valued and continuous exists.
+\end{definition}
+To find a branch point at $\infty$ consider instead the point $z^{-1} = 0$ of $f(z^{-1})$.
+\subsection{Branch Cuts}
+\begin{definition}{Branch cut}
+    A \underline{branch cut} is a curve that connects two branch points. We usually use straight lines.
+\end{definition}
+We say that the function is defined on all curves which do not cross the branch cut.
+\begin{definition}{Branch}
+    The \underline{branch} of a function (that has been assigned a branch cut) is the specific set of values that the function takes on the domain. It is sufficient to provide a single function value.
+\end{definition}
+We can also defined a branch and branch cut at the same time by prescribing a set of values to functions like $\arg(z - z_0)$.
+\section{M\"obius Maps}
+\begin{definition}{M\"obius map}
+    A \underline{M\"obius map} $f : \C^* \mapsto \C^*$ is defined by:
+    \begin{equation*}
+        f(z) = \frac{az + b}{cz + d}
+    \end{equation*}
+    where $a, b, c, d \in \C$ with $ad-bc\neq 0$.
+\end{definition}
+A circline is a circle or a line (both of which are circles on the Riemann Sphere, but lines pass through $\infty$).
+\begin{proposition}
+    Let $f : \C^* \mapsto \C^*$ be M\"obius. Then it maps circlines to circlines.
+    \label{propMobiusCirclines}
+\end{proposition}
+\begin{proof}
+    Circlines are defined by:
+    \begin{equation*}
+        \abs{z - z_1} = \lambda \abs{z - z_2}
+    \end{equation*}
+    then apply $f$.
+\end{proof}
+\begin{theorem}
+    Let $\alpha, \beta, \gamma, \tilde{\alpha}, \tilde{\beta}, \tilde{\gamma} \in \C$. There is a M\"obius map that sends:
+    \begin{align*}
+        \alpha &\mapsto \tilde{\alpha} \\
+        \beta &\mapsto \tilde{\beta} \\
+        \gamma &\mapsto \tilde{\gamma} \\
+    \end{align*}
+    \label{thmMobius3Point}
+\end{theorem}
+\begin{proof}
+    Consider the map:
+    \begin{equation*}
+        f(z;z_1, z_2, z_3) = \frac{(z - z_1)(z_2 - z_3)}{(z - z_3)(z - z_2)}
+    \end{equation*}
+    which sends $z_1$ to $0$, $z_2$ to $1$ and $z_3$ to $\infty$. Use this map and its inverse on the given points.
+\end{proof}
+\section{Conformal Mappings}
+\begin{definition}{Conformal map}
+    A \underline{conformal map} is a function $f : U \subseteq \C \mapsto V \subseteq \C$ which is analytic with $f'$ never zero.
+\end{definition}
+\begin{proposition}
+    A conformal map preserves the magnitudes of angles between intersecting lines.
+    \label{propConfMapAngles}
+\end{proposition}
+\begin{proof}
+    Let $z_1(t)$ and $z_2(t)$ intersect at $z_0$ (with $t = t_0$ on both).
+
+    The angle between $z_1$ and the horizontal at $z_0$ is $\theta = \arg(z_1'(t_0))$, and similarly let $\phi = \arg(z_2'(t_0))$. Consider the images of these curves $\xi_1$ and $\xi_2$.
+
+    Noting that $\xi_1'(t_0) = f'(t_0) z_1'(t_0)$ and the same for $\xi_2$, evaluate the angles $\alpha$ and $\beta$ between $\xi_1$ and $\xi_2$ and the horizontal. Then compare the difference $\beta - \alpha$ with $\phi - \theta$.
+\end{proof}
+\subsection{Conformal Maps and Domains}
+As will be illustrated in the next section, often we want to find conformal maps from a given domain to another given domain.
+\begin{itemize}
+    \item Rotations and scalings are given by $f(z) = az$.
+    \item $f(z) = z^2$ is conformal except at zero, and opens up a quarter-circle to a half-circle. If using $f(z) = z^{1 / 2}$, its inverse, we need to define the branch.
+    \item $\exp$ and $\log$ map rectangles to sectors of annuli.
+    \item The M\"obius map:
+        \begin{equation*}
+            f(z) = \frac{z - 1}{z + 1}
+        \end{equation*}
+        maps different parts of the unit circle to others. See example sheets.
+\end{itemize}
+\subsection{Solving Laplace's Equation}
+To solve Laplace's Equation on a domain $U$, with boundary conditions on $\partial U$, we can make the domain easier to work with by using conformal maps. The process is:
+\begin{enumerate}
+    \item find a conformal map $f : U \mapsto V$ that makes the domain or boundary conditions easier to deal with;
+    \item solve Laplace's equation on this domain (with transformed boundary conditions) to get $\Phi$;
+    \item the $\phi$ that solves the original problem is then given by:
+        \begin{equation*}
+            \phi(x, y) = \Phi(\Re(f(x + i y)), \Im(f(x + i y)))
+        \end{equation*}
+\end{enumerate}
+\end{document}
