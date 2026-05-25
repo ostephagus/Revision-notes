@@ -24,11 +24,12 @@ A hypothesis test is then defined by a critical region $C$: when $\vec{X} \in C$
 \end{definition}
 \section{Neyman-Pearson Lemma}
 \begin{definition}{Likelihood ratio test}
-    Given simple hypotheses $H_0$ and $H_1$ that specify the probability distribution of $\vec{X}$ as $f_0$ or $f_1$ (respectively), a \underline{likelihood ratio test} has critical region $\Lambda_{\vec{X}}(H_0, H_1) < k$ where $\Lambda$ is the likelihood ratio statistic:
+    Given simple hypotheses $H_0$ and $H_1$ that specify the probability distribution of $\vec{X}$ as $f_0$ or $f_1$ (respectively), a \underline{likelihood ratio test} has critical region $\Lambda_{\vec{X}}(H_0, H_1) > k$ where $\Lambda$ is the likelihood ratio statistic:
     \begin{equation*}
         \Lambda_{\vec{X}}(H_0, H_1) = \frac{f_1(\vec{X})}{f_0(\vec{X})}
     \end{equation*}
 \end{definition}
+\textbf{Way to remember:} we reject when this ratio is large, or when the alternative is much more likely than the null hypothesis. Therefore, the alternative hypothesis likelihood function must be the numerator.
 \begin{theorem}[Neyman-Pearson Lemma]
     Consider hypotheses as above. Suppose that $f_0$ and $f_1$ are non-zero on the same set and there exists $k$ such that the critical region:
     \begin{equation*}
@@ -166,7 +167,7 @@ The dimension of a hypothesis is the number of free parameters is the correspond
 \begin{theorem}[Wilk's Theorem]
     Let $\Theta_0 \subseteq \Theta_1$ and $\dim(\Theta_1) - \dim(\Theta_0) = p$. Then under regularity conditions as $n \to \infty$,
     \begin{equation*}
-        \Lambda_{\vec{X}}(H_0, H_1) \chi_p^2
+        2\log(\Lambda_{\vec{X}}(H_0, H_1)) \sim \chi_p^2
     \end{equation*}
     \label{thmWilk}
 \end{theorem}
