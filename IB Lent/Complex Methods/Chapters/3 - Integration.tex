@@ -1,0 +1,204 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Contours and Integrals}
+\begin{definition}{Curve}
+    A \underline{curve} $\gamma$ is a continuous map:
+    \begin{equation*}
+        \gamma : [0, 1] \mapsto \C
+    \end{equation*}
+\end{definition}
+We often refer to the image of $\gamma$ as the curve itself. The range of the parameterisation need not be $[0, 1]$.
+
+A curve is:
+\begin{itemize}
+    \item \underline{closed} if $\gamma(0)=\gamma(1)$,
+    \item \underline{simple} if it does not intersect itself (except possibly at the endpoints for closed curves),
+    \item a \underline{contour} if it is piecewise-differentiable.
+\end{itemize}
+We introduce the notation $-\gamma$ to go from $\gamma(1)$ to $\gamma(0)$, and $\gamma_1 + \gamma_2$ to join the cuves (and so the parameter runs from $0$ to $2$, notationally).
+
+\begin{definition}{Contour integral}
+    The \underline{contour integral} of a function $f$ over a contour $\gamma$ is:
+    \begin{equation*}
+        \int_\gamma f(z) dz = \int_{0}^{1} f(\gamma(t)) \frac{\partial \gamma}{\partial t} dt
+    \end{equation*}
+\end{definition}
+All the usual properties of integration that we would like hold.
+
+\begin{definition}{Connected domain}
+    An open set $D$ is a \underline{connected domain} in $\C$ if every set of two points in $D$ can be connected by a curve that is wholly in $D$.
+\end{definition}
+A connected domain is \underline{simply connected} if the interior of all curves in $D$ is also in $D$. That is, $D$ has no holes.
+\section{Cauchy's Theorem}
+\begin{theorem}[Cauchy's Theorem]
+    If $f(z)$ is analytic in a simply connected domain $D$, and $\gamma$ is a closed contour inside $D$,
+    \begin{equation*}
+        \int_\gamma f(z) dz = 0
+    \end{equation*}
+    \label{thmCauchy}
+\end{theorem}
+\begin{proof}
+    Write $f(x + i y) = u(x, y) + iv(x, y)$. Use Green's Theorem in the Plane,
+    \begin{equation*}
+        \oint_{\gamma} (P dx + Q dy) =\iint_M \left(\frac{\partial Q}{\partial x} - \frac{\partial P}{\partial y}\right) dx dy
+    \end{equation*}
+    where $M$ is the interior of $\gamma$, and the Cauchy-Riemann equations to show that the integral is zero.
+\end{proof}
+\section{Deforming Contours}
+\begin{proposition}
+    Let $\gamma_1, \gamma_2$ be integrals from $a$ to $b$. Let $f(z)$ be analtyic on both contours and in the region enclosed by them. Then:
+    \begin{equation*}
+        \int_{\gamma_1}f(z) dz = \int_{\gamma_2} f(z) dz.
+    \end{equation*}
+    \label{propIntSameEndpoints}
+\end{proposition}
+\begin{proof}
+    First suppose that $\gamma_1$ and $\gamma_2$ never intersect. Then $\gamma_1 - \gamma_2$ is a simple, closed contour, and we can show the integrals are the same by \thmref{thmCauchy}.
+
+    If they do intersect, apply the above logic for all the simple, closed curves that are created.
+\end{proof}
+\begin{proposition}[Contour Shrinking]
+    Let $\gamma_1$ and $\gamma_2$ be closed contours that can be continuously deformed into each other. Let $f(z)$ be analytic on and in between $\gamma_1$ and $\gamma_2$.
+    \begin{equation*}
+        \int_{\gamma_1} f(z) dz = \int_{\gamma_2} f(z) dz.
+    \end{equation*}
+    \label{propContourShrink}
+\end{proposition}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[line width=1.2pt, scale=0.7]
+        \tikzset{
+            ccwarrow/.style={
+                postaction={decorate, decoration={markings,
+                mark=at position 0.2 with {\arrowreversed{Stealth[length=7pt]}}}}
+            },
+            cwarrow/.style={
+                postaction={decorate, decoration={markings,
+                mark=at position 0.5 with {\arrow{Stealth[length=7pt]}}}}
+            },
+            uparrow/.style={
+                postaction={decorate, decoration={markings,
+                mark=at position 0.55 with {\arrow{Stealth[length=7pt]}}}}
+            },
+            dnarrow/.style={
+                postaction={decorate, decoration={markings,
+                mark=at position 0.55 with {\arrowreversed{Stealth[length=7pt]}}}}
+            },
+            }
+        % ====================
+        %  LEFT FIGURE
+        % ====================
+        \begin{scope}[xshift=-5.3cm]
+            
+            % Outer curve (gamma_1) -- counterclockwise
+            \draw[ccwarrow] plot[smooth cycle, tension=0.85] coordinates {
+                ( 0.05,  1.92)
+                ( 1.28,  1.60)
+                ( 2.12,  0.42)
+                ( 1.88, -1.05)
+                ( 0.22, -1.80)
+                (-1.08, -1.65)
+                (-2.08, -0.30)
+                (-1.78,  1.20)
+            };
+            
+            % Inner curve (gamma_2) -- counterclockwise
+            \draw[ccwarrow] plot[smooth cycle, tension=0.85] coordinates {
+                ( 0.05,  0.95)
+                ( 0.72,  0.70)
+                ( 1.08,  0.02)
+                ( 0.80, -0.62)
+                (-0.02, -0.92)
+                (-0.72, -0.66)
+                (-1.08,  0.04)
+                (-0.62,  0.74)
+            };
+            
+            % Labels
+            \node at ( 2.60,  -1) {$\gamma_1$};
+            \node at ( 1,  -1) {$\gamma_2$};
+        
+        \end{scope}
+        
+        % ==============================
+        %  Arrow between figures
+        % ==============================
+        \draw[-{Stealth}] (-0.85, 0) -- (0.85, 0);
+        
+        % ====================
+        %  RIGHT FIGURE
+        % ====================
+        \begin{scope}[xshift=5.3cm]
+            
+            % Outer arc (gamma_1) -- CCW open arc.
+            % Starts at right cut edge (0.20, 1.90), ends at left cut edge (-0.10, 1.90).
+            \draw[ccwarrow] plot[smooth, tension=0.85] coordinates {
+                ( 0.20,  1.90)
+                ( 1.28,  1.60)
+                ( 2.12,  0.42)
+                ( 1.88, -1.05)
+                ( 0.22, -1.80)
+                (-1.08, -1.65)
+                (-2.08, -0.30)
+                (-1.78,  1.20)
+                (-0.10,  1.90)
+            };
+            
+            % Inner arc (-gamma_2) -- CW open arc (reversed orientation).
+            % Starts at right cut edge (0.20, 0.95), ends at left cut edge (-0.10, 0.95).
+            \draw[cwarrow] plot[smooth, tension=0.85] coordinates {
+                ( 0.20,  0.95)
+                ( 0.72,  0.70)
+                ( 1.08,  0.02)
+                ( 0.80, -0.62)
+                (-0.02, -0.92)
+                (-0.72, -0.66)
+                (-1.08,  0.04)
+                (-0.62,  0.74)
+                (-0.10,  0.95)
+            };
+            
+            % Cut walls.
+            % Right wall (tilde{gamma}):  arrow points up  (inner -> outer).
+            % Left  wall (-tilde{gamma}): arrow points down (outer -> inner).
+            \draw[dnarrow] (-0.10, 0.95) -- (-0.10, 1.90);   % left wall:  -tilde{gamma}
+            \draw[uparrow] ( 0.20, 0.95) -- ( 0.20, 1.90);   % right wall:  tilde{gamma}
+            
+            % Labels
+            \node at ( 2.65,  0.50) {$\gamma_1$};
+            \node at (-0.22, -0.5) {$-\gamma_2$};
+            \node[font=\small] at (-0.55, 1.58) {$-\tilde{\gamma}$};
+            \node[font=\small] at ( 0.58, 1.58) {$\tilde{\gamma}$};
+        
+        \end{scope}
+    \end{tikzpicture}
+    \caption{Diagram of contour shrinking}
+    \label{figContourShrink}
+\end{figure}
+\begin{proof}
+    Consider the contour in figure~\ref{figContourShrink} formed be the two contours and a set of two lines infinitesimally close together that bridge the gap between the contours. Apply \thmref{thmCauchy}.
+\end{proof}
+\section{Cauchy Integral Formula}
+\begin{theorem}[Cauchy Integral Formula]
+    Let $f$ be analytic on an open set $D \subseteq \C$. Let $z \in D$ and $\gamma$ be a simple, closed contour in $D$ that encloses $z_0 \in D$ and is anticlockwise. Then:
+    \begin{equation*}
+        f(z_0) = \frac{1}{2\pi i} \oint_\gamma \frac{f(z)}{z - z_0} dz
+    \end{equation*}
+    and
+    \begin{equation*}
+        f^{(m)}(z_0) = \frac{m!}{2\pi i} \oint_{\gamma} \frac{f(z)}{(z - z_0)^{m+1}}
+    \end{equation*}
+    \label{thmCauchyIntegral}
+\end{theorem}
+\begin{proof}
+    The proof of this theorem is non-examinable.
+\end{proof}
+\begin{theorem}[Liouville's Theorem]
+    If $f(z)$ is entire (analytic on all $\C$) and bounded then it must be constant.
+    \label{thmEntireBddConst}
+\end{theorem}
+\begin{proof}
+    The proof of this theorem is non-examinable.
+\end{proof}
+\end{document}
