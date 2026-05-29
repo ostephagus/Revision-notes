@@ -1,0 +1,92 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Fourier Transform}
+\begin{definition}{Fourier Transform}
+    The \underline{Fourier transform} of a function $f : \R \mapsto \C$ is:
+    \begin{equation*}
+        \tilde{f}(k) = \FT[f](k) = \int_{-\infty}^{\infty} f(x) e^{-ikx} dx 
+    \end{equation*}
+    and its inverse is:
+    \begin{equation*}
+        f(x) = \FT^{-1}[\tilde{f}](x) = \frac{1}{2\pi} \int_{-\infty}^{\infty} \tilde{f}(k)e^{ikx} dk
+    \end{equation*}
+\end{definition}
+Note that the integral here is actually the Cauchy principal value which considers both limits tending to $\pm \infty$ at the same time. This allows for the case that the integrals over $\R^+$ and $\R^-$ cancel.
+
+Gaussians are eigenfunctions:
+\begin{equation*}
+    \FT[e^{-x^2 / 2}](k) = \sqrt{2\pi} e^{-k^2 / 2}
+\end{equation*}
+Exponentials give reciprocals:
+\begin{equation*}
+    \FT[H(x) e^{-ax}] = \frac{1}{a + ik}
+\end{equation*}
+for $a > 0$, and where $H(x)$ is the Heaviside step function.
+\section{Laplace Transforms}
+\begin{definition}{Laplace Transform}
+    The \underline{Laplace transform} of a function $f : \R \mapsto \C$ is:
+    \begin{equation*}
+        F(s) = \LT[f](s) = \int_{0}^{\infty} f(t)e^{-st} dt
+    \end{equation*}
+    and this is valid for functions $f$ that grow slower than exponential.
+\end{definition}
+\subsection{Laplace Transform of Example Functions}
+\begin{itemize}
+    \item The Laplace transform of a constant ($f(t) = 1$) gives $\frac1s$. We must use analytic continuation, since the integral only makes sense for $\Re(s) > 0$.
+    \item The Laplace transform of $f(t) = t$ gives $\frac1{s^2}$ and again we must use analytic continuation.
+    \item Exponentials $f(t) = e^{\lambda t}$ give:
+    \begin{equation*}
+        F(s) = \frac{1}{s - \lambda}
+    \end{equation*}
+\end{itemize}
+\subsection{Properties of the Laplace Transform}
+\begin{propositions}{
+        Let $f, g : \C \mapsto \C$ with Laplace transforms $F$ and $G$, and $\alpha, \beta \in \C$.
+        \label{propsLTProps}
+    }
+    \item Linearity:
+        \begin{equation*}
+            \LT\left[\alpha f + \beta g\right] = \alpha \LT[f] + \beta \LT[g]
+        \end{equation*}
+    \item Translation: let $t_0 \in \R$, then
+        \begin{equation*}
+            \LT[f(t - t_0) H(t - t_0)] (s) = e^{-s t_0} F(s)
+        \end{equation*}
+        where $H$ is the Heaviside function.
+    \item Scaling: Let $\lambda \in \R$ be positive, then
+        \begin{equation*}
+            \LT[f(\lambda t)] = \frac{1}{\lambda} F(s / \lambda)
+        \end{equation*}
+    \item Shifting by a constant:
+        \begin{equation*}
+            \LT[e^{s_0 t} f(t)] = F(s - s_0)
+        \end{equation*}
+    \item Derivatives:
+        \begin{equation*}
+            \LT[f'(t)] = sF(s) - f(0)
+        \end{equation*}
+        and the property that $f(0)$ appears in this term is known as \textit{memory}. The second derivative follows immediately:
+        \begin{equation*}
+            \LT[f''(t)] = s^2 F(s) - sf(0) - f'(0)
+        \end{equation*}
+    \item Derivative of the Laplace transform:
+        \begin{equation*}
+            \LT[tf(t)] = -F'(s)
+        \end{equation*}
+        this is useful because, given the Laplace Transform of $f(t)$, we can immediately know the Laplace transform of $tf(t)$.
+    \item If $\lim_{t \to\infty} f(t)$ exists, then:
+        \begin{equation*}
+            \lim_{s \to \infty} sF(s) = f(0) \text{ and } \lim_{s \to 0} sF(s) = \lim_{t \to \infty}f(t)
+        \end{equation*}
+\end{propositions}
+\subsection{Inverse Laplace Transform}
+\begin{proposition}
+    Given a function $F(s)$, we can convert the inverse Laplace transform $f(t) = \LT^{-1}[F](t)$ using the Bromwich inversion formula:
+    \begin{equation*}
+        f(t) = \frac1{2\pi i} \int_{\alpha - i \infty}^{\alpha + i \infty} F(s) e^{st} ds
+    \end{equation*}
+    and where the constant $\alpha$ is chosen such that the line $\Re(z) = \alpha$ lies to the right of any singularities of $F$.
+    \label{propLaplaceInverse}
+\end{proposition}
+\end{document}
