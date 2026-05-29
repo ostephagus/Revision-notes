@@ -1,0 +1,85 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Defining the Laurent Series}
+\begin{proposition}[Laurent Series]
+    Let $f : \C \mapsto \C$ be analytic in an annulus:
+    \begin{equation*}
+        \subsetselect{z \in \C}{R_1 < \abs{z - z_0} < R_2}
+    \end{equation*}
+    then it has \underline{Laurent series}:
+    \begin{equation*}
+        f(z) = \sum_{n \in \Z} a_n (z - z_0)^n
+    \end{equation*}
+    with coefficients:
+    \begin{equation*}
+        a_n = \frac{1}{2\pi i} \oint_\gamma \frac{f(z)}{(z - z_0)^{n+1}} dz
+    \end{equation*}
+    for any contour $\gamma$ around the annulus. The Laurent series is convergent within the annulus and uniformly convergent within compact subsets of the annulus.
+
+    Further, if $f$ is analytic all the way to $z_0$ (so $R_1 = 0$), $a_n$ are zero for $n < 0$ (and $f(z)$ is represented simply by its Taylor series).
+    \label{propLaurent}
+\end{proposition}
+\begin{proof}
+    Let $z_0 = 0$ without loss of generality. Fix $z$ in the annulus and let $\gamma_1$ and $\gamma_2$ have radii $r_1, r_2$ where $R_1 < r_1 < \abs{z} < r_2 < R_2$. Define the new contour $\gamma = \gamma_2 - \gamma_1$ which is achieved by the bridging method described in \thmref{propContourShrink}. We also have that $f$ is analytic inside $\gamma$, so apply \thmref{thmCauchyIntegral}. Split the integral into two (over $\gamma_1$ and over $\gamma_2$). Let the integration variable be $\xi$.
+
+    For the first integral we have $\abs{\frac{\xi}{z}} < 1$. Make the denominator $(1 - \xi / z)$ and expand as a geometric series (don't forget to absorb a negative sign).
+    
+    For the second integral the reciprocal is now less than 1 so make the denominator $(1 - z / \xi)$ and expand as a geometric series. 
+\end{proof}
+\section{Multiplicity of Zeroes}
+\begin{theorem}[Fundamental Theorem of Algebra]
+    For a polynomial $p(z)$ of degree $m \geq 1$, there are exactly $m$ roots (counting multiplicity).
+    \label{thmFundamentalAlgebra}
+\end{theorem}
+\begin{definition}{Zero of a function}
+    A \underline{zero} of a function is a point $z_0$ for which $f(z_0) = 0$.
+\end{definition}
+\begin{definition}{Order of a zero}
+    A zero of an analytic function $f(z)$ has \underline{order} $m$ if, in its Taylor expansion,
+    \begin{equation*}
+        f(z) = \sum_{k=1}^{\infty} a_k (z - z_0)^k
+    \end{equation*}
+    the first non-zero coefficient is $a_m$.
+\end{definition}
+\section{Singularities}
+\begin{definition}{Singularity}
+    A \underline{singularity} of a function $f(z)$ is a point $z = z_0$ where $f$ is not analytic.
+\end{definition}
+\begin{definition}{Isolated singularity}
+    A singularity $z_0$ is \underline{isolated} if the function is analytic in a neighbourhood around $z_0$ with arbitrarily small inner radius.
+\end{definition}
+Examples of non-isolated singularities are branch points and functions which have infinitely many singularities around a single point (e.g. $\operatorname{csch}(1/z)$ has a non-isolated singularity at $z = 0$).
+
+For a function with an isolated singularity at $z_0$, if the Laurent series at $z_0$ terminates on the left (in increasingly negative powers of $z$) with last non-zero term $a_{-N}$, then the function has a \underline{pole} at $z_0$ with order $N$.
+
+If the Laurent series at an isolated singularity does not terminate then it has an \underline{essential singularity}.
+\begin{proposition}
+    Let $f : \C \mapsto \C$ have a zero of order $m$ at $z_0$. The function $g(z) = 1 / f(z)$ has a pole of order $m$ at $z_0$.
+    \label{propRecipSing}
+\end{proposition}
+\begin{proof}
+    Consider the Taylor series of $f$ and take out a factor of $(z - z_0)^m$. Label the rest of the Taylor series $h(z)$ which does not have a zero at $z_0$. Then take the reciprocal, noting that $1 / h(z)$ is still analytic.
+\end{proof}
+\section{Residues}
+\begin{definition}{Residue}
+    The \underline{residue} of a function $f(z)$ with an isolated singularity at $z = z_0$, denoted $\res_{z = z_0} f(z)$, is the coefficient $a_{-1}$ in the Laurent series about $z_0$.
+\end{definition}
+\begin{proposition}
+    Let $f$ have a pole of order $n$ at $z = z_0$. The residue is given by:
+    \begin{equation*}
+        \res_{z = z_0} f(z) = \lim_{z \to z_0} \frac{1}{(n-1)!} \frac{d^{n}}{dx^{n}} \left[(z - z_0)^n f(z)\right]
+    \end{equation*}
+    \label{propResFormula}
+\end{proposition}
+\begin{theorem}[Residue Theorem]
+    Let $\gamma$ be a simple, closed contour around $z_0$ (anticlockwise). Let $f(z)$ be analytic within $\gamma$ except at an isolated singularity at $z_0$. Then:
+    \begin{equation*}
+        \oint_\gamma f(z) dz = 2\pi i \res_{z = z_0} f(z)
+    \end{equation*}
+    \label{thmResidue}
+\end{theorem}
+\begin{proof}
+    Deform $\gamma$ into a circle of radius $r$ around $z_0$. Use the Laurent series to evaluate the integral, and use $z = re^{i\theta}$. The only non-zero term is at $a_{-1}$.
+\end{proof}
+\end{document}
