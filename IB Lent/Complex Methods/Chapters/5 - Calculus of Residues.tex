@@ -1,0 +1,142 @@
+\documentclass[../Main.tex]{subfiles}
+
+\begin{document}
+\section{Residues Theorem}
+\begin{theorem}[Residues Theorem]
+    Let $f(z)$ be analytic in a simply connected domain $D$ except at a finite number of isolated singularities $(z_i)_{i=1}^n$. Let $\gamma$ be a simple, closed contour that encircles all the singularities (anticlockwise). Then:
+    \begin{equation*}
+        \oint_{\gamma} f(z) dz = 2\pi i \sum_{i=1}^{n} \res_{z = z_i} f(z)
+    \end{equation*}
+    \label{thmResidues}
+\end{theorem}
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[scale=1]
+        \pgfmathsetmacro{\intarrowanglediff}{2 * asin(0.2*sin(10) / 2.8)}
+        \pgfmathsetmacro{\restartAngleOne}{80 + \intarrowanglediff}
+        \pgfmathsetmacro{\restartAngleTwo}{200 + \intarrowanglediff}
+        \pgfmathsetmacro{\endAngleTwo}{360 - \intarrowanglediff}
+
+
+        \draw (3, 0) arc[start angle=0, end angle=360, radius=3]
+            pic[pos=0.1, rotate=36] {patharrow}
+            node[pos=0.1, anchor=south] {$\gamma$};
+
+        \draw (2.8, 0) arc[start angle=0, end angle=80, radius=2.8]
+            pic[rotate=-10] {integration loop={1}};
+        \draw (\restartAngleOne:2.8) arc[radius=2.8, start angle=\restartAngleOne, end angle=200]
+            pic[rotate=110] {integration loop={2}};
+
+        \draw (\restartAngleTwo:2.8) arc[radius=2.8, start angle=\restartAngleTwo, end angle=\endAngleTwo]
+            pic[pos=0.5, rotate=280] {patharrow}
+            node[pos=0.5, anchor=south] {$\tilde{\gamma}$}
+            pic[rotate=-90] {integration loop={3}};
+    \end{tikzpicture}
+    \caption{Diagram of contours involved in Residues Theorem}
+    \label{figResiduesDiagram}
+\end{figure}
+\begin{proof}
+    Consider the new contour $\tilde{\gamma}$ as in figure~\ref{figResiduesDiagram}.
+\end{proof}
+\section{Integrals Along the Real Axis}
+We consider integrals of the form:
+\begin{equation*}
+    I = \int_{-\infty}^{\infty} f(x) dx
+\end{equation*}
+where $f(z)$, the extension of $f(z)$ to $\C$, has singularities in $\C$. We close the real line (usually with a semicircle) to a closed contour that encircles a singularity which is easy to evaluate.
+
+Often we need to deal with the contribution from the new semicircle and argue that it tends to $0$ as the semicircle's radius tends to $\infty$.
+
+For integrands with a rotational symmetry of angle $\theta$, consider the sector formed by the lines $\arg(z) = 0$ and $\arg(z) = \theta$, and close using an arc. We can then find the required integral (along the real line) in terms of the singularities enclosed by the contour and by finding the integral along $\arg(z) = \theta$ in terms of the contour along the real axis.
+\section{Integrals Involving Trigonometric Functions}
+For integrals involving sine and cosine integrated over $2\pi$, we can transform to a contour around the unit circle, and use:
+\begin{equation*}
+    z + \frac1z = 2\cos(\theta),\qquad z - \frac1z = 2\sin(\theta)
+\end{equation*}
+In other cases (often when we have infinite limits), it is helpful to consider the required integral as the real/imaginary part of another integral, and replacing the $\cos$/$\sin$ with $e^{i\theta}$.
+\section{Branch Cuts and Keyhole Contours}
+When we are integrating over a function that, when considered over $\C$, has a branch point, we need to consider a contour that does not cross the branch cut. Figure~\ref{figKeyholeContour} shows an appropriate contour for a function with a branch cut on $\R^+$, and where the required integral is evaluated over $\R^+$ also. For example,
+\begin{equation*}
+    \int_{0}^{\infty} \frac{x^\alpha}{1 + \sqrt{2} x + x^2} dx
+\end{equation*}
+for $\alpha \in (0, 1)$.
+\begin{figure}
+    \centering
+    \begin{tikzpicture}
+        % Parameters
+        \pgfmathsetmacro{\R}{3}      % Outer (large) radius
+        \pgfmathsetmacro{\r}{0.3}    % Inner (small) radius
+        \pgfmathsetmacro{\eps}{0.15} % Vertical offset of the two parallel lines
+
+        % Half-angles of the gaps on the positive real axis
+        % (where the horizontal lines meet the arcs)
+        \pgfmathsetmacro{\phiR}{asin(\eps/\R)}  % ~2.87 deg
+        \pgfmathsetmacro{\phir}{asin(\eps/\r)}  % ~17.46 deg
+
+        % ---- Axes ----
+        \draw[->] ({-\R - 0.5}, 0) -- ({\R + 0.8}, 0) node[right] {Re};
+        \draw[->] (0, {-\R - 0.5}) -- (0, {\R + 0.8}) node[above] {Im};
+
+        % ---- Branch cut indicator (zigzag along positive real axis) ----
+        \draw[decorate, decoration={zigzag, segment length=4pt, amplitude=2pt}]
+            (0, 0) -- (\R + 0.7, 0);
+
+        % ---- Outer large arc (CCW, gap on positive real axis) ----
+        \draw ({\R*cos(\phiR)}, {\eps})
+            arc[start angle=\phiR, end angle={360 - \phiR}, radius=\R];
+
+        % ---- Upper horizontal line (outer arc → inner arc) ----
+        \draw ({\R*cos(\phiR)}, {\eps}) -- ({\r*cos(\phir)}, {\eps});
+
+        % ---- Inner small arc (CCW, gap on positive real axis) ----
+        \draw ({\r*cos(\phir)}, {\eps})
+            arc[start angle=\phir, end angle={360 - \phir}, radius=\r];
+
+        % ---- Lower horizontal line (inner arc → outer arc) ----
+        \draw ({\r*cos(\phir)}, {-\eps}) -- ({\R*cos(\phiR)}, {-\eps});
+    \end{tikzpicture}
+    \caption{Diagram of a Keyhole Contour}
+    \label{figKeyholeContour}
+\end{figure}
+
+We must be extremely careful to check that any singularities found are inside the correct branch. If not, we must transform them so that they are.
+\section{Rectangular Contours}
+Rectangular contours are useful for integrands with trigonometric functions in the denominator. For example, $1 / \cosh(z)$ has singularities along the imaginary axis. In this case, we choose a rectangle that includes the real line (which is to be integrated over), and the line with $\Im(z) = \pi$, to invoke periodicity of $\cosh$ and determine the integral over this line in terms of the integral over the real axis. We must also prove that the sides of the rectangle do not contribute to the integrand.
+
+A notable example is:
+\begin{equation*}
+    \oint_\gamma \frac{1}{z^2 \tan(\pi z)}
+\end{equation*}
+for which a square contour is appropriate, with singularities $\pm N$ inside the contour only.
+\section{Jordan's Lemma}
+\begin{lemma}
+    For $x \in [0, \pi / 2]$,
+    \begin{equation*}
+        \sin(x) \geq \frac{2}{\pi}x
+    \end{equation*}
+    \label{lemSinBound}
+\end{lemma}
+\begin{proof}
+    Let $h(x) = \frac{\sin(x)}{x}$, in order to show that $h(x) \leq h(\pi / 2)$ later.
+
+    Show that the derivative of $h$ is negative, by showing that its numerator is decreasing from 0.
+\end{proof}
+\begin{theorem}[Jordan's Lemma]
+    Let $f(z)$ be a function that is analytic in $\C$ except for finitely many isolated singularities. Require that $f(z) \to 0$ as $\abs{z} \to \infty$.
+
+    Let $\gamma_R$ be a semicircle in the upper half-plane with radius $R$. Let $\overline{\gamma_R}$ be a semicircle in the lower half-plane with radius $R$.
+
+    For $\lambda > 0$,
+    \begin{equation*}
+        \lim_{R \to 0} \int_{\gamma_R} f(z) e^{i \lambda z} dz = 0
+    \end{equation*}
+    and for $\mu < 0$,
+    \begin{equation*}
+        \lim_{R \to 0} \int_{\overline{\gamma_R}} f(z) e^{i \mu z} dz = 0
+    \end{equation*}
+    \label{thmJordan}
+\end{theorem}
+\begin{proof}
+    Evaluate the modulus of the integral directly. Make use of the sine bound in \thmref{lemSinBound}.
+\end{proof}
+\end{document}
