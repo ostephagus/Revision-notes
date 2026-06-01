@@ -113,8 +113,11 @@ In this section, let $\alpha : V \mapsto W$ be a linear map, $V, W$ vector space
     \end{equation}
     \label{thmRankNullity}
 \end{theorem}
-\begin{proof}
+\begin{proof}[based on previous theorems]
     Combine \thmref{thmIsomorphism} and \thmref{lemDimQuotient} for the result.
+\end{proof}
+\begin{proof}[working from bases]
+    Consider a basis $B$ of $V$ extended from a basis of $\ker(\alpha) \subseteq V$. Apply $\alpha$ to this basis and take the non-zero vectors to form $C$. Prove that this is a basis of the image.
 \end{proof}
 \begin{corollary}[Linear pigeon-hole principle]
     Assume that $\dim(V) = \dim(W) = n$. The following are equivalent:
