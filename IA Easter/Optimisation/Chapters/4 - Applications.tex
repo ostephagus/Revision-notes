@@ -108,7 +108,7 @@ Consider $n$ producers and $m$ consumers. Let producer $i$ supply $s_i$ of a goo
     \end{equation*}
     and by consumer $j$ to:
     \begin{equation*}
-        \sum_{k : (k, j) \in E} \overline{M}_{jk} - b_j.
+        \sum_{k : (j, k) \in E} \overline{M}_{jk} - b_j.
     \end{equation*}
     Now send a flow $x_{ij}$ from producer $(i, j)$ to consumer $j$. Then the flow from this producer to consumer $i$ must be $\overline{M}_{ij} - x_{ij}$.
 
